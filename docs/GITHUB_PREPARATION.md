@@ -1,14 +1,16 @@
 # Experimental Preview source publication
 
-Local main branch contains original source/configuration/tests/metadata/docs and
-full notices. ROM/BIOS/save/generated/build/cache/references/logs/private agent
-instructions/retired research are ignored. No generated source or compiled
-cartridge/BIOS binary belongs in the public source repository.
+Repository: https://github.com/Zaxaerith/MetroidZeroMissionRecomp
+The source-only main branch was uploaded with user authorization on2026-10-01.
+Normal pushes are used; no force push or compiled release assets were uploaded.
 
-GitHub CLI's existing login is invalid. Restore it interactively with
-`gh auth login -h github.com`; never paste credentials into project files.
-No remote has been created and no push/upload was attempted. After choosing the
-repository owner/name and visibility, create the repository from this source
-checkout and push main. Label it Experimental Preview, not a complete game port.
-Review `git ls-files` and `.gitignore` before publication. No broad automated
-campaign/strict/oracle qualification is required to prepare this preview.
+Local Git tracks hand-written source, configuration, final smoke routes,
+verified integration metadata, patches, docs and full license notices.
+ROM/BIOS/save/generated/build/cache/reference/log material remains ignored.
+No generated game/BIOS source or compiled cartridge/BIOS binary belongs here.
+
+For future uploads, authenticate locally using GitHub CLI and review git status,
+git ls-files and .gitignore before pushing. Never store credentials in source
+files. Keep README marked Experimental Preview; do not imply full-game,
+fully-static or independent emulator qualification. No broad gameplay,
+strict-static or oracle validation is required for source publication.

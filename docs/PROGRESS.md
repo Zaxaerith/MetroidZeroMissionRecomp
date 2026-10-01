@@ -82,3 +82,11 @@ copy around a synchronous action; setup itself does not duplicate ROMs.
 No game source changes, build, gameplay, coverage or validation runs.
 Origin is the user-provided HTTPS repository; no push. Existing GitHub credential
 is invalid and must be restored before a future user-approved upload.
+
+## Source publication — Checkpoint024 / 2026-10-01
+
+GitHub CLI connected to the user-authorized Zaxaerith account. Confirmed the
+provided repository was empty/public and normally pushed main. Repository:
+https://github.com/Zaxaerith/MetroidZeroMissionRecomp . Only tracked source and
+metadata uploaded; no ROM/BIOS/save/generated/binary/cache/log assets.
+No build, gameplay, coverage or game validation ran during publication.
