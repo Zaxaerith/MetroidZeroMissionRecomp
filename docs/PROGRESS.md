@@ -70,3 +70,15 @@ Largest remaining directory roms/8 MiB. Before/after classification is recorded
 in CLEANUP_AUDIT.json; commit adds only small Git metadata. Public source audit
 passed:59 tracked text files; no user assets or generated/build/cache material.
 Route and framework patch staged byte hashes match their pinned manifests.
+
+## Canonical ROM cleanup — Checkpoint023
+
+Both root canonical ROM and roms/decomp-mzm_us_baserom.gba were8388608 bytes,
+byte-identical: SHA1 5de8536afe1f0078ee6fe1089f890e8c7aa0a6e8;
+SHA256 fc94f65380b65b870a30b9b04b39cca1dc63d6e46a4a373d3904adc0912ebc37.
+Only the canonical root ROM is retained and ignored. The duplicate was deleted.
+Optional with-decomp-rom.ps1 supplies/removes a temporary filename-compatible
+copy around a synchronous action; setup itself does not duplicate ROMs.
+No game source changes, build, gameplay, coverage or validation runs.
+Origin is the user-provided HTTPS repository; no push. Existing GitHub credential
+is invalid and must be restored before a future user-approved upload.

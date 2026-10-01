@@ -62,3 +62,22 @@ can be deleted again. setup-deps/build-host recreate them. Keep only the latest
 host build log, a compact cold report and the three current result JSONs locally;
 no screenshots/WAV/state dumps. Small ignored runtime coverage/miss audit reports
 are retained as local metadata.
+
+## Canonical ROM and optional decomp filename
+
+Only the project-root `Metroid - Zero Mission (USA).gba` is canonical for regen,
+build and play. The identical decomp/reference copy was removed. Setup does not
+create a second permanent ROM. If an explicitly requested decomp command needs
+`mzm_us_baserom.gba`, use:
+
+```powershell
+.\tools\with-decomp-rom.ps1 -Action { param($decompRoot)
+    # Run the required synchronous decomp command here, using $decompRoot.
+}
+```
+
+The wrapper checks canonical SHA-1/SHA-256, refuses to overwrite an existing
+decomp ROM, temporarily copies it, and removes the copy in finally on completion
+or ordinary failure. An abrupt host/process termination may require manual
+removal of that temporary copy. It never modifies the canonical ROM.
+The wrapper was source-reviewed only; no decomp build or test was run.

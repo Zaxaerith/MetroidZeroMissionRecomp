@@ -26,6 +26,8 @@ Ensure-Pinned 'reference\gbarecomp' $pin.framework.repository $pin.framework.com
 Ensure-Pinned 'reference\gbarecomp\external\arm-recomp-core' $pin.arm_core.repository $pin.arm_core.commit
 Ensure-Pinned 'reference\SDL2' $pin.sdl2.repository $pin.sdl2.commit
 Ensure-Pinned 'build\framework\_deps\tomlplusplus-src' $pin.tomlplusplus.repository $pin.tomlplusplus.commit
+# Setup never duplicates the user ROM. with-decomp-rom.ps1 supplies a temporary
+# filename-compatible copy only for an explicitly requested decomp command.
 if ($IncludeDecomp) {
     Ensure-Pinned 'reference\mzm' $identity.decomp.repository $identity.decomp.commit
 }
