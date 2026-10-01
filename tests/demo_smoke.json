@@ -1,0 +1,13 @@
+{
+  "purpose": "Original title-idle demo native regression baseline; no imported demo data or addresses",
+  "phase": "completed VBlank calls; input before next step",
+  "fixture_sha256": "38e4ce507ef6db5a73a647443fb4b410873c94246b88f28231144f3af4d48a4a",
+  "route_sha256": "a88eee107d20c2de9f4fb738408aad91fe9df659bd3a8f439d5d4b8b936af142",
+  "rgb_sha256": {
+    "1000": "3d4f98c192c4303a5ba333e8a4f0298fb55580faa8f9a573ee6479d426ed672b",
+    "2200": "994f88d7f970de602d84bf64930c954bfdd01badbf9bbdda254ec68343f27c2b",
+    "3200": "cc8a9e15aea1e180fe626e25af579439d1858bb36a53ec135f34e776db0f8112",
+    "4500": "790b73456739bd6a38efcfefef530fde0c533fcb878fa541c01f8ee95f4a07bd"
+  },
+  "pcm_sha256": "f6884236f346b8dd35781ad62a4e0bbac908ad01ba48e7d3f0f595c64566c97a"
+}

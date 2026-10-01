@@ -1,0 +1,5 @@
+* text=auto eol=lf
+# Preserve verified hashes and original upstream license texts byte-for-byte.
+tests/routes/*.csv -text
+patches/framework/*.patch -text
+licenses/* -text

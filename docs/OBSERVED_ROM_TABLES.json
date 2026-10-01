@@ -1,0 +1,257 @@
+{
+  "rom_sha1": "5de8536afe1f0078ee6fe1089f890e8c7aa0a6e8",
+  "tables": [
+    {
+      "addr": "0x08760CA8",
+      "stride": 4,
+      "count": 8,
+      "format": "abs32",
+      "entries_mode": "auto",
+      "verification_bytes": 32,
+      "rom_table_sha256": "f5fb2b9219dd83b45f4389320fb380cf1ef5c37c2409735be781e8dbf58ab9a6",
+      "provenance": "Verified immutable ROM pointer subrange: all eight Thumb targets were observed in reset headless1800 coverage. First slot/target also appears in reset strict call/exchange trace. No decomp addresses imported.",
+      "trace": "logs/cp014-irq-strict/native.log",
+      "coverage_log": "logs/cp013-six-window/native.log",
+      "coverage_exe_sha256": "413255ed592f3f4eba0fedb91e63c0c90381d5a371dd5f30dca3b3ae9597b3ca",
+      "coverage_mode": "Headless, despite historical output folder name; no SDL qualification inferred.",
+      "entries": [
+        {
+          "slot": "0x08760CA8",
+          "target": "0x080806D0",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 110,
+          "verification_bytes": 32,
+          "rom_window_sha256": "acbcd59804ab4dabf3ccc297672c62cb5d02451af4194ce882ea4786035c08a6"
+        },
+        {
+          "slot": "0x08760CAC",
+          "target": "0x080808EC",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 33,
+          "verification_bytes": 32,
+          "rom_window_sha256": "208f3b4e77945e4a083d9477cdff19439055fff047b053b74d9eaf79a4de1944"
+        },
+        {
+          "slot": "0x08760CB0",
+          "target": "0x08080988",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 81,
+          "verification_bytes": 32,
+          "rom_window_sha256": "9393bd11ed3b720ff1a56d5ac5eb4782cf03c91daddef6d71e37104420c54041"
+        },
+        {
+          "slot": "0x08760CB4",
+          "target": "0x08080A88",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 322,
+          "verification_bytes": 32,
+          "rom_window_sha256": "b432ac2b83fbe769a0d20630121b02fec483ac2595414e9e2c853f8aa1339234"
+        },
+        {
+          "slot": "0x08760CB8",
+          "target": "0x08080CCC",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 81,
+          "verification_bytes": 32,
+          "rom_window_sha256": "50c28179b1799e751aa766e7e8754a2adcf87226e7e113b76643ff8c5af8a509"
+        },
+        {
+          "slot": "0x08760CBC",
+          "target": "0x08080DF8",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 310,
+          "verification_bytes": 32,
+          "rom_window_sha256": "036062c76f962121214ce20eb67be2b262b2c4ee3bca8530fbe0fb7d58b9df92"
+        },
+        {
+          "slot": "0x08760CC0",
+          "target": "0x08080EF8",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 193,
+          "verification_bytes": 32,
+          "rom_window_sha256": "0d0bf331c17e822ad2f4dcae47e0975f7b8cbb29f346a64bfd90664e0b7e37a9"
+        },
+        {
+          "slot": "0x08760CC4",
+          "target": "0x080810A0",
+          "mode": "thumb",
+          "headless1800_bridge_calls": 97,
+          "verification_bytes": 32,
+          "rom_window_sha256": "3e0aadb5d84785dd7fcffae7880f0bcbfed7239e8b0a997e80cac172c8feba7e"
+        }
+      ],
+      "limits": "Only this 32-byte observed subrange, not the whole surrounding pointer table. No neighboring unobserved entry or data is seeded.",
+      "static_seeded": true,
+      "experiment": "Rejected CP014: generated8-target callback subrange, native rooms RGB fails at6500+, full PCM2084776/hash6f201bf5... instead of2084772/hash05b6d0a6.... Ordinary table hint withdrawn without changing manifests.",
+      "failed_exe_sha256": "867a4beb8692c802c730c69ebf65614422ad316d1ce2ebe417e8658c3dabb07d",
+      "failed_route": "logs/cp014-table-rooms/result.json",
+      "defer_headless_frame_yield": true,
+      "qualification": "Checkpoint015: exact8 target scopes restore original physical-frame stopping boundary and all4 unchanged native RGB/PCM/SRAM routes. Direct no-scope experiment in014 remains historical rejected evidence.",
+      "accepted_exe_sha256": "10fab2ab2fc6d78f58698d2ddf2a49a78bad0c58612f6c71ea08dbf9eb5109cc",
+      "regression": "logs/cp015-summary.json"
+    },
+    {
+      "addr": "0x08760298",
+      "stride": 4,
+      "count": 3,
+      "format": "abs32",
+      "entries_mode": "auto",
+      "verification_bytes": 12,
+      "rom_table_sha256": "95b0d4d094f3e83853002459100f311883a5e640d5af7ddee757e00b78013d44",
+      "targets": [
+        "0x0806C6B4",
+        "0x0806C78C",
+        "0x0806C878"
+      ],
+      "observed_route_bridge_calls": {
+        "rooms": {
+          "0x0806C6B4": 76,
+          "0x0806C78C": 5
+        },
+        "demo": {
+          "0x0806C6B4": 144,
+          "0x0806C78C": 7,
+          "0x0806C878": 2
+        },
+        "save": {
+          "0x0806C6B4": 208,
+          "0x0806C78C": 3,
+          "0x0806C878": 5
+        },
+        "reload": {
+          "0x0806C6B4": 8,
+          "0x0806C878": 1
+        }
+      },
+      "provenance": "Actual reset-route Thumb misses and immutable three-pointer subrange; firststrict exchange0806C6B5/CPSR3F via0808AC04 after0806C688 call. Fourth XY-flip neighbor unobserved/unseeded.",
+      "static_seeded": true,
+      "defer_headless_frame_yield": true,
+      "qualification": "Checkpoint018: all4 original native routes RGB/fullPCM/SRAM and23 physical frame counters match017; exact3 target roots use existing opt-in scope.",
+      "accepted_exe_sha256": "6c7007c8a0ff34b95f4f65232b8c3b7897c960e3a69dfe90a480cf558a70edaa",
+      "regression": "logs/cp018-summary.json"
+    },
+    {
+      "addr": "0x08345D1C",
+      "stride": 48,
+      "count": 2,
+      "format": "abs32",
+      "entries_mode": "auto",
+      "targets": [
+        "0x0805CCF0",
+        "0x0805CD24"
+      ],
+      "rom_slots_sha256": [
+        "19b88095237f12e6dbe04be13b5e0866cf11ded8ae3ac0605f76f8fab7f00262",
+        "c868258aece4ab9429d532142c5a657d13a9e6b08ca2c476cbf0908bfc2d0255"
+      ],
+      "target_window_bytes": 32,
+      "target_window_sha256": [
+        "8f9e569036d894376db40e98433fa2289ae6bab5f658f80f0a069cd08cae6937",
+        "ad8c7a0a43419298459c68850d22c0c8d48883eb5bf72f2b25d1752300dc29ec"
+      ],
+      "provenance": "CP018 strict exchange0805CCF1/CPSR2000003F; caller0805C3AC computes base08345D00+24*index+4. Immutable odd ROM pointers at selected slots. Both normalized Thumb targets recorded on original reset routes. Previous default callback ends POP/BX0805CCEA/EC, padding then entry0805CCF0; next entry0805CD24 follows POP/BX0805CD1E/20 and padding. Decomp semantics only; no address import.",
+      "observed_route_bridge_calls": {
+        "rooms": [
+          3,
+          134
+        ],
+        "demo": [
+          40,
+          67
+        ],
+        "save": [
+          23,
+          268
+        ],
+        "reload": [
+          10,
+          0
+        ]
+      },
+      "static_seeded": true,
+      "defer_headless_frame_yield": true,
+      "limits": "Only two observed unique targets from selected immutable slots; no remaining fade callbacks seeded.",
+      "accepted_exe_sha256": "22ba967a566150667fc5e94b8dfd983b26f0fd298e6b40087770dbe712e77149",
+      "qualification": "Checkpoint019: original four reset routes/23 RGB/full PCM/two SRAM and fresh-process continuity, all23 physical-frame counters match018. Two exact scoped callback roots; no framework change.",
+      "regression": "logs/cp019-summary.json"
+    },
+    {
+      "addr": "0x0875F2B0",
+      "stride": 4,
+      "count": 1,
+      "format": "abs32",
+      "entries_mode": "auto",
+      "targets": [
+        "0x08046098"
+      ],
+      "verification_bytes": 4,
+      "rom_table_sha256": "449f1de73dc0c92c01982f63e340a7a0cc8a3754ba7cb36b65f48e8ab55d891a",
+      "target_window_bytes": 32,
+      "target_window_sha256": "46f2d4c0e4fec212f7f58b00a44cf5addd7556b3d0720937e7ddb3f28a4994e0",
+      "decomp_semantic_reference": "reference/mzm/src/sprites_ai/gunship.c:1401",
+      "decomp_callback_relationship": "reference/mzm/src/sprite.c:752",
+      "symbol": "GunshipPart",
+      "boundary_verification": "BX0804608E then2 literal words; Thumb PUSH08046098",
+      "mode_evidence": "Actual reset-prefix strict miss Thumb, immutable odd ROM pointer; no full instruction trace used",
+      "provenance": "cp020 actual first miss chain item1; logs/cp020-gates-before-corrected or cp020-gates-after-0; decomp consulted first, ROM corroborated; no decomp address/C import",
+      "static_seeded": true,
+      "defer_headless_frame_yield": true,
+      "limits": "One observed callback only; no neighboring table targets seeded",
+      "accepted_exe_sha256": "07d23601a43a20ce9d5b0d443a7bae1be085619378882200e9c312813e189198",
+      "qualification": "CP020:4 unchanged original RGB/fullPCM/SRAM/native routes and23 physical-frame counters;3 short prefix smokes; exact3 new scoped roots; no framework change",
+      "regression": "logs/cp020-summary.json"
+    },
+    {
+      "addr": "0x08345EFC",
+      "stride": 4,
+      "count": 1,
+      "format": "abs32",
+      "entries_mode": "auto",
+      "targets": [
+        "0x0805CC94"
+      ],
+      "verification_bytes": 4,
+      "rom_table_sha256": "f9bd554e18d1514423112477c1ed9960d836d6ef72d3cae79f97269f11c11da9",
+      "target_window_bytes": 32,
+      "target_window_sha256": "54600b237db23015ca6e06801162c9f3b9f976b250d722ab3ff3e0cea6c091a1",
+      "decomp_semantic_reference": "reference/mzm/src/color_fading.c:1079",
+      "decomp_callback_relationship": "reference/mzm/src/data/color_fading_data.c:218",
+      "symbol": "ColorFadingProcess_BeforeLandingShip",
+      "boundary_verification": "Previous POP/BX0805CC90/92; Thumb PUSH0805CC94",
+      "mode_evidence": "Actual reset-prefix strict miss Thumb, immutable odd ROM pointer; no full instruction trace used",
+      "provenance": "cp020 actual first miss chain item2; logs/cp020-gates-before-corrected or cp020-gates-after-1; decomp consulted first, ROM corroborated; no decomp address/C import",
+      "static_seeded": true,
+      "defer_headless_frame_yield": true,
+      "limits": "One observed callback only; no neighboring table targets seeded",
+      "accepted_exe_sha256": "07d23601a43a20ce9d5b0d443a7bae1be085619378882200e9c312813e189198",
+      "qualification": "CP020:4 unchanged original RGB/fullPCM/SRAM/native routes and23 physical-frame counters;3 short prefix smokes; exact3 new scoped roots; no framework change",
+      "regression": "logs/cp020-summary.json"
+    },
+    {
+      "addr": "0x0875FD80",
+      "stride": 4,
+      "count": 1,
+      "format": "abs32",
+      "entries_mode": "auto",
+      "targets": [
+        "0x0805BDC8"
+      ],
+      "verification_bytes": 4,
+      "rom_table_sha256": "4a1bb77cfa8636dc34b640687ac34944100a731ee14bd950d6a5de6b54e2cb8e",
+      "target_window_bytes": 32,
+      "target_window_sha256": "5b253a435e3817405a65f240857c833536ce73936f5235e3f91451fbecc1af0c",
+      "decomp_semantic_reference": "reference/mzm/src/color_fading.c:127",
+      "decomp_callback_relationship": "reference/mzm/src/color_fading.c:37",
+      "symbol": "unk_5bdc8",
+      "boundary_verification": "Previous POP/BX0805BDC4/6; Thumb PUSH0805BDC8",
+      "mode_evidence": "Actual reset-prefix strict miss Thumb, immutable odd ROM pointer; no full instruction trace used",
+      "provenance": "cp020 actual first miss chain item3; logs/cp020-gates-before-corrected or cp020-gates-after-2; decomp consulted first, ROM corroborated; no decomp address/C import",
+      "static_seeded": true,
+      "defer_headless_frame_yield": true,
+      "limits": "One observed callback only; no neighboring table targets seeded",
+      "accepted_exe_sha256": "07d23601a43a20ce9d5b0d443a7bae1be085619378882200e9c312813e189198",
+      "qualification": "CP020:4 unchanged original RGB/fullPCM/SRAM/native routes and23 physical-frame counters;3 short prefix smokes; exact3 new scoped roots; no framework change",
+      "regression": "logs/cp020-summary.json"
+    }
+  ]
+}

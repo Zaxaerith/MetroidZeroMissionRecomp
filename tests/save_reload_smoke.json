@@ -1,0 +1,15 @@
+{
+  "purpose": "Native SRAM persistence regression, not whole-game or emulator fidelity acceptance",
+  "phase": "completed VBlank calls; input before next step",
+  "fixture_sha256": "063d3506f8df692be24f82e57ca429f80bbee9b69f991475d803b250b7e42e86",
+  "route_sha256": "938b0562760e6ba67bfaabe3ec1649d8634243990246e78342ce862038c5170f",
+  "rgb_sha256": {
+    "1300": "4c7a796577b9664ad220ef315d857b72f9ba5613ad75eeb29250355c43a57218",
+    "1550": "75fe3ba300b66284c25b39b9abe9eb1ec26f6d03cfeef19d0458bb30a2f00e8d",
+    "2300": "4646185760f1c50eaef1999369a55a87261d618dbc89b9b59def7ee04dd9e7e1",
+    "2700": "db0050b3725e17f7c431851741a37494ce9a00ce948d0cd6f257a703c63ed4c5",
+    "3200": "34a02882fc201ce4ab1aa834263d2e958e280d59e66c4dd1e54de5d8e69d8a6f"
+  },
+  "pcm_sha256": "6c2b9d538941c27d16b05734d0bd20b67af64c5a3cf09084335e1efbd9bfab92",
+  "final_save_sha256": "6e8a5d69d676b40b168fb7aa24c9979ca206b17ed9fdc3b10195d97c783e04af"
+}

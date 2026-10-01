@@ -1,0 +1,264 @@
+[game]
+name = "Metroid: Zero Mission"
+short_name = "metroid_zero_mission"
+
+[program]
+name = "Metroid: Zero Mission (USA)"
+id = "BMXE"
+load_address = 0x08000000
+size = 0x00800000
+entry_pc = 0x08000000
+codegen_shards = 8
+static_resume_all = true
+
+[identity]
+sha1 = "5de8536afe1f0078ee6fe1089f890e8c7aa0a6e8"
+
+[rom]
+path = "Metroid - Zero Mission (USA).gba"
+sha1 = "5de8536afe1f0078ee6fe1089f890e8c7aa0a6e8"
+
+[bios]
+sha1 = "300c20df6731a33952ded8c436f7f186d25d3492"
+hle = false
+skip_intro = false
+
+[save]
+# Let the shared runtime detect the chip from the verified cartridge.
+path = "saves/metroid_zero_mission_usa.sav"
+
+[runtime]
+window_title = "MetroidZeroMissionRecomp"
+
+[video]
+screen = "raw"
+view_width = 240
+resize_view = false
+
+[audio]
+shadow = false
+
+# Byte-for-byte matches from logs/ram-frame600.bin against the verified ROM.
+# These describe original runtime copies, without importing decomp addresses.
+[[code_copy]]
+runtime_start = 0x03000C7C
+source_start = 0x08000104
+size = 0x200
+name = "copied_irq"
+note = "512 live IWRAM bytes match ROM; runtime reached ARM entry"
+
+[[code_copy]]
+runtime_start = 0x03003B90
+source_start = 0x08004464
+size = 0x658
+name = "copied_audio_main"
+note = "1624 live IWRAM bytes match ROM"
+
+[[code_copy]]
+runtime_start = 0x030041EC
+source_start = 0x08004310
+size = 0xA4
+name = "copied_audio_helper_1"
+note = "164 live IWRAM bytes match ROM"
+
+[[code_copy]]
+runtime_start = 0x03004294
+source_start = 0x080043B4
+size = 0xB0
+name = "copied_audio_helper_2"
+note = "176 live IWRAM bytes match ROM"
+
+[[extra_func]]
+addr = 0x03000C7C
+mode = "arm"
+note = "Observed native IRQ callback into byte-verified RAM copy"
+
+[[extra_func]]
+addr = 0x03003B90
+mode = "thumb"
+note = "Observed entry into byte-verified RAM audio copy"
+
+[[extra_func]]
+addr = 0x030041EC
+mode = "thumb"
+note = "Observed entry into byte-verified RAM audio copy"
+
+[[extra_func]]
+addr = 0x03004294
+mode = "thumb"
+note = "Observed entry into byte-verified RAM audio copy"
+
+# Moving-stack helpers are dispatched by complete live-image identity in
+# src/copied_code.cpp. Never seed their overlapping roots/interior aliases
+# into the ordinary PC table; tools/generate_stack_variants.cpp emits bodies.
+
+# Observed DMA3 transfers 320 halfwords from this ROM image. The shared area
+# is overwritten by menus/pause. src/copied_code.cpp verifies all 640 bytes
+# at dispatch AND every generated instruction; mismatches use live fallback.
+[[code_copy]]
+runtime_start = 0x030016C4
+source_start = 0x08057F7C
+size = 0x104
+name = "guarded_collision_code"
+note = "Only collision routine through verified POP/BX epilogue; guard validates full 640-byte DMA image"
+
+[[extra_func]]
+addr = 0x030016C4
+mode = "thumb"
+note = "Observed Thumb RAM dispatch; DMA and full-image hash evidence in RAM_COPIES.md"
+
+# Live ROM dispatch entries; CPSR mode and identity/window hashes are recorded
+# in docs/OBSERVED_ROM_ENTRIES.json. These are not imported decomp symbols.
+[[extra_func]]
+addr = 0x08003380
+mode = "thumb"
+note = "Observed immutable ROM target; 353120 bridge calls in save-station baseline"
+
+[[extra_func]]
+addr = 0x08014DB8
+mode = "thumb"
+note = "Observed immutable ROM target; 55868 bridge calls in save-station baseline"
+
+[[extra_func]]
+addr = 0x08000A98
+mode = "thumb"
+note = "Observed immutable IRQ callback exchange 08000A99/CPSR3F; preceding helper ends at BX08000A96, so this is a distinct entry"
+
+
+[[jump_table]]
+addr = 0x08760CA8
+stride = 4
+count = 8
+format = "abs32"
+entries_mode = "auto"
+defer_headless_frame_yield = true
+name = "observed_callback_subrange"
+note = "Verified eight-target ROM subrange; scoped stopping-boundary experiment, docs/OBSERVED_ROM_TABLES.json"
+[[extra_func]]
+addr = 0x080022B4
+mode = "thumb"
+note = "Observed strict exchange 080022B5/CPSR3F; preceding leaf returns at080022B2, immutable pointer at0808CF24; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x0800222C
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF04; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x080022A4
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF1C; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x0800238C
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF2C; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x080023A0
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF30; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x080023B4
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF34; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x080023CC
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF38; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x080023E0
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF3C; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x08002400
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF44; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x0800240C
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF48; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x08002460
+mode = "thumb"
+note = "Observed audio command callback; immutable ROM pointer slot0x0808CF6C; docs/OBSERVED_ROM_ENTRIES.json"
+
+[[extra_func]]
+addr = 0x08005070
+mode = "thumb"
+note = "Observed strict commandB3 exchange08005071/CPSR3F; immutable ROM slot0808CF00; preceding BXlr0800506C with padding; docs/OBSERVED_ROM_ENTRIES.json"
+
+
+# Independent DMA3 haze copy; guard validates the full512-byte live image.
+[[code_copy]]
+runtime_start = 0x03001944
+source_start = 0x0805D768
+size = 0xB8
+name = "guarded_haze_bg3"
+note = "ROM-matched BG3 image; executable through POP/BX, literals/neighbors excluded; full512-byte per-instruction guard"
+
+[[extra_func]]
+addr = 0x03001944
+mode = "thumb"
+note = "Observed Thumb haze callback03001945; separate512-byte DMA image; docs/OBSERVED_RAM_IMAGES.json"
+
+
+[[jump_table]]
+addr = 0x08760298
+stride = 4
+count = 3
+format = "abs32"
+entries_mode = "auto"
+defer_headless_frame_yield = true
+name = "observed_minimap_copy_subrange"
+note = "Three actually observed map tile copy/flip targets; immutable12-byte subrange, preserve prior callback stopping boundary; docs/OBSERVED_ROM_TABLES.json"
+
+
+[[jump_table]]
+addr = 0x08345D1C
+stride = 48
+count = 2
+format = "abs32"
+entries_mode = "auto"
+defer_headless_frame_yield = true
+name = "observed_color_fade_roots"
+note = "Two observed Thumb fade callbacks from24-byte ROM records; selected slots1C/4C only; preserve prior callback stopping boundary; docs/OBSERVED_ROM_TABLES.json"
+
+
+[[jump_table]]
+addr = 0x0875F2B0
+stride = 4
+count = 1
+format = "abs32"
+entries_mode = "auto"
+defer_headless_frame_yield = true
+name = "observed_gunship_part"
+note = "First New Game strict gate miss08046098; decomp GunshipPart semantic/call reference, immutable Thumb slot; docs/MISS_AUDIT.md"
+
+
+[[jump_table]]
+addr = 0x08345EFC
+stride = 4
+count = 1
+format = "abs32"
+entries_mode = "auto"
+defer_headless_frame_yield = true
+name = "observed_fade_before_landing"
+note = "Next actual New Game gate miss0805CC94; decomp ColorFadingProcess_BeforeLandingShip reference; immutable Thumb slot; docs/MISS_AUDIT.md"
+
+
+[[jump_table]]
+addr = 0x0875FD80
+stride = 4
+count = 1
+format = "abs32"
+entries_mode = "auto"
+defer_headless_frame_yield = true
+name = "observed_color_fade_function2"
+note = "Third actual New Game gate blocker0805BDC8; decomp unk_5bdc8 in sColorFadingFunctionPointers, immutable odd ROM pointer; docs/MISS_AUDIT.md"

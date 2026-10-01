@@ -1,0 +1,191 @@
+{
+  "checkpoint": "021",
+  "exe_sha256": "53e4fc735815ed6f13dfed711a2d25002b26f53be63170611b4243de4e021e57",
+  "route": "tests/routes/rooms.csv",
+  "route_sha256": "62c1d251276a6f7a696c04c11d5afa62291a71ebbe14d7149e3f60457abbfb4e",
+  "end_completed_vblank_steps": 8100,
+  "debug_state": false,
+  "healing": false,
+  "source": "logs/cp021-preview-gameplay/result.json",
+  "coverage_sha256": "fdcb9ab92c12543e7da0c8273eacf6be3d1743a3fe78b96279dd9bd95f2e265c",
+  "fragment_sha256": "519470b1d4b0a4e6b0054b59ee4d07ad649d9a7e0fa69bbb614ce11bcb1cfa52",
+  "aot_generated_functions": 20035,
+  "aot_executed_instructions": null,
+  "coverage": {
+    "ok": true,
+    "program": "ZEROMISSIONE",
+    "code": "BMXE",
+    "sha1": "5de8536afe1f0078ee6fe1089f890e8c7aa0a6e8",
+    "coverage": "NOT_STATIC",
+    "enabled": false,
+    "distinct_misses": 19,
+    "interpreted_insns": 2456739,
+    "healed_native": 0,
+    "native_calls": 0,
+    "inflight": 0,
+    "failed": 0,
+    "jump_table_candidate_regions": 0,
+    "misses": [
+      {
+        "pc": "0x080084DC",
+        "mode": "thumb",
+        "bridged": 1369,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x080086D4",
+        "mode": "thumb",
+        "bridged": 10,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08008CF8",
+        "mode": "thumb",
+        "bridged": 92,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08008EFC",
+        "mode": "thumb",
+        "bridged": 32,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08009C04",
+        "mode": "thumb",
+        "bridged": 2042,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08009FF0",
+        "mode": "thumb",
+        "bridged": 219,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0800A024",
+        "mode": "thumb",
+        "bridged": 84,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x080132A8",
+        "mode": "thumb",
+        "bridged": 948,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0801CC74",
+        "mode": "thumb",
+        "bridged": 228,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08026B50",
+        "mode": "thumb",
+        "bridged": 1136,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08050B64",
+        "mode": "thumb",
+        "bridged": 271,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0805448C",
+        "mode": "thumb",
+        "bridged": 284,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08054900",
+        "mode": "thumb",
+        "bridged": 96,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08054BB0",
+        "mode": "thumb",
+        "bridged": 564,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0805BD58",
+        "mode": "thumb",
+        "bridged": 34,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0805C4C0",
+        "mode": "thumb",
+        "bridged": 60,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0805CB78",
+        "mode": "thumb",
+        "bridged": 5,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x0805F8F4",
+        "mode": "thumb",
+        "bridged": 360,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      },
+      {
+        "pc": "0x08062FD8",
+        "mode": "thumb",
+        "bridged": 1262,
+        "healed": false,
+        "native_calls": 0,
+        "jump_table_candidate": false
+      }
+    ]
+  },
+  "strategy": "Experimental Preview; decomp-first bug fixing; coverage recorded, not a release gate",
+  "strict_first_miss": {
+    "pc": "0x08009FF0",
+    "mode": "thumb",
+    "route": "rooms/save",
+    "observed_checkpoint": "020",
+    "rerun_after_cleanup": false
+  }
+}

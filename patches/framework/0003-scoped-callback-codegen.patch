@@ -1,0 +1,215 @@
+diff --git a/docs/TOML_SCHEMA.md b/docs/TOML_SCHEMA.md
+index 8b95403..24ef0a9 100644
+--- a/docs/TOML_SCHEMA.md
++++ b/docs/TOML_SCHEMA.md
+@@ -493,3 +493,17 @@ Naming follows the sibling-recompiler convention:
+ 
+ A future port of the TOML schema across recompilers should be
+ straightforward.
++
++
++### Verified callback subtree frame boundary
++
++`[[jump_table]]` optionally accepts `defer_headless_frame_yield = true`
++(default false). Only that table's normalized target bodies receive an RAII
++`DeferHeadlessFrameYield` scope before their resume prologues. This preserves
++whole-interpreter-subtree headless stopping boundaries during qualified native
++migration. It does not alter instruction/device cycles, IRQ, debugger/HALT,
++presentation hooks or session scheduling. Interior resumes also enter the
++scope; returns/exceptions restore it. Missing independent target bodies or
++conflicting overlay scope settings fail generation. Requires runtime bridge
++patch support. Use only with measured migration evidence and unchanged full
++route gates; never to mask guest timing/fidelity defects or freeze all frames.
+diff --git a/src/recompile/emit_function.cpp b/src/recompile/emit_function.cpp
+index 104982d..65bd18e 100644
+--- a/src/recompile/emit_function.cpp
++++ b/src/recompile/emit_function.cpp
+@@ -195,6 +195,10 @@ std::string emit_function_body_str(
+         alu_immediate_override_pcs,
+     const std::unordered_set<uint64_t>* mod_function_hook_keys) {
+     std::string out;
++    // Enter before resume gotos so both ordinary and interior entries own
++    // a scope; returns and exceptions restore it without guest cycle changes.
++    if (fn.defer_headless_frame_yield)
++        out += "    gbarecomp::DeferHeadlessFrameYield _headless_frame_boundary;\n";
+ 
+     const uint32_t step = (fn.mode == CpuMode::Thumb) ? 2u : 4u;
+     armv4t::CodegenCtx ctx;
+diff --git a/src/recompile/function_finder.h b/src/recompile/function_finder.h
+index 9cb3206..71b5442 100644
+--- a/src/recompile/function_finder.h
++++ b/src/recompile/function_finder.h
+@@ -91,6 +91,8 @@ struct Function {
+     // Set during alias consolidation to mark this entry for removal from the
+     // function list (it was rolled into its host's alias_entries).
+     bool is_alias = false;
++    // Opt-in compatibility boundary for verified native callback subtrees.
++    bool defer_headless_frame_yield = false;
+ };
+ 
+ // A jump table the finder recognized automatically (no [[jump_table]]
+diff --git a/tests/recompile/codegen_shards_test.cpp b/tests/recompile/codegen_shards_test.cpp
+index 73ce92e..251fea7 100644
+--- a/tests/recompile/codegen_shards_test.cpp
++++ b/tests/recompile/codegen_shards_test.cpp
+@@ -89,5 +89,26 @@ int main() {
+         std::fprintf(stderr, "mod function-hook codegen allowlist is incorrect\n");
+         ok = false;
+     }
++    hooked.defer_headless_frame_yield = true;
++    const std::string scoped = gbarecomp::emit_function_body_str(
++        hooked, rom, sizeof(rom), hooked.addr, names);
++    const std::string scope = "    gbarecomp::DeferHeadlessFrameYield _headless_frame_boundary;\n";
++    if (scoped != scope + stock) {
++        std::fprintf(stderr, "scope changed guest code instead of only its host boundary\n");
++        ok = false;
++    }
++    gbarecomp::Function resumable{};
++    resumable.addr = 0x08004000;
++    resumable.end_addr = resumable.addr + 4;
++    resumable.mode = gbarecomp::CpuMode::Thumb;
++    resumable.defer_headless_frame_yield = true;
++    resumable.alias_entries = {resumable.addr + 2};
++    const uint8_t thumb_rom[] = {0x00, 0x20, 0x70, 0x47}; // MOV r0,#0; BX lr
++    const auto resumed = gbarecomp::emit_function_body_str(
++        resumable, thumb_rom, sizeof(thumb_rom), resumable.addr, names);
++    if (resumed.find(scope) != 0 || resumed.find("if (g_runtime_resume_pc)") < scope.size()) {
++        std::fprintf(stderr, "interior resume can bypass scope constructor\n");
++        ok = false;
++    }
+     return ok ? 0 : 1;
+ }
+diff --git a/tests/recompile/config_test.cpp b/tests/recompile/config_test.cpp
+index 09fb59f..3eeaf4f 100644
+--- a/tests/recompile/config_test.cpp
++++ b/tests/recompile/config_test.cpp
+@@ -72,6 +72,28 @@ int main() {
+         fs::remove(path, ec);
+         return fail("mode-conflicting mod_function_hook was accepted");
+     }
++    const std::string table =
++        "[[jump_table]]\naddr=0x08000080\nstride=4\ncount=2\n"
++        "format=\"abs32\"\nentries_mode=\"auto\"\n";
++    if (!write_file(path, base_config(table)) || !gbarecomp::load_config(path.string(), cfg) ||
++        cfg.jump_tables[0].defer_headless_frame_yield)
++        return fail("frame scope must default to disabled");
++    if (!write_file(path, base_config(table + "defer_headless_frame_yield=true\n")) ||
++        !gbarecomp::load_config(path.string(), cfg) || !cfg.jump_tables[0].defer_headless_frame_yield)
++        return fail("explicit frame scope was not parsed");
++    if (!write_file(path, base_config(table + "defer_headless_frame_yield=\"true\"\n")) ||
++        gbarecomp::load_config(path.string(), cfg))
++        return fail("non-boolean frame scope was accepted");
++    if (!write_file(path, base_config(table + "defer_headless_frame_yield=true\n")) ||
++        !gbarecomp::load_config(path.string(), cfg)) return fail("scoped base load failed");
++    const std::string overlay =
++        "[identity]\nsha1=\"0000000000000000000000000000000000000000\"\n" + table;
++    if (!write_file(path, overlay + "defer_headless_frame_yield=false\n") ||
++        gbarecomp::load_config_overlay(path.string(), cfg))
++        return fail("conflicting overlay silently dropped scope policy");
++    if (!write_file(path, overlay + "defer_headless_frame_yield=true\n") ||
++        !gbarecomp::load_config_overlay(path.string(), cfg) || !cfg.jump_tables[0].defer_headless_frame_yield)
++        return fail("identical overlay lost scope policy");
+     fs::remove(path, ec);
+     return 0;
+ }
+diff --git a/tools/gba_recompile/config.cpp b/tools/gba_recompile/config.cpp
+index 365a80e..93e2bd2 100644
+--- a/tools/gba_recompile/config.cpp
++++ b/tools/gba_recompile/config.cpp
+@@ -431,6 +431,14 @@ bool parse_jump_tables(const toml::array& arr,
+                 kAbortHeader, i);
+             return false;
+         }
++        if (auto node = t->get("defer_headless_frame_yield")) {
++            auto value = node->value<bool>();
++            if (!value) {
++                std::fprintf(stderr, "%s[[jump_table]] entry %zu: defer_headless_frame_yield must be boolean\n", kAbortHeader, i);
++                return false;
++            }
++            jt.defer_headless_frame_yield = *value;
++        }
+         jt.name = get_string_field(*t, "name", false, ok, err);
+         jt.note = get_string_field(*t, "note", false, ok, err);
+         out.push_back(std::move(jt));
+@@ -949,7 +957,13 @@ bool load_config_overlay(const std::string& path, Config& base) {
+     for (auto& jt : ov.jump_tables) {
+         bool dup = false;
+         for (const auto& have : base.jump_tables) {
+-            if (have.addr == jt.addr) { dup = true; break; }
++            if (have.addr == jt.addr) {
++                if (have.defer_headless_frame_yield != jt.defer_headless_frame_yield) {
++                    std::fprintf(stderr, "%sconflicting headless frame scope at jump_table 0x%08X\n", kAbortHeader, jt.addr);
++                    return false;
++                }
++                dup = true; break;
++            }
+         }
+         if (dup) { ++dropped_other; continue; }
+         base.jump_tables.push_back(std::move(jt));
+diff --git a/tools/gba_recompile/config.h b/tools/gba_recompile/config.h
+index e8f282a..fa27b28 100644
+--- a/tools/gba_recompile/config.h
++++ b/tools/gba_recompile/config.h
+@@ -129,6 +129,7 @@ struct ConfigJumpTable {
+     uint32_t            count = 0;
+     JumpTableFormat     format = JumpTableFormat::Abs32;
+     JumpTableEntriesMode entries_mode = JumpTableEntriesMode::Arm;
++    bool                defer_headless_frame_yield = false;
+     std::string         name;
+     std::string         note;
+ };
+diff --git a/tools/gba_recompile/main.cpp b/tools/gba_recompile/main.cpp
+index 6df666c..bb22dc9 100644
+--- a/tools/gba_recompile/main.cpp
++++ b/tools/gba_recompile/main.cpp
+@@ -829,6 +829,9 @@ void write_body(const std::string& dir,
+         "#include \"runtime_arm.h\"\n"
+         "#include \"%s\"\n\n",
+         shard, shard_count, names.header.c_str());
++        if (std::any_of(funcs.begin(), funcs.end(), [](const Function& fn) {
++                return fn.defer_headless_frame_yield;
++            })) std::fputs("#include \"runtime_bus_bridge.h\"\n\n", f);
+         for (const auto& fn : funcs) {
+             if (shard_count > 1 &&
+                 stable_shard_hash(fn) % shard_count != shard) {
+@@ -1112,6 +1115,7 @@ int main(int argc, char** argv) {
+     // both auto-data-ranges for the table bytes AND extra seeds),
+     // then extra_func seeds.
+     std::size_t jump_table_expanded_seeds = 0;
++    std::unordered_set<uint64_t> headless_scope_keys;
+     if (have_cfg) {
+         for (const auto& dr : cfg.data_ranges) {
+             finder.add_data_range(dr.start, dr.end, dr.note);
+@@ -1200,6 +1204,9 @@ int main(int argc, char** argv) {
+                 }
+                 finder.add_seed(FunctionSeed{
+                     target_addr, target_mode, std::string(buf)});
++                if (jt.defer_headless_frame_yield)
++                    headless_scope_keys.insert((static_cast<uint64_t>(target_addr) << 1u) |
++                        (target_mode == CpuMode::Thumb ? 1u : 0u));
+                 ++jump_table_expanded_seeds;
+             }
+         }
+@@ -1322,7 +1329,21 @@ int main(int argc, char** argv) {
+         return 1;
+     }
+ 
+-    const auto& funcs = finder.functions();
++    auto funcs = finder.functions();
++    std::size_t scoped_bodies = 0;
++    for (auto& fn : funcs) {
++        uint64_t key = (static_cast<uint64_t>(fn.addr) << 1u) |
++            (fn.mode == CpuMode::Thumb ? 1u : 0u);
++        if (headless_scope_keys.count(key)) {
++            fn.defer_headless_frame_yield = true;
++            ++scoped_bodies;
++        }
++    }
++    if (scoped_bodies != headless_scope_keys.size()) {
++        std::fprintf(stderr, "ERROR: scoped callback target is not an independent generated body\n");
++        return 1;
++    }
++    if (scoped_bodies) std::printf("==> scoped headless callback bodies: %zu\n", scoped_bodies);
+     const auto& stats = finder.stats();
+     if (have_cfg && !validate_thumb_alu_immediate_override_sites(
+             cfg, funcs, rom.data(), rom.size(), effective_rom_base)) {

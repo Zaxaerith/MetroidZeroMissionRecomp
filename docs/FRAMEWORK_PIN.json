@@ -1,0 +1,47 @@
+{
+  "framework": {
+    "repository": "https://github.com/mstan/gbarecomp.git",
+    "commit": "e7728148c6829ba526f682876430a0c9022dc6c0",
+    "patches": [
+      {
+        "path": "patches/framework/0001-obj-color-first-target.patch",
+        "sha256": "1f11d32b74d93b7a0c1382b54a8f52ff05b9f249e3b30bdc284df8edd3c7a782",
+        "purpose": "Honor BLDCNT opaque OBJ first target; keep semitransparent alpha distinct; includes ROM-free regression."
+      },
+      {
+        "path": "patches/framework/0002-scoped-headless-frame-yield.patch",
+        "sha256": "6cb4276db6cd0ba13a6eb75cb17ca3be254bcce1c9690da32a8105d04d7db0c5",
+        "purpose": "RAII scope preserves interpreter-subtree headless frame stopping when replaced by native RAM callbacks; IRQ/device timing, guards, debugger, presentation hooks and session scheduler remain active. Used by qualified six-image default stack dispatch since Checkpoint013."
+      },
+      {
+        "path": "patches/framework/0003-scoped-callback-codegen.patch",
+        "sha256": "35314ed54c12cb0dc37a14ab5094a650e5c03d77700445981051839b023a5a4f",
+        "purpose": "Opt-in boolean callback-table codegen scope preserves measured headless interpreter-subtree stopping boundaries at exact target roots; default disabled, scope before resume gotos, strict config/overlay validation and emitter tests. Uses patch0002 RAII API."
+      }
+    ]
+  },
+  "arm_core": {
+    "repository": "https://github.com/mstan/arm-recomp-core.git",
+    "commit": "c626f4e53fcdca0c72d2a7d34d41663d87c7e175"
+  },
+  "tomlplusplus": {
+    "repository": "https://github.com/marzer/tomlplusplus.git",
+    "commit": "30172438cee64926dc41fdd9c11fb3ba5b2ba9de"
+  },
+  "sdl2": {
+    "repository": "https://github.com/libsdl-org/SDL.git",
+    "commit": "b7502f1a884c055f8535cf8d2be3f44c41669a43"
+  },
+  "host_reference": {
+    "repository": "https://github.com/mstan/MegaManZeroRecomp.git",
+    "commit": "218adfddf3572a6eaf7ffbec858d95c71bf53935",
+    "purpose": "Architecture reference only; no game hints or addresses imported"
+  },
+  "note": "This source pin is separate from the 0.2.0 CLI vanilla baseline. No equivalence between those tool binaries is claimed.",
+  "mgba": {
+    "repository": "https://github.com/mgba-emu/mgba.git",
+    "tag": "0.10.5",
+    "commit": "26b7884bc25a5933960f3cdcd98bac1ae14d42e2",
+    "purpose": "Separate-process validation only; not linked into game host"
+  }
+}

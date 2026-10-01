@@ -1,0 +1,1492 @@
+{
+  "source": "CP019 original reset routes; root master fragment belongs to original8-point gameplay/oracle route",
+  "fragment_count": 15,
+  "route_union_count": 61,
+  "classification_counts": {
+    "indirect callback": 61
+  },
+  "no_current_evidence_categories": [
+    "jump table case/interior resume",
+    "ARM-Thumb mismatch",
+    "emitter gap",
+    "genuinely dynamic code"
+  ],
+  "rows": [
+    {
+      "pc": "0x08005030",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "boundary unconfirmed",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 41,
+        "reload": 5
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0808CEFC"
+      ],
+      "decomp_reference": null,
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080084DC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 45,
+      "route_bridged": {
+        "rooms": 1369,
+        "demo": 268,
+        "save": 6137
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6A8"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 3847,
+        "semantic": "Samus running main loop",
+        "symbol": "SamusRunning",
+        "decomp_boundary_hint_bytes": 212
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 1369,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080086D4",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 161,
+      "route_bridged": {
+        "rooms": 10,
+        "demo": 446,
+        "save": 2786
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6AC",
+        "0x0875E6B4",
+        "0x0875E6D0",
+        "0x0875E794"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4019,
+        "semantic": "Samus standing main loop",
+        "symbol": "SamusStanding",
+        "decomp_boundary_hint_bytes": 328
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 10,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0800883C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 16,
+        "save": 12
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6B0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4127,
+        "semantic": "Samus turning around main loop",
+        "symbol": "SamusTurningAround",
+        "decomp_boundary_hint_bytes": 188
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0800895C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 175,
+        "save": 1137
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6B8",
+        "0x0875E6C0",
+        "0x0875E798"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4212,
+        "semantic": "Samus crouching main loop",
+        "symbol": "SamusCrouching",
+        "decomp_boundary_hint_bytes": 440
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08008B14",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 4
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6BC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4336,
+        "semantic": "Samus turning around and crouching main loop",
+        "symbol": "SamusTurningAroundAndCrouching",
+        "decomp_boundary_hint_bytes": 272
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08008CF8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 11,
+      "route_bridged": {
+        "rooms": 92,
+        "demo": 85,
+        "save": 428
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6C8"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4498,
+        "semantic": "Samus mid air main loop",
+        "symbol": "SamusMidAir",
+        "decomp_boundary_hint_bytes": 256
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 92,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08008E38",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 4,
+        "save": 8
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6CC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4615,
+        "semantic": "Samus turning around mid air main loop",
+        "symbol": "SamusTurningAroundMidAir",
+        "decomp_boundary_hint_bytes": 128
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08008EFC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 32,
+        "demo": 253,
+        "save": 507
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6D4",
+        "0x0875E6D8",
+        "0x0875E6E0",
+        "0x0875E6E4"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4687,
+        "semantic": "Samus spinning main loop",
+        "symbol": "SamusSpinning",
+        "decomp_boundary_hint_bytes": 324
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 32,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009210",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 12,
+        "save": 32
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6E8"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4935,
+        "semantic": "Samus morphing main loop",
+        "symbol": "SamusMorphing",
+        "decomp_boundary_hint_bytes": 32
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0800924C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 132,
+        "save": 3490
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6EC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 4964,
+        "semantic": "Samus morphball main loop",
+        "symbol": "SamusMorphball",
+        "decomp_boundary_hint_bytes": 368
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080093BC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 340,
+        "save": 1573
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6F0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5079,
+        "semantic": "Samus rolling main loop",
+        "symbol": "SamusRolling",
+        "decomp_boundary_hint_bytes": 204
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080094C0",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 6,
+        "save": 30
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6F4"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5161,
+        "semantic": "Samus unmorphing main loop",
+        "symbol": "SamusUnmorphing",
+        "decomp_boundary_hint_bytes": 72
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0800952C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 64,
+        "save": 128
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6F8"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5205,
+        "semantic": "Samus morphball midair main loop",
+        "symbol": "SamusMorphballMidAir",
+        "decomp_boundary_hint_bytes": 216
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009604",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 81
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E6FC",
+        "0x0875E79C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5260,
+        "semantic": "Samus hanging on ledge main loop",
+        "symbol": "SamusHangingOnLedge",
+        "decomp_boundary_hint_bytes": 364
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009798",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 62
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E700",
+        "0x0875E704",
+        "0x0875E70C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5392,
+        "semantic": "Samus turning to aim while hanging main loop",
+        "symbol": "SamusTurningToAimWhileHanging",
+        "decomp_boundary_hint_bytes": 200
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080098B4",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 142
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E708"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5492,
+        "semantic": "Samus aiming while hanging main loop",
+        "symbol": "SamusAimingWhileHanging",
+        "decomp_boundary_hint_bytes": 396
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009A40",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 18
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E710",
+        "0x0875E718"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5617,
+        "semantic": "Samus pulling self up main loop",
+        "symbol": "SamusPullingSelfUp",
+        "decomp_boundary_hint_bytes": 40
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009A94",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 24
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E714"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5658,
+        "semantic": "Samus pulling self forward main loop",
+        "symbol": "SamusPullingSelfForward",
+        "decomp_boundary_hint_bytes": 32
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009C04",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 2042,
+      "route_bridged": {
+        "rooms": 2042,
+        "save": 2042,
+        "reload": 757
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E720"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 5814,
+        "semantic": "Samus facing the foreground main loop",
+        "symbol": "SamusFacingTheForeground",
+        "decomp_boundary_hint_bytes": 40
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 2042,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009F4C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 342
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E748",
+        "0x0875E74C",
+        "0x0875E750"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 6162,
+        "semantic": "Samus on zipline main loop",
+        "symbol": "SamusOnZipline",
+        "decomp_boundary_hint_bytes": 88
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08009FF0",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 219,
+      "route_bridged": {
+        "rooms": 219,
+        "save": 414,
+        "reload": 340
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E758",
+        "0x0875E75C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 6230,
+        "semantic": "Samus saving/loading game main loop",
+        "symbol": "SamusSavingLoadingGame",
+        "decomp_boundary_hint_bytes": 24
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 219,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0800A024",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 84,
+        "save": 84
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875E764",
+        "0x0875E76C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/samus.c",
+        "line": 6261,
+        "semantic": "Samus getting hurt main loop",
+        "symbol": "SamusGettingHurt",
+        "decomp_boundary_hint_bytes": 104
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 84,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08012748",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 928
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F1F8"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/chozo_statue_movement.c",
+        "line": 74,
+        "semantic": "Chozo statue movement AI",
+        "symbol": "ChozoStatueMovement",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080132A8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 221,
+      "route_bridged": {
+        "rooms": 948,
+        "save": 1524
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F234"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/morph_ball.c",
+        "line": 157,
+        "semantic": "Morph ball outside AI",
+        "symbol": "MorphBallOutside",
+        "decomp_boundary_hint_bytes": 44
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 948,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08015000",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 144
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F1F0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/chozo_statue.c",
+        "line": 1341,
+        "semantic": "Chozo statue refill AI",
+        "symbol": "ChozoStatueRefill",
+        "decomp_boundary_hint_bytes": 168
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0801BBFC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 152
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F220"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/message_banner.c",
+        "line": 379,
+        "semantic": "Save yes no cursor AI",
+        "symbol": "SaveYesNoCursor",
+        "decomp_boundary_hint_bytes": 400
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0801CC74",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 228,
+        "save": 228
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F218",
+        "0x0875F224"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/skree.c",
+        "line": 386,
+        "semantic": "Skree explosion AI",
+        "symbol": "SkreeExplosion",
+        "decomp_boundary_hint_bytes": 36
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 228,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080203D0",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 1204,
+        "reload": 1426
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F21C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/save_platform.c",
+        "line": 677,
+        "semantic": "Save platform part AI",
+        "symbol": "SavePlatformPart",
+        "decomp_boundary_hint_bytes": 404
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08026B50",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 221,
+      "route_bridged": {
+        "rooms": 1136,
+        "demo": 672,
+        "save": 2749
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F278"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/morph_ball_launcher.c",
+        "line": 218,
+        "semantic": "Morph ball launcher part AI",
+        "symbol": "MorphBallLauncherPart",
+        "decomp_boundary_hint_bytes": 232
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 1136,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08046098",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 660,
+      "route_bridged": {
+        "rooms": 660,
+        "save": 660
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F2B0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/sprites_ai/gunship.c",
+        "line": 1401,
+        "semantic": "Gunship part AI",
+        "symbol": "GunshipPart",
+        "decomp_boundary_hint_bytes": 484
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": true
+    },
+    {
+      "pc": "0x08050B64",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 13,
+      "route_bridged": {
+        "rooms": 271,
+        "save": 381
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F974"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/projectile.c",
+        "line": 24,
+        "semantic": "Main loop for a normal beam projectile",
+        "symbol": "ProjectileProcessNormalBeam",
+        "decomp_boundary_hint_bytes": 248
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 271,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08050D48",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 287
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F97C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/projectile.c",
+        "line": 177,
+        "semantic": "Main loop for a ice beam projectile",
+        "symbol": "ProjectileProcessIceBeam",
+        "decomp_boundary_hint_bytes": 292
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08051BAC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 128
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9A4"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/projectile.c",
+        "line": 1173,
+        "semantic": "Main loop for a missile projectile",
+        "symbol": "ProjectileProcessMissile",
+        "decomp_boundary_hint_bytes": 280
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08051FF8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 147
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9AC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/projectile.c",
+        "line": 1478,
+        "semantic": "Main loop for a bomb projectile",
+        "symbol": "ProjectileProcessBomb",
+        "decomp_boundary_hint_bytes": 504
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080542BC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 192
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9C0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 484,
+        "semantic": "Main loop for the sprite splash lava small particle effect",
+        "symbol": "ParticleSpriteSplashLavaSmall",
+        "decomp_boundary_hint_bytes": 68
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054454",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 8,
+        "save": 44
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9D8"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 633,
+        "semantic": "Main loop for the shooting beam left particle effect",
+        "symbol": "ParticleShootingBeamLeft",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805448C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 4,
+      "route_bridged": {
+        "rooms": 284,
+        "demo": 61,
+        "save": 575
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9EC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 655,
+        "semantic": "Main loop for the shooting beam right particle effect",
+        "symbol": "ParticleShootingBeamRight",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 284,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080544C4",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 4
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9DC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 677,
+        "semantic": "Main loop for the shooting beam diagonally up particle effect",
+        "symbol": "ParticleShootingBeamDiagUpLeft",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080544FC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 24
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9F0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 699,
+        "semantic": "Main loop for the shooting beam diagonally down particle effect",
+        "symbol": "ParticleShootingBeamDiagUpRight",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080545A4",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 12
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875F9E4"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 765,
+        "semantic": "Main loop for the shooting beam up left particle effect",
+        "symbol": "ParticleShootingBeamUpLeft",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054684",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 42
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA00"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 853,
+        "semantic": "Main loop for the bomb particle effect",
+        "symbol": "ParticleBomb",
+        "decomp_boundary_hint_bytes": 68
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080546C8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 264
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA04"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 876,
+        "semantic": "Main loop for the missile trail particle effect",
+        "symbol": "ParticleMissileTrail",
+        "decomp_boundary_hint_bytes": 56
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054738",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 137
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA0C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 920,
+        "semantic": "Main loop for the beam trailing right particle effect",
+        "symbol": "ParticleBeamTrailingRight",
+        "decomp_boundary_hint_bytes": 72
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054780",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 880
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA10"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 947,
+        "semantic": "Main loop for the beam trailing left particle effect",
+        "symbol": "ParticleBeamTrailingLeft",
+        "decomp_boundary_hint_bytes": 72
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054900",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 96,
+        "save": 96
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA2C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1088,
+        "semantic": "Main loop for the sprite explosion huge particle effect",
+        "symbol": "ParticleSpriteExplosionHuge",
+        "decomp_boundary_hint_bytes": 52
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 96,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054970",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 216
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA34"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1132,
+        "semantic": "Main loop for the sprite explosion medium particle effect",
+        "symbol": "ParticleSpriteExplosionMedium",
+        "decomp_boundary_hint_bytes": 52
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x080549A8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 225
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA38"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1154,
+        "semantic": "Main loop for the sprite explosion big particle effect",
+        "symbol": "ParticleSpriteExplosionBig",
+        "decomp_boundary_hint_bytes": 52
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054B30",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 51
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA54"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1308,
+        "semantic": "Main loop for the freezing sprite with ice particle effect",
+        "symbol": "ParticleFreezingSpriteWithIce",
+        "decomp_boundary_hint_bytes": 64
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054BB0",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 564,
+        "save": 1408
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA5C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1354,
+        "semantic": "Main loop for the hitting something with base beam particle effect",
+        "symbol": "ParticleHittingSomethingWithNormalBeam",
+        "decomp_boundary_hint_bytes": 60
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 564,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054C2C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 223
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA64"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1398,
+        "semantic": "Main loop for the hitting something with ice beam particle effect",
+        "symbol": "ParticleHittingSomethingWithIceBeam",
+        "decomp_boundary_hint_bytes": 60
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08054D9C",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 136
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FA74"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/particle.c",
+        "line": 1530,
+        "semantic": "Main loop for the hitting something with missile particle effect",
+        "symbol": "ParticleHittingSomethingWithMissile",
+        "decomp_boundary_hint_bytes": 64
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805BD58",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 34,
+        "demo": 17,
+        "save": 68
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FD7C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 92,
+        "semantic": "To document",
+        "symbol": "unk_5bd58",
+        "decomp_boundary_hint_bytes": 112
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 34,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805BDC8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 2,
+      "route_bridged": {
+        "rooms": 2,
+        "demo": 36,
+        "save": 20,
+        "reload": 9
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0875FD80"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 127,
+        "semantic": "To document",
+        "symbol": "unk_5bdc8",
+        "decomp_boundary_hint_bytes": 180
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": true
+    },
+    {
+      "pc": "0x0805C4C0",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "rooms": 60,
+        "demo": 30,
+        "save": 120
+      },
+      "aligned_rom_pointer_slots": [
+        "0x08345D54",
+        "0x08345D6C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 544,
+        "semantic": "Door transition fade function",
+        "symbol": "ColorFadingProcess_DoorTransition",
+        "decomp_boundary_hint_bytes": 616
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 60,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805C728",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "save": 22,
+        "reload": 11
+      },
+      "aligned_rom_pointer_slots": [
+        "0x08345D24",
+        "0x08345D3C",
+        "0x08345D84",
+        "0x08345D9C",
+        "0x08345DB4",
+        "0x08345DCC",
+        "0x08345DE4",
+        "0x08345DFC",
+        "0x08345E14"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 660,
+        "semantic": "Default function for a color fading",
+        "symbol": "ColorFadingProcess_Default",
+        "decomp_boundary_hint_bytes": 84
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805C8AC",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 0,
+      "route_bridged": {
+        "demo": 105
+      },
+      "aligned_rom_pointer_slots": [
+        "0x08345E44",
+        "0x08345E5C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 776,
+        "semantic": "Before demo end fade function",
+        "symbol": "ColorFadingProcess_BeforeDemoEnding",
+        "decomp_boundary_hint_bytes": 120
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805CB78",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 5,
+      "route_bridged": {
+        "rooms": 5,
+        "save": 5
+      },
+      "aligned_rom_pointer_slots": [
+        "0x08345EEC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 985,
+        "semantic": "Before intro text cutscene fade function",
+        "symbol": "ColorFadingProcess_BeforeIntroText",
+        "decomp_boundary_hint_bytes": 164
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 5,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x0805CC94",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 71,
+      "route_bridged": {
+        "rooms": 71,
+        "save": 71
+      },
+      "aligned_rom_pointer_slots": [
+        "0x08345EFC"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/color_fading.c",
+        "line": 1079,
+        "semantic": "Before ship landing sequence fade function",
+        "symbol": "ColorFadingProcess_BeforeLandingShip",
+        "decomp_boundary_hint_bytes": 92
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 0,
+      "resolved_in_batch": true
+    },
+    {
+      "pc": "0x0805F8F4",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 360,
+      "route_bridged": {
+        "rooms": 360,
+        "save": 360
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0836030C"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/in_game_cutscene.c",
+        "line": 32,
+        "semantic": "Handles the samus close up cutscene",
+        "symbol": "InGameCutsceneSamusCloseUp",
+        "decomp_boundary_hint_bytes": 1124
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 360,
+      "resolved_in_batch": false
+    },
+    {
+      "pc": "0x08062FD8",
+      "mode": "thumb",
+      "category": "indirect callback",
+      "secondary": "function entry",
+      "master_fragment_bridged": 1262,
+      "route_bridged": {
+        "rooms": 1262,
+        "save": 1262
+      },
+      "aligned_rom_pointer_slots": [
+        "0x0836BDC0",
+        "0x0836BDD0",
+        "0x0836BDE0"
+      ],
+      "decomp_reference": {
+        "file": "reference/mzm/src/cutscenes/story_text_cutscene.c",
+        "line": 376,
+        "semantic": "Main loop for the story text cutscenes",
+        "symbol": "StoryTextCutsceneHandler",
+        "decomp_boundary_hint_bytes": 48
+      },
+      "evidence_limit": "Decomp names/boundaries are semantic hints; exact rebuilt ROM unavailable. No symbol/address import; classify callbacks via immutable aligned ROM pointer and observed Thumb miss.",
+      "current_canonical_bridged": 1262,
+      "resolved_in_batch": false
+    }
+  ],
+  "current_canonical_route": "tests/routes/rooms.csv",
+  "current_fragment_count": 19,
+  "current_exe_sha256": "07d23601a43a20ce9d5b0d443a7bae1be085619378882200e9c312813e189198",
+  "strategy": "Frozen CP020 audit; not a scheduled strict sweep. Current preview uses decomp-first fixes for real bugs."
+}

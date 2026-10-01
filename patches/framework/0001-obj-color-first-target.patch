@@ -1,0 +1,136 @@
+diff --git a/src/gba/gba_ppu.cpp b/src/gba/gba_ppu.cpp
+index 2b220c9..5681c3d 100644
+--- a/src/gba/gba_ppu.cpp
++++ b/src/gba/gba_ppu.cpp
+@@ -736,6 +736,7 @@ void render_scanline_internal(uint8_t* rgb,
+         uint16_t color = 0;
+         int key = 0x7FFFFFFF;
+         uint8_t layer = 5;
++        bool semitransparent_obj = false;
+         bool target1 = false;
+         bool target2 = false;
+         bool valid = false;
+@@ -827,12 +828,13 @@ void render_scanline_internal(uint8_t* rgb,
+                       int key,
+                       uint8_t layer,
+                       bool target1,
+-                      bool target2) {
++                      bool target2, bool semitransparent_obj = false) {
+         PixelCandidate cand;
+         cand.color = color;
+         to_rgb888(color, cand.rgb);
+         cand.key = key;
+         cand.layer = layer;
++        cand.semitransparent_obj = semitransparent_obj;
+         cand.target1 = target1;
+         cand.target2 = target2;
+         cand.valid = true;
+@@ -1216,8 +1218,8 @@ void render_scanline_internal(uint8_t* rgb,
+                 const uint16_t color = load_u16_le(&obj_pal[pal_index * 2]);
+                 uint32_t ux = static_cast<uint32_t>(screen_x);
+                 bool t1 = blend_enabled(ux) &&
+-                    obj_mode == 1;
+-                submit(ux, color, key, 4, t1, obj_target2);
++                    (obj_mode == 1 || (first_targets & (1u << 4)) != 0);
++                submit(ux, color, key, 4, t1, obj_target2, obj_mode == 1);
+             };
+             if (rot_scale) {
+                 int bw = disable_or_double ? sw * 2 : sw;
+@@ -1285,7 +1287,7 @@ void render_scanline_internal(uint8_t* rgb,
+         // EVA=0/EVB=16 is a valid blend (1st target fully fades into the 2nd) —
+         // the Oak-intro character fade endpoint that previously snapped back to
+         // opaque, leaving body/feet (BG2 + semi-transparent OBJ) out of sync.
+-        if ((effect == 1 || top[x].layer == 4) &&
++        if ((effect == 1 || top[x].semitransparent_obj) &&
+             top[x].target1 && second[x].valid && second[x].target2 &&
+             !(top[x].layer == 4 && second[x].layer == 4)) {
+             const uint16_t blended = blend_alpha_gba555(
+@@ -1340,6 +1342,7 @@ void render_scanline_wide(uint8_t* rgb, int y, uint16_t dispcnt,
+         uint16_t color = 0;
+         int key = 0x7FFFFFFF;
+         uint8_t layer = 5;
++        bool semitransparent_obj = false;
+         bool target1 = false;
+         bool target2 = false;
+         bool valid = false;
+@@ -1459,12 +1462,13 @@ void render_scanline_wide(uint8_t* rgb, int y, uint16_t dispcnt,
+         top[x].valid = true;
+     }
+     auto submit = [&](uint32_t x, uint16_t color, int key, uint8_t layer,
+-                      bool target1, bool target2) {
++                      bool target1, bool target2, bool semitransparent_obj = false) {
+         PixelCandidate cand;
+         cand.color = color;
+         to_rgb888(color, cand.rgb);
+         cand.key = key;
+         cand.layer = layer;
++        cand.semitransparent_obj = semitransparent_obj;
+         cand.target1 = target1;
+         cand.target2 = target2;
+         cand.valid = true;
+@@ -1909,8 +1913,9 @@ void render_scanline_wide(uint8_t* rgb, int y, uint16_t dispcnt,
+                 }
+                 const uint16_t color = load_u16_le(&obj_pal[pal_index * 2]);
+                 uint32_t ux = static_cast<uint32_t>(screen_x);
+-                bool t1 = blend_enabled(ux) && obj_mode == 1;
+-                submit(ux, color, key, 4, t1, obj_target2);
++                bool t1 = blend_enabled(ux) &&
++                    (obj_mode == 1 || (first_targets & (1u << 4)) != 0);
++                submit(ux, color, key, 4, t1, obj_target2, obj_mode == 1);
+             };
+             if (rot_scale) {
+                 int bw = disable_or_double ? sw * 2 : sw;
+@@ -2028,7 +2033,7 @@ void render_scanline_wide(uint8_t* rgb, int y, uint16_t dispcnt,
+         // EVA=0/EVB=16 is a valid blend (1st target fully fades into the 2nd) —
+         // the Oak-intro character fade endpoint that previously snapped back to
+         // opaque, leaving body/feet (BG2 + semi-transparent OBJ) out of sync.
+-        if ((effect == 1 || top[x].layer == 4) &&
++        if ((effect == 1 || top[x].semitransparent_obj) &&
+             top[x].target1 && second[x].valid && second[x].target2 &&
+             !(top[x].layer == 4 && second[x].layer == 4)) {
+             const uint16_t blended = blend_alpha_gba555(
+diff --git a/tests/ppu_smoke/test_main.cpp b/tests/ppu_smoke/test_main.cpp
+index 198b217..ddc4fec 100644
+--- a/tests/ppu_smoke/test_main.cpp
++++ b/tests/ppu_smoke/test_main.cpp
+@@ -1844,6 +1844,40 @@ void test_latched_frame_immune_to_in_progress_scanlines() {
+ } // namespace
+ 
+ int main() {
++    // Opaque OBJ must obey BLDCNT first-target selection for brightness.
++    // Semitransparent OBJ forces alpha, independently of that selection.
++    for (int margin : {0, 24}) {
++        Fixture f;
++        f.ppu.set_view_margins(margin, margin, 0, 0);
++        std::vector<uint8_t> pixels(f.ppu.render_bytes());
++        const uint8_t* object_pixel = pixels.data() + margin * 3;
++        disable_all_objects(f);
++        store16(f.oam.data(), 0);  // opaque 8x8 OBJ at (0,0)
++        std::fill(f.vram.begin() + 0x10000, f.vram.begin() + 0x10020, 0x11);
++        store16(&f.pal[0], 0x7C00);  // blue backdrop
++        store16(&f.pal[0x202], 0x001F);  // red OBJ
++        store16(&f.io[0x52], 0x0808);
++        store16(&f.io[0x54], 8);
++        auto render = [&]() {
++            f.ppu.render(pixels.data(), 0x1000, f.io.data(), f.vram.data(),
++                         f.oam.data(), f.pal.data());
++        };
++        store16(&f.io[0x50], 0x20D0);  // darken OBJ, backdrop second target
++        render();
++        expect_pixel(object_pixel, 132, 0, 0, "opaque OBJ darkens via BLDCNT");
++        store16(&f.io[0x50], 0x2090);  // brighten OBJ
++        render();
++        expect_pixel(object_pixel, 255, 132, 132, "opaque OBJ brightens via BLDCNT");
++        store16(&f.io[0x50], 0x2050);  // alpha: OBJ first, backdrop second
++        render();
++        expect_pixel(object_pixel, 132, 0, 132, "opaque OBJ alpha via BLDCNT");
++        store16(&f.io[0x50], 0x20C0);  // OBJ not a first target
++        render();
++        expect_pixel(object_pixel, 255, 0, 0, "opaque OBJ ignores unselected brightness");
++        store16(f.oam.data(), 0x0400);  // semitransparent OBJ
++        render();
++        expect_pixel(object_pixel, 132, 0, 132, "semitransparent OBJ forces alpha during darken");
++    }
+     test_alpha_native_domain_and_green_precision();
+     test_brightness_native_domain_and_green_precision();
+     test_extended_view_geometry_and_clamp();

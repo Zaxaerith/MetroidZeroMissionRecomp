@@ -1,0 +1,23 @@
+# gbarecomp-keyinput-v1
+# Fresh process: title -> file A -> Start Game -> saved room -> Morph Ball.
+# No savestate, memory injection, or intro-skipping flags.
+0,0x03FF
+600,0x03F7
+610,0x03FF
+1100,0x03F7
+1110,0x03FF
+1400,0x03FE
+1410,0x03FF
+1600,0x03FE
+1610,0x03FF
+2400,0x037F
+2430,0x03FF
+2460,0x037F
+2490,0x03FF
+2520,0x037F
+2550,0x03FF
+2800,0x03F7
+2810,0x03FF
+3000,0x02FF
+3010,0x03FF
+3200,0x03FF

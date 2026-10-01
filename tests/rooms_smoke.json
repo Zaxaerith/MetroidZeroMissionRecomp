@@ -1,0 +1,17 @@
+{
+  "purpose": "Native regression baseline, not emulator fidelity acceptance",
+  "phase": "completed VBlank calls; input before next step",
+  "fixture_sha256": "38e4ce507ef6db5a73a647443fb4b410873c94246b88f28231144f3af4d48a4a",
+  "route_sha256": "62c1d251276a6f7a696c04c11d5afa62291a71ebbe14d7149e3f60457abbfb4e",
+  "rgb_sha256": {
+    "1000": "3d4f98c192c4303a5ba333e8a4f0298fb55580faa8f9a573ee6479d426ed672b",
+    "1300": "b9804c7f2eae67c92d8f3ce0c9f64489272f15faea87d86babfd730464d8a92e",
+    "6200": "f41323885855b5dac1a33c593c0ad5f898218fe97e320ff09f7fc24cc27f6b36",
+    "6500": "3a002da161be4997bcd1f10bf700cf0af4f4a6d7d7c4babbae4675ae07d8cffc",
+    "7200": "790f228286f4110237b4af94b796b39578603caf9bf17544dbadd10debc5d0ae",
+    "7350": "ac69e46f3eb6f8c19d004d3167e1aea7643ffd74d266fdf7a2883fa56ab57b80",
+    "7700": "0b999178760d4637418665fa745496bac06be0b4005892bb8e1c10ad03736525",
+    "8100": "21d1cc62d0d8344f39af66d41cabdf70b53a74b8e0ef515a7028c3b7e459c7f4"
+  },
+  "pcm_sha256": "05b6d0a630bf777454f0ec101c7642199b327554a58ab9d3fc8ccdc160eddc53"
+}

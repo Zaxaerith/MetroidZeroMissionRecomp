@@ -1,0 +1,55 @@
+diff --git a/src/runtime/runtime_bus_bridge.cpp b/src/runtime/runtime_bus_bridge.cpp
+index 947db1c..90c4e69 100644
+--- a/src/runtime/runtime_bus_bridge.cpp
++++ b/src/runtime/runtime_bus_bridge.cpp
+@@ -92,6 +92,7 @@ static const bool g_phase_prof = [] {
+     return on;
+ }();
+ static unsigned long long g_runtime_yielded_vblank_start = 0;
++static unsigned g_headless_frame_yield_defer_depth = 0;
+ static bool g_session_execution = false;
+ static bool g_session_instruction_started = false;
+ static bool g_session_slice = false, g_session_slice_stopped = false;
+@@ -1020,6 +1021,7 @@ extern "C" bool runtime_should_yield(void) {
+         return !(e && e[0] == '0' && e[1] == '\0');
+     }();
+     if (yield_on_vblank && g_irq_nest_depth == 0u &&
++        !(g_headless_frame_yield_defer_depth && !g_frame_present_hook) &&
+         g_runtime_vblank_starts != g_runtime_yielded_vblank_start) {
+         const uint32_t mode = g_cpu.cpsr & 0x1Fu;
+         if (mode == 0x10u || mode == 0x1Fu) {
+@@ -1107,6 +1109,12 @@ extern "C" bool runtime_should_yield(void) {
+ }
+ 
+ namespace gbarecomp {
++DeferHeadlessFrameYield::DeferHeadlessFrameYield() {
++    ++g_headless_frame_yield_defer_depth;
++}
++DeferHeadlessFrameYield::~DeferHeadlessFrameYield() {
++    --g_headless_frame_yield_defer_depth;
++}
+ void runtime_capture_timing_context(RuntimeTimingContext& out) {
+     out.cycles = g_runtime_cycles;
+     out.vblank_starts = g_runtime_vblank_starts;
+diff --git a/src/runtime/runtime_bus_bridge.h b/src/runtime/runtime_bus_bridge.h
+index 799db1c..c2d5b11 100644
+--- a/src/runtime/runtime_bus_bridge.h
++++ b/src/runtime/runtime_bus_bridge.h
+@@ -34,6 +34,17 @@ struct RuntimeTimingContext {
+ };
+ void runtime_capture_timing_context(RuntimeTimingContext&);
+ void runtime_restore_timing_context(const RuntimeTimingContext&);
++// Preserve a whole-subtree dispatch boundary when a native callback replaces
++// the interpreter bridge. Device ticks, IRQ delivery, guards and debugger
++// breaks still run. Window presentation and session scheduler yields are not
++// deferred. This temporary host scope is not snapshot state.
++class DeferHeadlessFrameYield {
++public:
++    DeferHeadlessFrameYield();
++    ~DeferHeadlessFrameYield();
++    DeferHeadlessFrameYield(const DeferHeadlessFrameYield&) = delete;
++    DeferHeadlessFrameYield& operator=(const DeferHeadlessFrameYield&) = delete;
++};
+ // Conservative native execution backend for the local-link qualification
+ // harness. CPU instructions accrue cycle debt; the session advances devices
+ // for every machine on one timeline. No machine's hardware runs ahead.

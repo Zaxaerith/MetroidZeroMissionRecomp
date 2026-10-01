@@ -1,0 +1,32 @@
+# User-supplied and derived cartridge/BIOS material
+*.gba
+*.bin
+*.sav
+*.srm
+*.state
+/baseline/
+/generated/
+/build*/
+/reference/
+/logs/
+/roms/
+/saves/
+/diagnostics/
+recomp_coverage_*.json
+recomp_master_misses_*
+/recomp_cache/
+__pycache__/
+
+# Local agent instructions, research archives and private provisioning
+/AGENT_PROMPT.md
+/.deps/
+/third_party/
+/dist/
+*.exe
+*.dll
+*.a
+*.lib
+*.obj
+*.o
+*.wav
+*.png

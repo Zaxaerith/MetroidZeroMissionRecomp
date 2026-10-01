@@ -1,0 +1,10 @@
+{
+  "purpose": "Bounded CP019 reset phase calibration;2400 screenshot visually verified new-game ship cutscene,2200 still difficulty selection",
+  "rom_sha1": "5de8536afe1f0078ee6fe1089f890e8c7aa0a6e8",
+  "fixture_sha256": "38e4ce507ef6db5a73a647443fb4b410873c94246b88f28231144f3af4d48a4a",
+  "route_sha256": "62c1d251276a6f7a696c04c11d5afa62291a71ebbe14d7149e3f60457abbfb4e",
+  "baseline_exe_sha256": "22ba967a566150667fc5e94b8dfd983b26f0fd298e6b40087770dbe712e77149",
+  "rgb_sha256": {
+    "2400": "d9e2109bb4c47c44ae007aa0b74ed6736fbc9f308263f327cc97bf6ea5c347b7"
+  }
+}
