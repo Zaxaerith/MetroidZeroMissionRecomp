@@ -1,12 +1,14 @@
-# Preview validation
+# Preview validation boundary
 
-Current acceptance is clean build, boot/title, representative native gameplay,
-basic input/audio and persistence. The source cleanup removes instrumentation
-and optional research targets, retaining production code-image and IRQ guards.
-Checkpoint020 qualified4 local routes/23 RGB/full PCM/SRAM/frame counters.
-Checkpoint021 performs the limited post-cleanup representative/reload acceptance.
-See PROGRESS.md and COVERAGE_CURRENT.json for the final build and measured state.
+Checkpoint022 cold-build acceptance PASS: generated/build/runtime cache absent
+before setup; source dependencies pinned; cartridge/BIOS regenerated; SDL,
+framework and host rebuilt. Only existing rooms/save-station/reload routes ran.
+All19 RGB endpoints, three complete PCM segments, real SRAM flush and new-process
+saved-room/equipment restoration passed. Source fixture unchanged.
 
-Do not infer full campaign compatibility, zero fallback, complete static coverage
-or physical controller/listening approval. Historical research records are in
-ignored diagnostics/retired-research, not active development tasks.
+See PROGRESS.md, REPRODUCIBILITY.md and COVERAGE_CURRENT.json for exact scope and
+build identity. Generated/build/cache/checkouts were removed again after PASS.
+Retain only latest cold build and compact current acceptance reports locally.
+No fully-static, whole-campaign, bit-identical binary, independent emulator or
+physical controller/listening qualification is claimed. No more tests or
+feature work are scheduled before user confirmation.

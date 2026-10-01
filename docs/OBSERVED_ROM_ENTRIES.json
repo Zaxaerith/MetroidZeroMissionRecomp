@@ -213,5 +213,6 @@
       "strict_exchange_evidence": "logs/cp016-strict1800/native.log:0808ABFC BXr1/08005071/CPSR3F/commandB3",
       "boundary_review": "Prior ROM leaf returnsBXlr0800506C with padding at0506E; finder independently walks05070/05080/05094/050B0/050CA/050CC, endingBXlr050CC. Reference ASM PATT semantics compared, no decomp address/C import."
     }
-  ]
+  ],
+  "evidence_retention": "Historical log paths are provenance identifiers only. Raw trace/dump evidence was retired during final cleanup; verified addresses, hashes and integration decisions are retained here."
 }

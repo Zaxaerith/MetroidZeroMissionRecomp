@@ -70,3 +70,6 @@ an earlier rooms-route blocker.
 Full61-PC table/frequencies/source locations are local evidence in
 logs/cp020-miss-audit-before.json. This document will record this batch's actual
 first-miss chain after generation/build/smoke.
+
+Final cleanup: historical log paths in this frozen audit identify retired evidence;
+raw trace files are not retained or required for a reproducible build.

@@ -1,7 +1,0 @@
-# gbarecomp-keyinput-v1
-# frame,keyinput_active_low
-0,0x03FF
-600,0x03F7
-610,0x03FF
-1100,0x03F7
-1110,0x03FF

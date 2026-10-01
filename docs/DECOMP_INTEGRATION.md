@@ -29,5 +29,5 @@ Scope of acceptance: clean build, boot/title, representative movement/fire/room
 change, basic input/audio and save/restart/load. No complete campaign testing,
 zero-miss prerequisite, long frame bisection or trajectory research. Physical
 controllers/listening are user-deferred; broad compatibility belongs to players.
-Old research tools are locally archived under ignored diagnostics/retired-research.
+Old research tools and traces are retired; they are not build dependencies.
 Production ROM/IWRAM identity guards and IRQ-aware stack continuations remain.

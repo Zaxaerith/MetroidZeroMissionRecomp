@@ -1,14 +1,12 @@
 {
-  "checkpoint": "021",
-  "exe_sha256": "53e4fc735815ed6f13dfed711a2d25002b26f53be63170611b4243de4e021e57",
+  "checkpoint": "022",
+  "exe_sha256": "24e5d5abd04ccd8b76aee32ecf5a4caf8f40682677addc94c4a4f4e57624c106",
   "route": "tests/routes/rooms.csv",
   "route_sha256": "62c1d251276a6f7a696c04c11d5afa62291a71ebbe14d7149e3f60457abbfb4e",
   "end_completed_vblank_steps": 8100,
   "debug_state": false,
   "healing": false,
-  "source": "logs/cp021-preview-gameplay/result.json",
-  "coverage_sha256": "fdcb9ab92c12543e7da0c8273eacf6be3d1743a3fe78b96279dd9bd95f2e265c",
-  "fragment_sha256": "519470b1d4b0a4e6b0054b59ee4d07ad649d9a7e0fa69bbb614ce11bcb1cfa52",
+  "source": "logs/cold-validation.json (routes.rooms)",
   "aot_generated_functions": 20035,
   "aot_executed_instructions": null,
   "coverage": {
@@ -187,5 +185,6 @@
     "route": "rooms/save",
     "observed_checkpoint": "020",
     "rerun_after_cleanup": false
-  }
+  },
+  "intermediate_files": "Current root runtime coverage/miss reports remain ignored locally; canonical rooms snapshot is embedded here."
 }

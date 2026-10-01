@@ -25,12 +25,18 @@ Place the supported ROM in the project root under the filename recorded in
 ```
 
 build-host.ps1 builds SDL/framework tools before regenerating cartridge/BIOS
-source from the verified files you provide.
+source from the verified files you provide. A checkout intentionally has no
+`generated/`, `build/` or runtime cache. Re-run both commands after deleting
+`build/`, because pinned toml++ headers are provisioned beneath it. See
+[reproducibility and cleanup](docs/REPRODUCIBILITY.md).
 The host uses faithful240x160 rendering and the original game's SRAM chip.
 Saves default to `saves/metroid_zero_mission_usa.sav`; use `--save-path` for an
 isolated save. Back up meaningful player saves before preview testing.
 
 ## Decomp-assisted development
+
+For optional local decomp reading, run `tools/setup-deps.ps1 -IncludeDecomp`;
+it is not downloaded by the normal build setup.
 
 The pinned [metroidret/mzm](https://github.com/metroidret/mzm) decomp supplies
 C/ASM answers, function boundaries, callback relationships, linker/game-state

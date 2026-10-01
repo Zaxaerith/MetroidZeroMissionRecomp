@@ -253,5 +253,6 @@
       "qualification": "CP020:4 unchanged original RGB/fullPCM/SRAM/native routes and23 physical-frame counters;3 short prefix smokes; exact3 new scoped roots; no framework change",
       "regression": "logs/cp020-summary.json"
     }
-  ]
+  ],
+  "evidence_retention": "Historical log paths are provenance identifiers only. Raw trace/dump evidence was retired during final cleanup; verified addresses, hashes and integration decisions are retained here."
 }

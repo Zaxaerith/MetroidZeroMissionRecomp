@@ -1488,5 +1488,6 @@
   "current_canonical_route": "tests/routes/rooms.csv",
   "current_fragment_count": 19,
   "current_exe_sha256": "07d23601a43a20ce9d5b0d443a7bae1be085619378882200e9c312813e189198",
-  "strategy": "Frozen CP020 audit; not a scheduled strict sweep. Current preview uses decomp-first fixes for real bugs."
+  "strategy": "Frozen CP020 audit; not a scheduled strict sweep. Current preview uses decomp-first fixes for real bugs.",
+  "evidence_retention": "Historical log paths are provenance identifiers only. Raw trace/dump evidence was retired during final cleanup; verified addresses, hashes and integration decisions are retained here."
 }

@@ -15,7 +15,7 @@ fit a manifest. All tests use isolated output saves and verify the input save.
 With your local fixture and BIOS:
 
 ```powershell
-.\tools\test-smoke.ps1 -Bios $biosPath -Route rooms
+.\tools\test-smoke.ps1 -Bios $biosPath
 .\tools\test-save-load.ps1 -Bios $biosPath
 ```
 

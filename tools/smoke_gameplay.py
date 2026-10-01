@@ -1,7 +1,7 @@
 """Run a native VBlank input route with isolated SRAM and optional pixel gates.
 
 Captures mono PCM from the runtime mixer; does not certify host speakers or
-controller devices. Debug savestates accelerate route exploration only.
+controller devices. Acceptance always starts from reset.
 """
 import argparse
 import array
@@ -21,16 +21,12 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--bios", type=Path, required=True)
     p.add_argument("--save", type=Path, default=ROOT / "saves/metroid_zero_mission_usa.sav")
-    p.add_argument("--route", type=Path, default=ROOT / "tests/routes/gameplay.csv")
+    p.add_argument("--route", type=Path, default=ROOT / "tests/routes/rooms.csv")
     p.add_argument("--checkpoints")
     p.add_argument("--out", type=Path, default=ROOT / "logs/gameplay-smoke")
     p.add_argument("--expected", type=Path)
     p.add_argument("--audio-start", type=int, default=6200)
     p.add_argument("--port", type=int, default=19946)
-    p.add_argument("--exe", type=Path, help="Explicit diagnostic EXE; defaults to accepted host")
-    p.add_argument("--load-state", type=Path)
-    p.add_argument("--start-step", type=int, default=0)
-    p.add_argument("--save-state", action="store_true")
     p.add_argument("--no-wav", action="store_true", help="Verify complete PCM without retaining a duplicate WAV")
     a = p.parse_args()
     a.bios, a.save, a.out = a.bios.resolve(), a.save.resolve(), a.out.resolve()
@@ -54,12 +50,8 @@ def main():
     expected = json.loads(a.expected.read_text()) if a.expected else None
     point_spec = a.checkpoints or (",".join(expected["rgb_sha256"]) if expected else "1000,1300,6200,6520")
     points = sorted(set(map(int, point_spec.split(","))))
-    if not points or points[0] < a.start_step or a.start_step < 0:
-        raise RuntimeError("invalid checkpoints/start step")
-    if bool(a.load_state) != bool(a.start_step):
-        raise RuntimeError("debug state and nonzero start step must be used together")
-    if a.load_state and a.expected:
-        raise RuntimeError("acceptance must start from reset, not a debug state")
+    if not points or points[0] < 0:
+        raise RuntimeError("invalid checkpoints")
     if expected and set(points) != set(map(int, expected["rgb_sha256"])):
         raise RuntimeError("all manifest checkpoints must be checked")
     if expected and (expected["route_sha256"] != digest(a.route.read_bytes()) or
@@ -75,11 +67,11 @@ def main():
                GBARECOMP_FORCE_INTERP="0", GBARECOMP_STRICT_STATIC="0",
                GBARECOMP_SELFHEAL_RECOMPILE="0")
     env["PATH"] = str(ROOT / "build/host") + os.pathsep + env["PATH"]
-    exe = a.exe.resolve() if a.exe else ROOT / "build/host/MetroidZeroMissionRecomp.exe"
+    exe = ROOT / "build/host/MetroidZeroMissionRecomp.exe"
     result = dict(rom_sha1=identity["rom"]["sha1"], bios_sha1=identity["bios"]["sha1"],
                   exe_sha256=digest(exe.read_bytes()), fixture_sha256=digest(fixture),
                   route_sha256=digest(a.route.read_bytes()), mode="static+bridge; healing disabled",
-                  phase="completed VBlank calls; input before next step", debug_state=bool(a.load_state),
+                  phase="completed VBlank calls; input before next step", debug_state=False,
                   checkpoints=[], status="RUNNING")
     pcm = bytearray()
     rate = None
@@ -91,11 +83,9 @@ def main():
                                    creationflags=subprocess.CREATE_NO_WINDOW)
         try:
             client = Client(a.port, process)
-            if a.load_state:
-                client.call("savestate_load", path=a.load_state.resolve().as_posix())
             current_key = None
             event_frames = [event[0] for event in events]
-            for step in range(a.start_step, points[-1] + 1):
+            for step in range(points[-1] + 1):
                 if step in points:
                     shot = client.call("screenshot")
                     if (shot["w"], shot["h"]) != (240, 160):
@@ -105,8 +95,6 @@ def main():
                     row = dict(step=step, rgb_sha256=digest(rgb), ppu=client.call("ppu_state"))
                     if expected:
                         row["matches"] = row["rgb_sha256"] == expected["rgb_sha256"].get(str(step))
-                    if a.save_state:
-                        client.call("savestate_save", path=(a.out / f"frame-{step}.state").as_posix())
                     result["checkpoints"].append(row)
                     print(json.dumps(dict(step=step, rgb_sha256=row["rgb_sha256"],
                                           vcount=row["ppu"]["vcount"], matches=row.get("matches"))), flush=True)

@@ -1,0 +1,718 @@
+{
+  "checkpoint": "022",
+  "before": {
+    "bytes": 924216358,
+    "root_entries": [
+      {
+        "name": "reference",
+        "bytes": 312777284,
+        "files": 14767
+      },
+      {
+        "name": "generated",
+        "bytes": 263280665,
+        "files": 28
+      },
+      {
+        "name": "baseline",
+        "bytes": 171274186,
+        "files": 52
+      },
+      {
+        "name": "build",
+        "bytes": 159082018,
+        "files": 888
+      },
+      {
+        "name": "logs",
+        "bytes": 8504258,
+        "files": 354
+      },
+      {
+        "name": "Metroid - Zero Mission (USA).gba",
+        "bytes": 8388608,
+        "files": 1
+      },
+      {
+        "name": "diagnostics",
+        "bytes": 241032,
+        "files": 22
+      },
+      {
+        "name": "recomp_cache",
+        "bytes": 216957,
+        "files": 44
+      },
+      {
+        "name": ".git",
+        "bytes": 135424,
+        "files": 112
+      },
+      {
+        "name": "docs",
+        "bytes": 131459,
+        "files": 19
+      },
+      {
+        "name": "tests",
+        "bytes": 37582,
+        "files": 16
+      },
+      {
+        "name": "saves",
+        "bytes": 32768,
+        "files": 1
+      },
+      {
+        "name": "tools",
+        "bytes": 25455,
+        "files": 9
+      },
+      {
+        "name": "patches",
+        "bytes": 19911,
+        "files": 3
+      },
+      {
+        "name": "AGENT_PROMPT.md",
+        "bytes": 17681,
+        "files": 1
+      },
+      {
+        "name": "licenses",
+        "bytes": 12207,
+        "files": 6
+      },
+      {
+        "name": "src",
+        "bytes": 11402,
+        "files": 4
+      },
+      {
+        "name": "game.toml",
+        "bytes": 7957,
+        "files": 1
+      },
+      {
+        "name": "README.md",
+        "bytes": 4209,
+        "files": 1
+      },
+      {
+        "name": "CMakeLists.txt",
+        "bytes": 3835,
+        "files": 1
+      },
+      {
+        "name": "recomp_master_misses_BMXE.toml.frag",
+        "bytes": 2986,
+        "files": 1
+      },
+      {
+        "name": "THIRD_PARTY_NOTICES.md",
+        "bytes": 2765,
+        "files": 1
+      },
+      {
+        "name": "recomp_coverage_BMXE.json",
+        "bytes": 2379,
+        "files": 1
+      },
+      {
+        "name": "LICENSE",
+        "bytes": 1347,
+        "files": 1
+      },
+      {
+        "name": "baserom.md",
+        "bytes": 987,
+        "files": 1
+      },
+      {
+        "name": ".gitignore",
+        "bytes": 432,
+        "files": 1
+      },
+      {
+        "name": ".github",
+        "bytes": 393,
+        "files": 1
+      },
+      {
+        "name": ".gitattributes",
+        "bytes": 171,
+        "files": 1
+      }
+    ]
+  },
+  "prior_acceptance": {
+    "exe_sha256": "53e4fc735815ed6f13dfed711a2d25002b26f53be63170611b4243de4e021e57",
+    "representative_gameplay": "PASS 8RGB/fullPCM/SRAM/frame counters",
+    "fresh_process_reload": "PASS 5RGB/fullPCM/SRAM/frame counters"
+  },
+  "regeneration_evidence": {
+    "generated": "tools/build-host.ps1 -Regenerate builds gba_recompile then tools/regen.ps1 generates cart/bios; CMake stack_variant_generator regenerates stack_variants.cpp",
+    "build": "tools/setup-deps.ps1 obtains pinned toml++; tools/build-host.ps1 configures/builds SDL, framework generator and host from source",
+    "recomp_cache": "Optional runtime-created interpreter/healing cache; smoke explicitly disables healing; not a build input",
+    "baseline": "Obsolete initial CLI static library, not referenced by current CMake or tools; replaced by current generated+runtime host",
+    "reference/mgba": "Unused independent validator clone; clean tracked working tree; fixed repository/commit in FRAMEWORK_PIN.json; not a host/build dependency",
+    "reference/MegaManZeroRecomp": "Unused clean architecture-reference clone; fixed repository/commit in FRAMEWORK_PIN.json; not a host/build dependency"
+  },
+  "protected_assets": [
+    "Metroid - Zero Mission (USA).gba",
+    "reference/mzm/mzm_us_baserom.gba",
+    "saves/metroid_zero_mission_usa.sav",
+    "External BIOS (read-only)"
+  ],
+  "old_logs_retirement": {
+    "reason": "Prior acceptance conclusions and sizes preserved in this audit and PROGRESS; user requests ordinary old logs removed. Local test-save copies are derived isolated outputs; protected source SRAM is outside logs.",
+    "root_entries": [
+      "logs\\cp007-coverage-summary.json",
+      "logs\\cp008-coverage-summary.json",
+      "logs\\cp008-ram",
+      "logs\\cp008-ram-after",
+      "logs\\cp009-coverage-summary.json",
+      "logs\\cp011-coverage-summary.json",
+      "logs\\cp012-summary.json",
+      "logs\\cp013-compare-provenance",
+      "logs\\cp013-compare14-provenance",
+      "logs\\cp013-compare18-provenance",
+      "logs\\cp013-summary.json",
+      "logs\\cp014-summary.json",
+      "logs\\cp015-summary.json",
+      "logs\\cp016-summary.json",
+      "logs\\cp017-stack-provenance",
+      "logs\\cp017-summary.json",
+      "logs\\cp018-final-project-tests.log",
+      "logs\\cp018-haze-provenance-fixed",
+      "logs\\cp018-helper-diff.log",
+      "logs\\cp018-minimap-table.json",
+      "logs\\cp018-summary.json",
+      "logs\\cp019-baseline",
+      "logs\\cp019-build.log",
+      "logs\\cp019-color-fade-provenance.json",
+      "logs\\cp019-final-demo",
+      "logs\\cp019-final-oracle",
+      "logs\\cp019-final-reload",
+      "logs\\cp019-final-rooms",
+      "logs\\cp019-final-save",
+      "logs\\cp019-final-window",
+      "logs\\cp019-generation.log",
+      "logs\\cp019-patch-check.log",
+      "logs\\cp019-project-tests.log",
+      "logs\\cp019-strict3000",
+      "logs\\cp019-strict3500",
+      "logs\\cp019-strict6000",
+      "logs\\cp019-summary.json",
+      "logs\\cp020-before",
+      "logs\\cp020-build-1.log",
+      "logs\\cp020-build-2.log",
+      "logs\\cp020-build-3.log",
+      "logs\\cp020-canonical-coverage",
+      "logs\\cp020-final-demo",
+      "logs\\cp020-final-reload",
+      "logs\\cp020-final-rooms",
+      "logs\\cp020-final-save",
+      "logs\\cp020-gates-after-1",
+      "logs\\cp020-gates-after-2",
+      "logs\\cp020-gates-before",
+      "logs\\cp020-gates-before-corrected",
+      "logs\\cp020-gates-final",
+      "logs\\cp020-gates-reload",
+      "logs\\cp020-gates-save",
+      "logs\\cp020-generation-1.log",
+      "logs\\cp020-generation-2.log",
+      "logs\\cp020-generation-3.log",
+      "logs\\cp020-idle-strict3000",
+      "logs\\cp020-idle-strict3500",
+      "logs\\cp020-log-cleanup-plan.json",
+      "logs\\cp020-log-cleanup-result.json",
+      "logs\\cp020-log-inventory.json",
+      "logs\\cp020-miss-audit-before.json",
+      "logs\\cp020-newgame-phase",
+      "logs\\cp020-oracle-logging-probe",
+      "logs\\cp020-phase-calibration",
+      "logs\\cp020-project-tests.log",
+      "logs\\cp020-rom-provenance.json",
+      "logs\\cp020-short-smoke-1",
+      "logs\\cp020-short-smoke-2",
+      "logs\\cp020-short-smoke-3",
+      "logs\\cp020-summary.json",
+      "logs\\cp021-clean-build-repaired.log",
+      "logs\\cp021-clean-build.log",
+      "logs\\cp021-cleanup-result.json",
+      "logs\\cp021-preview-gameplay",
+      "logs\\cp021-preview-reload",
+      "logs\\cp021-retired-log-plan.json",
+      "logs\\cp021-source-audit.json",
+      "logs\\cp021-summary.json",
+      "logs\\cp022-before.json",
+      "logs\\ram-frame600.bin"
+    ]
+  },
+  "research_archive_retirement": {
+    "reason": "22 archived historical docs/debug tools; no current build, regen or smoke inputs; active copies were already retired. No ROM/BIOS/save assets.",
+    "files": [
+      "diagnostics\\retired-research\\PROGRESS-001-019.md",
+      "diagnostics\\retired-research\\stack_dispatch_experiment.cpp",
+      "diagnostics\\retired-research\\docs\\KNOWN_ISSUES.md",
+      "diagnostics\\retired-research\\docs\\LOG_POLICY.md",
+      "diagnostics\\retired-research\\docs\\ORACLE_VALIDATION.md",
+      "diagnostics\\retired-research\\docs\\SMOKE_TESTS.md",
+      "diagnostics\\retired-research\\docs\\STACK_DISPATCH_EXPERIMENT.md",
+      "diagnostics\\retired-research\\docs\\STATIC_COVERAGE.md",
+      "diagnostics\\retired-research\\docs\\VALIDATION.md",
+      "diagnostics\\retired-research\\tests\\test_stack_overlap_evidence.py",
+      "diagnostics\\retired-research\\tools\\audit_route_gates.py",
+      "diagnostics\\retired-research\\tools\\audit_strict.py",
+      "diagnostics\\retired-research\\tools\\build-baseline.ps1",
+      "diagnostics\\retired-research\\tools\\build-oracle.ps1",
+      "diagnostics\\retired-research\\tools\\compare_oracle.py",
+      "diagnostics\\retired-research\\tools\\generate_stack_experiment.py",
+      "diagnostics\\retired-research\\tools\\inspect_gameplay_ram.py",
+      "diagnostics\\retired-research\\tools\\inspect_ram_copies.py",
+      "diagnostics\\retired-research\\tools\\probe_stack_candidate.py",
+      "diagnostics\\retired-research\\tools\\probe_stack_overlap.py",
+      "diagnostics\\retired-research\\tools\\stack_experiment_main.cpp",
+      "diagnostics\\retired-research\\tools\\oracle\\CMakeLists.txt"
+    ]
+  },
+  "dependency_checkout_audit": {
+    "reference/gbarecomp": {
+      "commit": "e7728148c6829ba526f682876430a0c9022dc6c0",
+      "tracked_changes": "hash-pinned framework patches only",
+      "reprovision": "tools/setup-deps.ps1; tools/apply-framework-patches.ps1"
+    },
+    "reference/SDL2": {
+      "commit": "b7502f1a884c055f8535cf8d2be3f44c41669a43",
+      "tracked_changes": "none",
+      "reprovision": "tools/setup-deps.ps1; tools/apply-framework-patches.ps1"
+    },
+    "reference/mzm": {
+      "commit": "43b7fd52f552e4d38c1521ff9d4df5ee57e61493",
+      "tracked_changes": "none",
+      "reprovision": "tools/setup-deps.ps1; tools/apply-framework-patches.ps1"
+    }
+  },
+  "preserved_decomp_rom": {
+    "original": "reference\\mzm\\mzm_us_baserom.gba",
+    "destination": "roms/decomp-mzm_us_baserom.gba",
+    "sha256": "fc94f65380b65b870a30b9b04b39cca1dc63d6e46a4a373d3904adc0912ebc37",
+    "bytes": 8388608
+  },
+  "classification": {
+    "KEEP_TRACK": [
+      "src/",
+      "tools/ regen/build/setup/minimal smoke only",
+      "tests/ three final smoke routes/manifests and small production guard tests",
+      "docs/ current status, known issues, reproduction and verified integration metadata",
+      "game.toml",
+      "baserom.md",
+      "CMakeLists.txt",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md",
+      "licenses/",
+      "patches/",
+      ".github/",
+      ".gitignore",
+      ".gitattributes",
+      "README.md"
+    ],
+    "LOCAL_ONLY_KEEP": [
+      "root user ROM",
+      "preserved decomp ROM copy in roms/",
+      "source SRAM fixture in saves/",
+      "AGENT_PROMPT.md",
+      "external BIOS (read-only; outside project)",
+      "latest cold host build log and compact validation report",
+      "small root runtime coverage/miss audit reports (ignored)"
+    ],
+    "REGENERABLE_DELETE": [
+      "generated/",
+      "build/",
+      "recomp_cache/",
+      "fixed-commit reference checkouts after preserving user ROM",
+      "obsolete baseline static-library prototype",
+      "ordinary old logs/screenshots/audio/state dumps",
+      "retired research archive and optional debug-only tests/routes"
+    ]
+  },
+  "cold_environment": {
+    "platform": "Windows x64",
+    "cmake": "4.4.3",
+    "ninja": "1.13.2",
+    "gcc": "MinGW-w64 16.1.0 x86_64-win32-seh",
+    "python": "3.14.3",
+    "source_dependencies": "Pinned existing framework/arm-core/SDL source verified; toml++ fetched afresh after build removal. All objects, generated code and host rebuilt without previous build/cache. Optional MZM is not a build dependency."
+  },
+  "cold_validation": {
+    "checkpoint": "022",
+    "date": "2026-10-01",
+    "cold_build": "PASS",
+    "prerequisite": "generated/build/runtime cache absent before rebuild; pinned dependency sources verified; toml++ re-cloned",
+    "exe_bytes": 31937479,
+    "routes": {
+      "rooms": {
+        "exe_sha256": "24e5d5abd04ccd8b76aee32ecf5a4caf8f40682677addc94c4a4f4e57624c106",
+        "fixture_sha256": "38e4ce507ef6db5a73a647443fb4b410873c94246b88f28231144f3af4d48a4a",
+        "route_sha256": "62c1d251276a6f7a696c04c11d5afa62291a71ebbe14d7149e3f60457abbfb4e",
+        "mode": "static+bridge; healing disabled",
+        "phase": "completed VBlank calls; input before next step",
+        "status": "PASS",
+        "final_save_sha256": "f3b1c9746fb756cdd08c719b6d724bd940e7f8ec10b59be6fae5488885c3ec17",
+        "audio": {
+          "rate": 65536,
+          "channels": 1,
+          "samples": 2084772,
+          "pcm_sha256": "05b6d0a630bf777454f0ec101c7642199b327554a58ab9d3fc8ccdc160eddc53",
+          "nonzero": 2067213,
+          "peak": 32767,
+          "rms": 8842.128160349119,
+          "clipped": 54,
+          "clipped_fraction": 2.5902113036821294e-05,
+          "signal_gate": true,
+          "matches": true
+        },
+        "checkpoints": [
+          {
+            "step": 1000,
+            "rgb_sha256": "3d4f98c192c4303a5ba333e8a4f0298fb55580faa8f9a573ee6479d426ed672b",
+            "matches": true
+          },
+          {
+            "step": 1300,
+            "rgb_sha256": "b9804c7f2eae67c92d8f3ce0c9f64489272f15faea87d86babfd730464d8a92e",
+            "matches": true
+          },
+          {
+            "step": 6200,
+            "rgb_sha256": "f41323885855b5dac1a33c593c0ad5f898218fe97e320ff09f7fc24cc27f6b36",
+            "matches": true
+          },
+          {
+            "step": 6500,
+            "rgb_sha256": "3a002da161be4997bcd1f10bf700cf0af4f4a6d7d7c4babbae4675ae07d8cffc",
+            "matches": true
+          },
+          {
+            "step": 7200,
+            "rgb_sha256": "790f228286f4110237b4af94b796b39578603caf9bf17544dbadd10debc5d0ae",
+            "matches": true
+          },
+          {
+            "step": 7350,
+            "rgb_sha256": "ac69e46f3eb6f8c19d004d3167e1aea7643ffd74d266fdf7a2883fa56ab57b80",
+            "matches": true
+          },
+          {
+            "step": 7700,
+            "rgb_sha256": "0b999178760d4637418665fa745496bac06be0b4005892bb8e1c10ad03736525",
+            "matches": true
+          },
+          {
+            "step": 8100,
+            "rgb_sha256": "21d1cc62d0d8344f39af66d41cabdf70b53a74b8e0ef515a7028c3b7e459c7f4",
+            "matches": true
+          }
+        ],
+        "coverage": {
+          "coverage": "NOT_STATIC",
+          "distinct_misses": 19,
+          "interpreted_insns": 2456739,
+          "healed_native": 0,
+          "native_calls": 0
+        },
+        "bridge_invocations": 9096
+      },
+      "save_station": {
+        "exe_sha256": "24e5d5abd04ccd8b76aee32ecf5a4caf8f40682677addc94c4a4f4e57624c106",
+        "fixture_sha256": "38e4ce507ef6db5a73a647443fb4b410873c94246b88f28231144f3af4d48a4a",
+        "route_sha256": "d70839db101f0a131a2cb74b854ea1ce391418fc1d3a3f33faab6f1035f8d656",
+        "mode": "static+bridge; healing disabled",
+        "phase": "completed VBlank calls; input before next step",
+        "status": "PASS",
+        "final_save_sha256": "063d3506f8df692be24f82e57ca429f80bbee9b69f991475d803b250b7e42e86",
+        "audio": {
+          "rate": 65536,
+          "channels": 1,
+          "samples": 21176924,
+          "pcm_sha256": "58b25f9a37297190297b4e68683894820190904604cc4247e9ba6b4d9a4e9eea",
+          "nonzero": 20803327,
+          "peak": 32767,
+          "rms": 8302.56710932927,
+          "clipped": 94,
+          "clipped_fraction": 4.43879384938058e-06,
+          "signal_gate": true,
+          "matches": true
+        },
+        "checkpoints": [
+          {
+            "step": 8400,
+            "rgb_sha256": "f886e5455eedea8840a3ca714571905e650d95a56b7c6123d8b424d4b54e3fe9",
+            "matches": true
+          },
+          {
+            "step": 21790,
+            "rgb_sha256": "8639346003a29fe8690d022190a488e2be0a7a8d5910fbc30cb4eedaca299772",
+            "matches": true
+          },
+          {
+            "step": 22100,
+            "rgb_sha256": "78a4a0784984027a3c281568e62626acf5c0366bd17923de147c9e08884b753f",
+            "matches": true
+          },
+          {
+            "step": 23000,
+            "rgb_sha256": "125f2e38ac0d4a0aa077389c8f345f029c5a3ffe7ac2da3b9c3325ff934144ba",
+            "matches": true
+          },
+          {
+            "step": 25100,
+            "rgb_sha256": "71984129403cba3e7f854ba540df3786ab37883d384e324c8c3e73cd237f926c",
+            "matches": true
+          },
+          {
+            "step": 25500,
+            "rgb_sha256": "e4186124420b322710fc2cb1cc6305ba2e186a542f3c6d196eed6e762b56677c",
+            "matches": true
+          }
+        ],
+        "coverage": {
+          "coverage": "NOT_STATIC",
+          "distinct_misses": 35,
+          "interpreted_insns": 7262422,
+          "healed_native": 0,
+          "native_calls": 0
+        },
+        "bridge_invocations": 30123
+      },
+      "reload": {
+        "exe_sha256": "24e5d5abd04ccd8b76aee32ecf5a4caf8f40682677addc94c4a4f4e57624c106",
+        "fixture_sha256": "063d3506f8df692be24f82e57ca429f80bbee9b69f991475d803b250b7e42e86",
+        "route_sha256": "938b0562760e6ba67bfaabe3ec1649d8634243990246e78342ce862038c5170f",
+        "mode": "static+bridge; healing disabled",
+        "phase": "completed VBlank calls; input before next step",
+        "status": "PASS",
+        "final_save_sha256": "6e8a5d69d676b40b168fb7aa24c9979ca206b17ed9fdc3b10195d97c783e04af",
+        "audio": {
+          "rate": 65536,
+          "channels": 1,
+          "samples": 1650260,
+          "pcm_sha256": "6c2b9d538941c27d16b05734d0bd20b67af64c5a3cf09084335e1efbd9bfab92",
+          "nonzero": 1490525,
+          "peak": 27456,
+          "rms": 4960.072796596879,
+          "clipped": 0,
+          "clipped_fraction": 0.0,
+          "signal_gate": true,
+          "matches": true
+        },
+        "checkpoints": [
+          {
+            "step": 1300,
+            "rgb_sha256": "4c7a796577b9664ad220ef315d857b72f9ba5613ad75eeb29250355c43a57218",
+            "matches": true
+          },
+          {
+            "step": 1550,
+            "rgb_sha256": "75fe3ba300b66284c25b39b9abe9eb1ec26f6d03cfeef19d0458bb30a2f00e8d",
+            "matches": true
+          },
+          {
+            "step": 2300,
+            "rgb_sha256": "4646185760f1c50eaef1999369a55a87261d618dbc89b9b59def7ee04dd9e7e1",
+            "matches": true
+          },
+          {
+            "step": 2700,
+            "rgb_sha256": "db0050b3725e17f7c431851741a37494ce9a00ce948d0cd6f257a703c63ed4c5",
+            "matches": true
+          },
+          {
+            "step": 3200,
+            "rgb_sha256": "34a02882fc201ce4ab1aa834263d2e958e280d59e66c4dd1e54de5d8e69d8a6f",
+            "matches": true
+          }
+        ],
+        "coverage": {
+          "coverage": "NOT_STATIC",
+          "distinct_misses": 5,
+          "interpreted_insns": 299821,
+          "healed_native": 0,
+          "native_calls": 0
+        },
+        "bridge_invocations": 2539
+      }
+    },
+    "source_fixture_unchanged": true,
+    "save_restart_load": "PASS",
+    "manual_devices_listening": "DEFERRED",
+    "strict_or_oracle_sweep": "NOT_RUN",
+    "aot_generated_functions": 20035,
+    "guarded_stack_bodies": 7,
+    "aot_executed_instructions": null
+  },
+  "retention_adjustment": "Keep small ignored root coverage/miss reports and original three current smoke result JSONs; final cleanup deletes only verified source checkouts, regenerated outputs and obsolete captures.",
+  "framework_changes_verified": "Exact entire tracked diff equals the three pinned patches applied to a clean HEAD index; no additional local source changes.",
+  "final_capture_deletion": {
+    "files": [
+      "logs\\rooms-smoke\\frame-1000.png",
+      "logs\\rooms-smoke\\frame-1300.png",
+      "logs\\rooms-smoke\\frame-6200.png",
+      "logs\\rooms-smoke\\frame-6500.png",
+      "logs\\rooms-smoke\\frame-7200.png",
+      "logs\\rooms-smoke\\frame-7350.png",
+      "logs\\rooms-smoke\\frame-7700.png",
+      "logs\\rooms-smoke\\frame-8100.png",
+      "logs\\rooms-smoke\\native-test.sav",
+      "logs\\rooms-smoke\\native.log",
+      "logs\\save-station-smoke\\frame-21790.png",
+      "logs\\save-station-smoke\\frame-22100.png",
+      "logs\\save-station-smoke\\frame-23000.png",
+      "logs\\save-station-smoke\\frame-25100.png",
+      "logs\\save-station-smoke\\frame-25500.png",
+      "logs\\save-station-smoke\\frame-8400.png",
+      "logs\\save-station-smoke\\native-test.sav",
+      "logs\\save-station-smoke\\native.log",
+      "logs\\save-reload-smoke\\frame-1300.png",
+      "logs\\save-reload-smoke\\frame-1550.png",
+      "logs\\save-reload-smoke\\frame-2300.png",
+      "logs\\save-reload-smoke\\frame-2700.png",
+      "logs\\save-reload-smoke\\frame-3200.png",
+      "logs\\save-reload-smoke\\native-test.sav",
+      "logs\\save-reload-smoke\\native.log",
+      "logs/sdl-configure.log",
+      "logs/sdl-build.log",
+      "logs/sdl-install.log",
+      "logs/framework-configure.log",
+      "logs/framework-tool-build.log",
+      "logs/host-cart-generation.log",
+      "logs/host-bios-generation.log",
+      "logs/host-configure.log",
+      "logs/host-build.log"
+    ],
+    "retained": "cold-host-build.log, cold-validation.json and original result.json for each of three current smoke phases",
+    "reason": "Captures, isolated test-save copies and redundant setup/generation/build logs are regenerated by the validated tools; source SRAM and both user ROMs are outside these targets."
+  },
+  "after_cleanup_before_git_commit": {
+    "bytes": 17827188,
+    "root_entries": [
+      {
+        "name": "Metroid - Zero Mission (USA).gba",
+        "bytes": 8388608,
+        "files": 1
+      },
+      {
+        "name": "roms",
+        "bytes": 8388608,
+        "files": 1
+      },
+      {
+        "name": "logs",
+        "bytes": 601766,
+        "files": 5
+      },
+      {
+        "name": "docs",
+        "bytes": 140016,
+        "files": 19
+      },
+      {
+        "name": ".git",
+        "bytes": 135424,
+        "files": 112
+      },
+      {
+        "name": "saves",
+        "bytes": 32768,
+        "files": 1
+      },
+      {
+        "name": "tests",
+        "bytes": 29598,
+        "files": 9
+      },
+      {
+        "name": "tools",
+        "bytes": 24433,
+        "files": 9
+      },
+      {
+        "name": "patches",
+        "bytes": 19911,
+        "files": 3
+      },
+      {
+        "name": "AGENT_PROMPT.md",
+        "bytes": 18121,
+        "files": 1
+      },
+      {
+        "name": "licenses",
+        "bytes": 12207,
+        "files": 6
+      },
+      {
+        "name": "src",
+        "bytes": 11402,
+        "files": 4
+      },
+      {
+        "name": "game.toml",
+        "bytes": 7957,
+        "files": 1
+      },
+      {
+        "name": "README.md",
+        "bytes": 4579,
+        "files": 1
+      },
+      {
+        "name": "CMakeLists.txt",
+        "bytes": 3406,
+        "files": 1
+      },
+      {
+        "name": "THIRD_PARTY_NOTICES.md",
+        "bytes": 2765,
+        "files": 1
+      },
+      {
+        "name": "recomp_master_misses_BMXE.toml.frag",
+        "bytes": 1449,
+        "files": 1
+      },
+      {
+        "name": "LICENSE",
+        "bytes": 1347,
+        "files": 1
+      },
+      {
+        "name": "baserom.md",
+        "bytes": 987,
+        "files": 1
+      },
+      {
+        "name": "recomp_coverage_BMXE.json",
+        "bytes": 840,
+        "files": 1
+      },
+      {
+        "name": ".gitignore",
+        "bytes": 432,
+        "files": 1
+      },
+      {
+        "name": ".github",
+        "bytes": 393,
+        "files": 1
+      },
+      {
+        "name": ".gitattributes",
+        "bytes": 171,
+        "files": 1
+      }
+    ],
+    "measurement": "Logical file bytes including Git metadata; source documentation/commit add small metadata afterward."
+  }
+}

@@ -27,10 +27,6 @@ add_custom_command(OUTPUT "${STACK_GENERATED}"
     COMMAND $<TARGET_FILE:stack_variant_generator> "${STACK_ROM}" "${STACK_GENERATED}"
     DEPENDS stack_variant_generator "${STACK_ROM}" src/copied_code.h
     VERBATIM)
-add_executable(stack_variant_diff_tests EXCLUDE_FROM_ALL tests/stack_variant_diff.cpp
-    "${GBARECOMP_ROOT}/tests/codegen/stubs.cpp" "${GBARECOMP_ROOT}/src/gba/sha1.cpp" "${STACK_GENERATED}")
-target_include_directories(stack_variant_diff_tests PRIVATE src "${GBARECOMP_ROOT}/tests/codegen" "${GBARECOMP_ROOT}/src/runtime" "${GBARECOMP_ROOT}/src/gba")
-target_link_libraries(stack_variant_diff_tests PRIVATE gbarecomp_armv4t)
 
 endif()
 if(NOT STACK_ROM_COUNT EQUAL 1)

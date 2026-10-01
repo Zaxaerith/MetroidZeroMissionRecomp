@@ -1,3 +1,4 @@
+param([switch]$IncludeDecomp)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $pin = Get-Content -LiteralPath "$root\docs\FRAMEWORK_PIN.json" -Raw | ConvertFrom-Json
@@ -25,5 +26,7 @@ Ensure-Pinned 'reference\gbarecomp' $pin.framework.repository $pin.framework.com
 Ensure-Pinned 'reference\gbarecomp\external\arm-recomp-core' $pin.arm_core.repository $pin.arm_core.commit
 Ensure-Pinned 'reference\SDL2' $pin.sdl2.repository $pin.sdl2.commit
 Ensure-Pinned 'build\framework\_deps\tomlplusplus-src' $pin.tomlplusplus.repository $pin.tomlplusplus.commit
-Ensure-Pinned 'reference\mzm' $identity.decomp.repository $identity.decomp.commit
+if ($IncludeDecomp) {
+    Ensure-Pinned 'reference\mzm' $identity.decomp.repository $identity.decomp.commit
+}
 Write-Host 'Pinned dependencies available. Provide your ROM/BIOS and run build-host.ps1 -Regenerate.'

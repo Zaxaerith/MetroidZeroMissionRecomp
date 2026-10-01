@@ -150,5 +150,6 @@
       "accepted_exe_sha256": "6c7007c8a0ff34b95f4f65232b8c3b7897c960e3a69dfe90a480cf558a70edaa",
       "limits": "Only observed BG3 image qualified, literal pool/neighbors excluded from codegen; other haze images/lifetimes require separate evidence and remain live fallback."
     }
-  ]
+  ],
+  "evidence_retention": "Historical log paths are provenance identifiers only. Raw trace/dump evidence was retired during final cleanup; verified addresses, hashes and integration decisions are retained here."
 }
