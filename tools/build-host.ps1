@@ -14,7 +14,8 @@ foreach ($entry in @(
     @{Path="$root\reference\gbarecomp"; Commit=$pin.framework.commit},
     @{Path="$root\reference\gbarecomp\external\arm-recomp-core"; Commit=$pin.arm_core.commit},
     @{Path="$root\reference\SDL2"; Commit=$pin.sdl2.commit},
-    @{Path="$root\build\framework\_deps\tomlplusplus-src"; Commit=$pin.tomlplusplus.commit}
+    @{Path="$root\build\framework\_deps\tomlplusplus-src"; Commit=$pin.tomlplusplus.commit},
+    @{Path="$root\reference\recomp-ui"; Commit=$pin.recomp_ui.commit}
 )) {
     $safe = "safe.directory=$($entry.Path.Replace('\','/'))"
     $actual = & git -c $safe -C $entry.Path rev-parse HEAD
@@ -38,5 +39,5 @@ Run-Logged 'framework-configure' (@('-S',"$root\reference\gbarecomp",'-B',"$root
 Run-Logged 'framework-tool-build' @('--build',"$root\build\framework",'--target','gba_recompile','--parallel',"$Jobs")
 if ($Regenerate) { & "$PSScriptRoot\regen.ps1" -Bios $Bios }
 Run-Logged 'host-configure' (@('-S',$root,'-B',"$root\build\host") + $common + @("-DSDL2_INCLUDE_DIR=$root\build\deps\include\SDL2","-DSDL2_LIBRARY=$root\build\deps\lib\libSDL2.dll.a","-DGBARECOMP_MINGW_RUNTIME_BIN=$Toolchain\bin"))
-Run-Logged 'host-build' @('--build',"$root\build\host",'--target','MetroidZeroMissionRecomp','--parallel',"$Jobs")
+Run-Logged 'host-build' @('--build',"$root\build\host",'--target','MetroidZeroMissionRecomp','launcher_contract','--parallel',"$Jobs")
 Get-Item -LiteralPath "$root\build\host\MetroidZeroMissionRecomp.exe" | Select-Object FullName,Length

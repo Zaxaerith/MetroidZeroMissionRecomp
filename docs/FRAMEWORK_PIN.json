@@ -32,6 +32,10 @@
     "repository": "https://github.com/libsdl-org/SDL.git",
     "commit": "b7502f1a884c055f8535cf8d2be3f44c41669a43"
   },
+  "recomp_ui": {
+    "repository": "https://github.com/mstan/recomp-ui.git",
+    "commit": "6374aae201b930c97425718249f5d39b2275ca13"
+  },
   "host_reference": {
     "repository": "https://github.com/mstan/MegaManZeroRecomp.git",
     "commit": "218adfddf3572a6eaf7ffbec858d95c71bf53935",

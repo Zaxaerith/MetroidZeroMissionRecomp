@@ -22,6 +22,9 @@ __pycache__/
 /.deps/
 /third_party/
 /dist/
+/release-stage/
+*.cfg
+*.ini
 *.exe
 *.dll
 *.a

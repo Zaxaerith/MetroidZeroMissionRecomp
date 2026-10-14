@@ -12,7 +12,15 @@ function Ensure-Pinned([string]$Relative, [string]$Repository, [string]$Commit) 
             throw "Existing non-Git dependency directory: $Relative. Preserve it and resolve explicitly."
         }
         New-Item -ItemType Directory -Force -Path (Split-Path -Parent $destination) | Out-Null
-        & git clone $Repository $destination
+        $refArgs = @()
+        if ($Repository -match 'recomp-ui' -and (Test-Path "$root\..\MarioLuigiSuperstarSagaRecomp\recomp-ui\.git")) {
+            $refArgs = @('--reference', (Resolve-Path "$root\..\MarioLuigiSuperstarSagaRecomp\recomp-ui").Path)
+        } elseif ($Repository -match 'gbarecomp\.git' -and (Test-Path "$root\..\MarioLuigiSuperstarSagaRecomp\gbarecomp\.git")) {
+            $refArgs = @('--reference', (Resolve-Path "$root\..\MarioLuigiSuperstarSagaRecomp\gbarecomp").Path)
+        } elseif ($Repository -match 'arm-recomp-core' -and (Test-Path "$root\..\MarioLuigiSuperstarSagaRecomp\gbarecomp\external\arm-recomp-core\.git")) {
+            $refArgs = @('--reference', (Resolve-Path "$root\..\MarioLuigiSuperstarSagaRecomp\gbarecomp\external\arm-recomp-core").Path)
+        }
+        & git clone @refArgs $Repository $destination
         if ($LASTEXITCODE -ne 0) { throw "Clone failed: $Relative" }
         & git -c $safe -C $destination checkout --detach $Commit
         if ($LASTEXITCODE -ne 0) { throw "Pin checkout failed: $Relative" }
@@ -26,6 +34,7 @@ Ensure-Pinned 'reference\gbarecomp' $pin.framework.repository $pin.framework.com
 Ensure-Pinned 'reference\gbarecomp\external\arm-recomp-core' $pin.arm_core.repository $pin.arm_core.commit
 Ensure-Pinned 'reference\SDL2' $pin.sdl2.repository $pin.sdl2.commit
 Ensure-Pinned 'build\framework\_deps\tomlplusplus-src' $pin.tomlplusplus.repository $pin.tomlplusplus.commit
+Ensure-Pinned 'reference\recomp-ui' $pin.recomp_ui.repository $pin.recomp_ui.commit
 # Setup never duplicates the user ROM. with-decomp-rom.ps1 supplies a temporary
 # filename-compatible copy only for an explicitly requested decomp command.
 if ($IncludeDecomp) {

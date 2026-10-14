@@ -10,6 +10,7 @@ framework, patches or game/BIOS content. Full license texts are in `licenses/`.
 | [metroidret/mzm](https://github.com/metroidret/mzm) | 43b7fd52f552e4d38c1521ff9d4df5ee57e61493 | MIT; Copyright2025 YohannDR; C/ASM/function-boundary/callback/layout and game-state reference |
 | [SDL2](https://github.com/libsdl-org/SDL) | b7502f1a884c055f8535cf8d2be3f44c41669a43 | zlib; display/input/audio backend |
 | [toml++](https://github.com/marzer/tomlplusplus) | 30172438cee64926dc41fdd9c11fb3ba5b2ba9de | MIT; configuration parser |
+| [recomp-ui](https://github.com/mstan/recomp-ui) | 6374aae201b930c97425718249f5d39b2275ca13 | MIT; Copyright 2026 Matthew Stanley; player GUI launcher and input configuration |
 
 `licenses/GBARecomp-THIRD-PARTY.md` reproduces the framework's full attribution,
 including MIT/Apache ports and MPL-2.0-covered BIOS-HLE files. Its terms and
