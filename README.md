@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-A Windows x64 native recompilation integration for **Metroid: Zero Mission (USA, Game Code: BMXE, Revision 0)**, built using [GBARecomp](https://github.com/mstan/gbarecomp) and [recomp-ui](https://github.com/mstan/recomp-ui).
+A Windows x64 native recompilation integration for **Metroid: Zero Mission (USA, Game Code: BMXE, Revision 0)**, built using [GBARecomp](https://github.com/mstan/gbarecomp) and [recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui) (formerly `mstan/recomp-ui`).
 
 > **v0.1.0-preview — Experimental Preview**  
 > This unofficial, non-commercial project is not affiliated with, endorsed by, or associated with Nintendo. Players must supply their own legally obtained GBA ROM and retail GBA BIOS. Full-game completion is not claimed.
@@ -48,9 +48,15 @@ No developer tools (CMake, Ninja, GCC, Python, or command-line shells) are requi
 
 ---
 
-## Required Private Files
+## No Original ROM or BIOS Files Included
 
 You must provide your own legally dumped game ROM and retail GBA BIOS. Neither file is included in this repository or any release download.
+
+### Notice on Compiled Guest Code and Distribution Boundary
+
+The executable contains statically recompiled translations of the original game machine code. It does not contain or distribute the original proprietary ROM or BIOS binary images, raw graphics, audio samples, or cartridge assets.
+
+To satisfy integrity verification and launch the game, you must supply your own legally acquired original ROM and BIOS files. This project is an independent, non-commercial software research and digital preservation initiative, and makes no claim of endorsement or licensing by Nintendo. The developers do not warrant that compiled retranslations are exempt from third-party copyright claims in all jurisdictions, and players/distributors are responsible for compliance with their local laws.
 
 | File | Supported Identity | Expected Size | SHA-1 Hash | SHA-256 Checksum |
 |---|---|---:|---|---|
@@ -108,7 +114,7 @@ Standard modern game controllers (Xbox / XInput, PlayStation DualShock 4 / DualS
   * `g_runtime_ram_dispatch_hook = mzm::copied_code_ram_dispatch`: Tail-dispatch execution for 7 qualified moving-stack helper variants (`stack_variant_0` through `stack_variant_6`).
   * `StackTailDispatch`: Reentrant-safe continuation dispatcher preventing stack overflow on interrupt nest changes.
   * `DeferHeadlessFrameYield`: Headless stopping boundary synchronization.
-* **GUI Launcher**: Pinned [recomp-ui](https://github.com/mstan/recomp-ui) (`6374aae201b930c97425718249f5d39b2275ca13`) powered by Dear ImGui.
+* **GUI Launcher**: Pinned [recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui) (`6374aae201b930c97425718249f5d39b2275ca13`, formerly `mstan/recomp-ui`) powered by Dear ImGui.
 * **Host Platform**: SDL2 drives window creation, hardware OpenGL rendering, low-latency audio streaming, and controller hot-plugging.
 * **Decompilation Assistance**: Appreciation to [metroidret/mzm](https://github.com/metroidret/mzm) contributors for documenting symbol boundaries, callback relationships, and memory layout. No copyrighted game code or assets from decompilation projects are redistributed in this repository.
 
@@ -161,7 +167,7 @@ Standard modern game controllers (Xbox / XInput, PlayStation DualShock 4 / DualS
 ## Credits and Licenses
 
 * **GBARecomp**: Developed by Matthew Stanley ([mstan/gbarecomp](https://github.com/mstan/gbarecomp)). Licensed under [PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/).
-* **recomp-ui**: Developed by Matthew Stanley ([mstan/recomp-ui](https://github.com/mstan/recomp-ui)). Licensed under MIT.
+* **recomp-ui**: Developed by Matthew Stanley ([RetroPortingToolKit/recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui), formerly [mstan/recomp-ui](https://github.com/mstan/recomp-ui)). Licensed under MIT.
 * **arm-recomp-core**: Developed by Matthew Stanley ([mstan/arm-recomp-core](https://github.com/mstan/arm-recomp-core)). Licensed under MIT.
 * **MetroidZeroMissionRecomp Integration**: Integration code, stack dispatch, and tooling. Licensed under [MIT](LICENSE).
 * **Third-Party Components**:

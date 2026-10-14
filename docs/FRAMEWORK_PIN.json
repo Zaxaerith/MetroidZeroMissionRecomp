@@ -33,8 +33,9 @@
     "commit": "b7502f1a884c055f8535cf8d2be3f44c41669a43"
   },
   "recomp_ui": {
-    "repository": "https://github.com/mstan/recomp-ui.git",
-    "commit": "6374aae201b930c97425718249f5d39b2275ca13"
+    "repository": "https://github.com/RetroPortingToolKit/recomp-ui.git",
+    "commit": "6374aae201b930c97425718249f5d39b2275ca13",
+    "upstream_redirect_from": "https://github.com/mstan/recomp-ui.git"
   },
   "host_reference": {
     "repository": "https://github.com/mstan/MegaManZeroRecomp.git",

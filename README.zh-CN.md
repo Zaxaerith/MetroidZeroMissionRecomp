@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-基于 [GBARecomp](https://github.com/mstan/gbarecomp) 与 [recomp-ui](https://github.com/mstan/recomp-ui) 构建的 **《银河战士：零点任务》（Metroid: Zero Mission，美版，编号：BMXE，Revision 0）** 原生 Windows x64 静态重编译集成项目。
+基于 [GBARecomp](https://github.com/mstan/gbarecomp) 与 [recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui)（原 `mstan/recomp-ui`）构建的 **《银河战士：零点任务》（Metroid: Zero Mission，美版，编号：BMXE，Revision 0）** 原生 Windows x64 静态重编译集成项目。
 
 > **v0.1.0-preview — 实验性预览版本**  
 > 本项目为非官方、非商业性质的研究与数字化保存项目，与任天堂（Nintendo）无任何关联或背书。玩家须自行提供合法取得的 GBA 游戏 ROM 与官方零售版 GBA BIOS。本项目不包含且不承诺全流程完全通关兼容。
@@ -48,9 +48,15 @@
 
 ---
 
-## 玩家必须自备的文件
+## 未包含任何原版 ROM 或 BIOS 文件（玩家自备）
 
 玩家必须自行准备合法取得的原版游戏 ROM 与官方零售 GBA BIOS 文件。本项目源码及任何发布包均不包含此类专有资产。
+
+### 关于转译 Guest 代码与分发边界的特别说明
+
+本项目的可执行文件包含通过静态重编译生成的原始游戏指令机器码转译实现。可执行文件及发布包中**严禁且不包含**任何原版 ROM、官方 BIOS 原始镜像、提取的游戏音效素材、未授权美术资源或卡带专有数据。
+
+运行游戏时，玩家必须自行提供合法取得的原版游戏 ROM 与零售版 GBA BIOS 以供启动器完成校验并载入资源。本项目为独立的、非商业性质的数字化保存与软件工程研究，不代表任天堂官方背书或授权。开发者不就转译代码在所有国家与地区的衍生著作权边界作绝对豁免保证，分发者与使用者应自觉遵守所在司法管辖区的知识产权法律法规。
 
 | 文件 | 适用版本 | 文件大小 | SHA-1 哈希 | SHA-256 校验码 |
 |---|---|---:|---|---|
@@ -108,7 +114,7 @@
   * `g_runtime_ram_dispatch_hook = mzm::copied_code_ram_dispatch`：分发 7 个移动栈专属函数（`stack_variant_0` 至 `stack_variant_6`）。
   * `StackTailDispatch`：中断重入安全的尾调用调度器，防范递归栈溢出。
   * `DeferHeadlessFrameYield`：保持已测量的调度边界。
-* **GUI 启动器**：固定版本的 [recomp-ui](https://github.com/mstan/recomp-ui)（Commit `6374aae201b930c97425718249f5d39b2275ca13`），基于 Dear ImGui。
+* **GUI 启动器**：固定版本的 [recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui)（Commit `6374aae201b930c97425718249f5d39b2275ca13`，原 `mstan/recomp-ui`），基于 Dear ImGui。
 * **反编译辅助**：鸣谢 [metroidret/mzm](https://github.com/metroidret/mzm) 项目贡献者在函数边界、回调关系与数据结构领域的逆向成果。
 
 ---
@@ -151,7 +157,7 @@
 ## 鸣谢与开源许可证
 
 * **GBARecomp**：Matthew Stanley 开发，遵循 [PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/) 许可证。
-* **recomp-ui**：Matthew Stanley 开发，遵循 MIT 许可证。
+* **recomp-ui**：Matthew Stanley 开发（[RetroPortingToolKit/recomp-ui](https://github.com/RetroPortingToolKit/recomp-ui)，原 [mstan/recomp-ui](https://github.com/mstan/recomp-ui)），遵循 MIT 许可证。
 * **arm-recomp-core**：Matthew Stanley 开发，遵循 MIT 许可证。
 * **MetroidZeroMissionRecomp 集成代码**：遵循 [MIT](LICENSE) 许可证。
 * **第三方组件**：Dear ImGui (MIT)、toml++ (MIT)、SDL2 (zlib)、开源字体 (OFL-1.1 / CC BY-SA 4.0)、MinGW-w64 运行时库 (GPLv3 with GCC Runtime Library Exception)。详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 与 `licenses/`。
