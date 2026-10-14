@@ -1,6 +1,6 @@
 # Third-party notices
 
-The original hand-written integration is MIT; this does not relicense its
+The original hand-written integration is licensed under MIT (Copyright (c) 2026 MetroidZeroMissionRecomp contributors); this does not relicense its
 framework, patches or game/BIOS content. Full license texts are in `licenses/`.
 
 | Component | Pin / Origin | License / use |
@@ -14,12 +14,18 @@ framework, patches or game/BIOS content. Full license texts are in `licenses/`.
 | [Dear ImGui](https://github.com/ocornut/imgui) | Bundled in recomp-ui | MIT; Copyright (c) 2014-2024 Omar Cornut; see `licenses/DearImGui-MIT.txt` |
 | [tinyfiledialogs](https://sourceforge.net/projects/tinyfiledialogs/) | Bundled in recomp-ui | zlib; Copyright (c) 2014 - 2024 Guillaume Vareille; see `licenses/tinyfiledialogs-zlib.txt` |
 | [stb](https://github.com/nothings/stb) | Bundled in recomp-ui | MIT / Public Domain; Sean Barrett; see `licenses/stb-MIT.txt` |
-| [mGBA](https://github.com/mgba-emu/mgba) (BIOS HLE) | Embedded in GBARecomp | MPL-2.0; Copyright (c) 2013-2024 Jeffrey Pfau; see `licenses/MPL-2.0.txt` |
+| [mGBA](https://github.com/mgba-emu/mgba) (BIOS HLE) | Embedded in GBARecomp (`src/runtime/bios_hle.{h,cpp}`) | MPL-2.0; Copyright (c) 2013-2024 Jeffrey Pfau; see `licenses/MPL-2.0.txt`. Source available at https://github.com/mstan/gbarecomp |
 | [Lato Font](http://www.latofonts.com/) | Bundled in recomp-ui assets | SIL Open Font License 1.1; Copyright (c) 2010-2015 by tyPoland Lukasz Dziedzic; see `licenses/Lato-OFL.txt` |
 | [Noto Sans Symbols 2](https://fonts.google.com/noto/specimen/Noto+Sans+Symbols+2) | Bundled in recomp-ui assets | SIL Open Font License 1.1; Copyright 2022 The Noto Project Authors; see `licenses/NotoSymbols-OFL.txt` |
 | [OpenMoji](https://openmoji.org/) | Bundled in recomp-ui assets | CC BY-SA 4.0; see `licenses/OpenMoji-LICENSE.txt` |
 | [MinGW-w64 / GCC Runtime](https://gcc.gnu.org/) | Runtime DLLs | GPLv3 with GCC Runtime Library Exception; Free Software Foundation; see `licenses/GCC-Runtime-Exception.txt` |
 | [JRickey Controller Icons](https://jrickey.itch.io/) | Bundled in recomp-ui assets | MIT; Copyright (c) 2024 JRickey; see `licenses/JRickey-MIT.txt` |
+
+## MPL-2.0 Compliance Notice
+
+The executable statically links `reference/gbarecomp/src/runtime/bios_hle.{h,cpp}`, which are ported from mGBA's `src/gba/bios.c` and are Covered Software governed by the Mozilla Public License, v. 2.0 (MPL-2.0). In accordance with MPL-2.0 Section 3.2, recipients of the executable form are hereby informed that the Source Code Form of this Covered Software is publicly available without charge at:
+`https://github.com/mstan/gbarecomp/tree/e7728148c6829ba526f682876430a0c9022dc6c0/src/runtime/`
+or via this project's dependency setup script (`tools/setup-deps.ps1`). Under MPL-2.0 Section 3.3, this project constitutes a Larger Work; the MPL-2.0 license continues to apply to `bios_hle.{h,cpp}` without alteration.
 
 `licenses/GBARecomp-THIRD-PARTY.md` reproduces the framework's full attribution,
 including MIT/Apache ports and MPL-2.0-covered BIOS-HLE files. Its terms and

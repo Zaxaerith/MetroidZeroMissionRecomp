@@ -77,14 +77,14 @@ All 3 framework patches are preserved byte-for-byte and verified against `docs/F
 
 | Component | Applicable License | Copyright Holder / Attribution | Commercial Restriction? | Local License File |
 |---|---|---|---|---|
-| **MZM Integration & Tooling** | MIT | Copyright (c) 2026 Antigravity & Codex Contributors | No | `LICENSE` |
+| **MZM Integration & Tooling** | MIT | Copyright (c) 2026 MetroidZeroMissionRecomp contributors | No | `LICENSE` |
 | **GBARecomp** | PolyForm Noncommercial 1.0.0 | Copyright (c) 2026 Matthew Stanley | **YES (Strict Noncommercial)** | `licenses/GBARecomp-PolyForm-Noncommercial.txt` |
 | **arm-recomp-core** | MIT | Copyright (c) 2026 Matthew Stanley | No | `licenses/arm-recomp-core.txt` |
 | **recomp-ui** | MIT | Copyright (c) 2026 Matthew Stanley | No | `licenses/recomp-ui-MIT.txt` |
 | **Dear ImGui** | MIT | Copyright (c) 2014-2024 Omar Cornut | No | `licenses/DearImGui-MIT.txt` |
 | **tinyfiledialogs** | zlib | Copyright (c) 2014-2024 Guillaume Vareille | No | `licenses/tinyfiledialogs-zlib.txt` |
 | **stb (stb_image, etc.)** | MIT / Public Domain | Sean Barrett | No | `licenses/stb-MIT.txt` |
-| **mGBA (BIOS HLE)** | MPL-2.0 | Copyright (c) 2013-2024 Jeffrey Pfau | Weak copyleft (file-level) | `licenses/MPL-2.0.txt` |
+| **mGBA (BIOS HLE)** | MPL-2.0 | Copyright (c) 2013-2024 Jeffrey Pfau | Weak copyleft (file-level source disclosure under §3.2) | `licenses/MPL-2.0.txt` |
 | **SDL2** | zlib | Copyright (c) 1997-2024 Sam Lantinga | No | `licenses/SDL2-zlib.txt` |
 | **toml++** | MIT | Copyright (c) 2019-2024 Mark Gillard | No | `licenses/tomlplusplus.txt` |
 | **Lato Font** | SIL Open Font License 1.1 | Copyright (c) 2010-2015 by tyPoland Lukasz Dziedzic | No | `licenses/Lato-OFL.txt` |
@@ -94,6 +94,11 @@ All 3 framework patches are preserved byte-for-byte and verified against `docs/F
 | **JRickey Gamepad Icons** | MIT | Copyright (c) 2024 JRickey | No | `licenses/JRickey-MIT.txt` |
 | **metroidret/mzm (Decomp)** | MIT | Copyright (c) 2025 YohannDR | Reference only (no code copied) | `licenses/metroidret-mzm-MIT.txt` |
 
+### MPL-2.0 Compliance and Source Disclosure Analysis
+- **Linked Files:** `reference/gbarecomp/src/runtime/bios_hle.{h,cpp}` are linked into `gbarecomp_runtime` and embedded into `MetroidZeroMissionRecomp.exe`. These files are ported from mGBA's `src/gba/bios.c` and are Covered Software governed by MPL-2.0.
+- **Source Availability Obligation (§3.2):** MPL-2.0 requires informing recipients of executable forms how to obtain the source code of Covered Software. This obligation is met by the disclosure in `THIRD_PARTY_NOTICES.md` pointing to `https://github.com/mstan/gbarecomp/tree/e7728148c6829ba526f682876430a0c9022dc6c0/src/runtime/` and by the automated checkout tool `tools/setup-deps.ps1`.
+- **Larger Work Licensing Interaction (§3.3):** The project distributes the executable as a Larger Work under the MIT integration and PolyForm Noncommercial 1.0.0 framework terms. While MPL-2.0 allows Larger Works, the distributor must ensure that the license for the executable does not attempt to restrict recipients' rights in the MPL-2.0 source code.
+
 ---
 
 ## 5. Phase 4: Compiled Guest Code Copyright Boundary
@@ -102,7 +107,7 @@ All 3 framework patches are preserved byte-for-byte and verified against `docs/F
 1. **No Proprietary Assets Distributed:** Neither the source repository nor the release package contains any Nintendo ROM image (`*.gba`), retail BIOS dump (`*.bin`), audio samples, graphical tilemaps, or extracted script archives.
 2. **Compiled Guest Code Nature:** The compiled binary contains native x64 translations of original ARM/Thumb instructions generated through static recompilation. While distinct from distributing the original binary ROM file, recompiled machine code represents an analytical translation of proprietary software.
 3. **Mandatory User-Supplied Verification:** The application strictly enforces runtime cryptographic SHA-1 verification. The game will not boot unless the user provides their own legally acquired USA Rev 0 ROM (`5de8536afe1f...`) and retail GBA BIOS (`300c20df6731...`).
-4. **Boundary Statement:** The project is positioned strictly as a non-commercial digital preservation and educational research effort. Neither Antigravity nor previous contributors represent that compiled guest code is exempt from copyright law in all jurisdictions.
+4. **Boundary Statement:** The project is positioned strictly as a non-commercial digital preservation and educational research effort. Neither repository contributors nor third-party maintainers represent that compiled guest code is exempt from copyright law in all jurisdictions.
 
 ---
 
@@ -119,8 +124,8 @@ The executable was **NOT recompiled** during this audit. The tested binary from 
 ### Release Archive Check
 
 - **Archive File:** `release-stage\MetroidZeroMissionRecomp-windows-x64-v0.1.0-preview.zip`
-- **Archive Size:** `16,613,754` bytes (`15.84 MB`)
-- **Archive SHA-256:** `67afd32cffc613132784fcc31dd10621c72dd7c7ff29eab3cd362ee885b69690`
+- **Archive Size:** `16,614,124` bytes (`15.84 MB`)
+- **Archive SHA-256:** `27915484ebbbaa98eeaac8f1e2e93499f68446c2ee4aa9dff39a08066c37b5cb`
 - **Included Content:**
   - `MetroidZeroMissionRecomp.exe` (Verified identical)
   - `SDL2.dll`, `libgcc_s_seh-1.dll`, `libstdc++-6.dll`, `libwinpthread-1.dll`
@@ -134,19 +139,24 @@ The executable was **NOT recompiled** during this audit. The tested binary from 
 
 ---
 
-## 7. Residual Risks & Blockers
+## 7. Residual Risks, Blockers & Unresolved Distribution Rights Questions
 
-| Risk Item | Severity | Current Status | Remediation / Recommendation |
-|---|---|---|---|
-| **GBARecomp Commercial Restriction** | Moderate | Mitigated | PolyForm Noncommercial 1.0.0 is explicitly highlighted in README, release notes, and notices. Strictly non-commercial distribution only. |
-| **Late-Game / Boss Stability** | Low | Noted in Release Notes | Handled by "Experimental Preview" designation. Community route testing invited. |
-| **Upstream Git Operations** | None (Audit Only) | Enforced | Zero git tags created, zero branches pushed, zero releases drafted. Awaiting user's explicit authorization. |
+> [!IMPORTANT]
+> A determination of `TECHNICAL RELEASE AUDIT: PASS` verifies only technical integrity, reproducible build configurations, and attribution documentation. It explicitly DOES NOT constitute `LEGAL RELEASE AUTHORIZED`. The following legal and distribution rights questions remain legally unresolved:
+
+| Category | Unresolved Legal / Distribution Question | Assessment & Practical Risk |
+|---|---|---|
+| **Nintendo IP / Derivative Work** | Static recompilation emits native x64 logic replicating original ROM ARM instructions. Whether this constitutes a fair use transformative recreation or an unauthorized derivative work under copyright law remains unadjudicated in major jurisdictions. | **High legal uncertainty**. Distributing compiled binaries carries inherent third-party copyright risk regardless of runtime SHA-1 gating. |
+| **GBARecomp Commercial Restriction** | Upstream GBARecomp is licensed under PolyForm Noncommercial 1.0.0, strictly forbidding any commercial use, monetization, or paid distribution. | **Binding restriction**. Distribution must remain strictly 100% free and non-commercial. |
+| **MPL-2.0 Larger Work Sublicensing** | The executable combines MPL-2.0 covered source (`bios_hle.{h,cpp}`) with a PolyForm Noncommercial larger work. While MPL-2.0 §3.3 permits Larger Works, sublicensing terms cannot restrict recipient rights in the underlying MPL source code. | **Licensing tension**. Solved at source level by public availability, but non-commercial restriction on binary does not exempt MPL source availability. |
+| **Upstream Git Operations** | Local repository is clean and fast-forward ready, but remote publication requires explicit human authorization. | **Enforced**. Zero git tags created, zero branches pushed, zero releases drafted. |
 
 ---
 
 ## 8. Final Audit Sign-Off
 
 - **Technical Audit Status:** `TECHNICAL RELEASE AUDIT: PASS`
+- **Legal Authorization Status:** `PENDING HUMAN AUTHORIZATION (NOT LEGALLY WARRANTED)`
 - **Fast-Forward Merge Ready:** Yes (`feature/player-launcher-preview` -> `main`)
 - **Release Assets Staged:** Yes (`release-stage/MetroidZeroMissionRecomp-windows-x64-v0.1.0-preview.zip`)
 - **Next Action:** Await user's explicit authorization for merge or publishing.
