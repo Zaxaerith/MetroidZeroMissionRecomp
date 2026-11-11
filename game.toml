@@ -267,4 +267,9 @@ note = "Third actual New Game gate blocker0805BDC8; decomp unk_5bdc8 in sColorFa
 [[mod_function_hook]]
 addr = 0x08000A4C
 mode = "thumb"
-note = "Reviewed Native C++ FixedMultiplication replacement"
+note = "Reviewed Native C++ FixedMultiplication replacement (R4)"
+
+[[mod_function_hook]]
+addr = 0x080007D0
+mode = "thumb"
+note = "Reviewed Native C++ SoftResetCheck replacement (R5)"
