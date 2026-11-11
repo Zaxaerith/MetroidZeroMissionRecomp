@@ -278,3 +278,8 @@ note = "Reviewed Native C++ SoftResetCheck replacement (R5)"
 addr = 0x0800847C
 mode = "thumb"
 note = "Reviewed Native C++ SamusUpdateAnimation replacement (R6)"
+
+[[mod_function_hook]]
+addr = 0x080088F8
+mode = "thumb"
+note = "Reviewed Native C++ SamusTurningAroundGfx replacement (R7)"

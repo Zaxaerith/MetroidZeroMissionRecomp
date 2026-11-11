@@ -13,6 +13,7 @@ enum class NativeFunctionId {
     FixedMultiplication, // 0x08000A4C (R4)
     SoftResetCheck,       // 0x080007D0 (R5)
     SamusUpdateAnimation, // 0x0800847C (R6)
+    SamusTurningAroundGfx, // 0x080088F8 (R7)
     Count
 };
 

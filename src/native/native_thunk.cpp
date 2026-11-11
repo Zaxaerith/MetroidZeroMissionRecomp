@@ -23,6 +23,9 @@ std::atomic<uint64_t> g_soft_reset_hits{0};
 
 std::atomic<bool> g_samus_anim_enabled{false};
 std::atomic<uint64_t> g_samus_anim_hits{0};
+
+std::atomic<bool> g_samus_turn_enabled{false};
+std::atomic<uint64_t> g_samus_turn_hits{0};
 } // namespace
 
 // ============================================================================
@@ -40,6 +43,9 @@ void set_function_enabled(NativeFunctionId id, bool enabled) noexcept {
     case NativeFunctionId::SamusUpdateAnimation:
         g_samus_anim_enabled.store(enabled, std::memory_order_release);
         break;
+    case NativeFunctionId::SamusTurningAroundGfx:
+        g_samus_turn_enabled.store(enabled, std::memory_order_release);
+        break;
     default:
         break;
     }
@@ -53,6 +59,8 @@ bool is_function_enabled(NativeFunctionId id) noexcept {
         return g_soft_reset_enabled.load(std::memory_order_acquire);
     case NativeFunctionId::SamusUpdateAnimation:
         return g_samus_anim_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusTurningAroundGfx:
+        return g_samus_turn_enabled.load(std::memory_order_acquire);
     default:
         return false;
     }
@@ -66,6 +74,8 @@ uint64_t get_function_hits(NativeFunctionId id) noexcept {
         return g_soft_reset_hits.load(std::memory_order_relaxed);
     case NativeFunctionId::SamusUpdateAnimation:
         return g_samus_anim_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusTurningAroundGfx:
+        return g_samus_turn_hits.load(std::memory_order_relaxed);
     default:
         return 0;
     }
@@ -82,6 +92,9 @@ void reset_function_hits(NativeFunctionId id) noexcept {
     case NativeFunctionId::SamusUpdateAnimation:
         g_samus_anim_hits.store(0, std::memory_order_relaxed);
         break;
+    case NativeFunctionId::SamusTurningAroundGfx:
+        g_samus_turn_hits.store(0, std::memory_order_relaxed);
+        break;
     default:
         break;
     }
@@ -91,6 +104,7 @@ void set_all_functions_enabled(bool enabled) noexcept {
     set_function_enabled(NativeFunctionId::FixedMultiplication, enabled);
     set_function_enabled(NativeFunctionId::SoftResetCheck, enabled);
     set_function_enabled(NativeFunctionId::SamusUpdateAnimation, enabled);
+    set_function_enabled(NativeFunctionId::SamusTurningAroundGfx, enabled);
 }
 
 void sync_all_hooks() noexcept {
@@ -111,24 +125,34 @@ void sync_all_hooks() noexcept {
     } else {
         deactivate_native_samus_anim_hook();
     }
+
+    if (is_function_enabled(NativeFunctionId::SamusTurningAroundGfx)) {
+        activate_native_samus_turn_hook();
+    } else {
+        deactivate_native_samus_turn_hook();
+    }
 }
 
 void print_session_summary() noexcept {
     const uint64_t mult_hits = get_function_hits(NativeFunctionId::FixedMultiplication);
     const uint64_t reset_hits = get_function_hits(NativeFunctionId::SoftResetCheck);
     const uint64_t anim_hits = get_function_hits(NativeFunctionId::SamusUpdateAnimation);
+    const uint64_t turn_hits = get_function_hits(NativeFunctionId::SamusTurningAroundGfx);
     const uint64_t framework_hits = gba_mod_function_hook_hits();
 
     std::printf("[mzm:native] Native Pipeline Summary:\n");
-    std::printf("  - FixedMultiplication (0x08000A4C): %llu hits [%s]\n",
+    std::printf("  - FixedMultiplication  (0x08000A4C): %llu hits [%s]\n",
                 static_cast<unsigned long long>(mult_hits),
                 is_function_enabled(NativeFunctionId::FixedMultiplication) ? "ENABLED" : "DISABLED");
-    std::printf("  - SoftResetCheck      (0x080007D0): %llu hits [%s]\n",
+    std::printf("  - SoftResetCheck       (0x080007D0): %llu hits [%s]\n",
                 static_cast<unsigned long long>(reset_hits),
                 is_function_enabled(NativeFunctionId::SoftResetCheck) ? "ENABLED" : "DISABLED");
     std::printf("  - SamusUpdateAnimation (0x0800847C): %llu hits [%s]\n",
                 static_cast<unsigned long long>(anim_hits),
                 is_function_enabled(NativeFunctionId::SamusUpdateAnimation) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusTurningAroundGfx(0x080088F8): %llu hits [%s]\n",
+                static_cast<unsigned long long>(turn_hits),
+                is_function_enabled(NativeFunctionId::SamusTurningAroundGfx) ? "ENABLED" : "DISABLED");
     std::printf("  - Framework hook total calls: %llu\n",
                 static_cast<unsigned long long>(framework_hits));
 }
@@ -358,6 +382,83 @@ int hook_samus_update_animation(uint32_t addr, int thumb, ArmCpuState* cpu) noex
 }
 
 // ============================================================================
+// SamusTurningAroundGfx (0x080088F8, R7)
+// ============================================================================
+
+void set_native_samus_turn_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusTurningAroundGfx, enabled);
+}
+
+bool is_native_samus_turn_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusTurningAroundGfx);
+}
+
+uint64_t get_native_samus_turn_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusTurningAroundGfx);
+}
+
+void reset_native_samus_turn_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusTurningAroundGfx);
+}
+
+void activate_native_samus_turn_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_turn", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_turn (0x080088F8)\n");
+}
+
+void deactivate_native_samus_turn_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_turn", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_turn (0x080088F8)\n");
+}
+
+void thunk_samus_turning_around_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    const uint8_t result = samus_turning_around_gfx(p_data);
+
+    // 3. Return value in R0
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r4}; pop {r1}; bx r1):
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags: original movs r0, #imm sets N=0, Z=(result == 0)
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT);
+    if (result == 0u) {
+        cpu->cpsr |= CPSR_Z_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_turning_around_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x080088F8u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_turn_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_turning_around_gfx_on_state(cpu);
+    g_samus_turn_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
 // Lifecycle & Plugin Registration
 // ============================================================================
 
@@ -393,7 +494,16 @@ GBA_MOD_CONSTRUCTOR(register_mzm_native_hooks) {
     );
     gba_mod_register_activation_plugin("mzm.native.samus_anim", on_mod_sync_callback);
 
-    // 4. Register global reset callback to re-sync hooks across soft resets
+    // 4. SamusTurningAroundGfx (0x080088F8, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_turn",
+        0x080088F8u,
+        1,
+        hook_samus_turning_around_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_turn", on_mod_sync_callback);
+
+    // 5. Register global reset callback to re-sync hooks across soft resets
     gba_mod_register_reset_callback(on_mod_sync_callback);
 }
 

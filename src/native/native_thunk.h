@@ -9,6 +9,7 @@
 #include "fixed_multiplication.h"
 #include "soft_reset_check.h"
 #include "samus_animation.h"
+#include "samus_turning.h"
 #include "native_pipeline.h"
 
 #if __has_include("runtime_arm_types.h")
@@ -68,5 +69,16 @@ uint64_t get_native_samus_anim_hits() noexcept;
 void reset_native_samus_anim_hits() noexcept;
 void activate_native_samus_anim_hook() noexcept;
 void deactivate_native_samus_anim_hook() noexcept;
+
+// --- SamusTurningAroundGfx (0x080088F8, R7) ---
+void thunk_samus_turning_around_gfx_on_state(ArmCpuState* cpu) noexcept;
+int hook_samus_turning_around_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept;
+
+void set_native_samus_turn_enabled(bool enabled) noexcept;
+bool is_native_samus_turn_enabled() noexcept;
+uint64_t get_native_samus_turn_hits() noexcept;
+void reset_native_samus_turn_hits() noexcept;
+void activate_native_samus_turn_hook() noexcept;
+void deactivate_native_samus_turn_hook() noexcept;
 
 } // namespace mzm::native
