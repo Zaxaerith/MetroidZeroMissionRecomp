@@ -30,9 +30,11 @@ int main(int argc, char** argv) {
                       "  --frames <count>   Stop after specified frame count\n"
                       "  --native-math      Enable Native C++ FixedMultiplication (0x08000A4C)\n"
                       "  --native-soft-reset Enable Native C++ SoftResetCheck (0x080007D0)\n"
+                      "  --native-samus-anim Enable Native C++ SamusUpdateAnimation (0x0800847C)\n"
                       "  --native-all       Enable all verified Native C++ replacements\n"
                       "  --no-native-math   Disable Native C++ FixedMultiplication\n"
                       "  --no-native-soft-reset Disable Native C++ SoftResetCheck\n"
+                      "  --no-native-samus-anim Disable Native C++ SamusUpdateAnimation\n"
                       "  --no-native-all    Disable all Native C++ replacements (default: original AOT)\n"
                       "\n"
                       "Faithful 240x160 presentation; cartridge and BIOS hashes are verified.");
@@ -57,12 +59,14 @@ int main(int argc, char** argv) {
     // Process native pipeline experimental toggles
     bool enable_math = false;
     bool enable_soft_reset = false;
+    bool enable_samus_anim = false;
 
     // Check environment variables
     const char* env_all = std::getenv("MZM_NATIVE_ALL");
     if (env_all && (std::strcmp(env_all, "1") == 0 || std::strcmp(env_all, "true") == 0)) {
         enable_math = true;
         enable_soft_reset = true;
+        enable_samus_anim = true;
     }
     const char* env_math = std::getenv("MZM_NATIVE_FIXED_MULT");
     if (env_math && (std::strcmp(env_math, "1") == 0 || std::strcmp(env_math, "true") == 0)) {
@@ -72,16 +76,22 @@ int main(int argc, char** argv) {
     if (env_sr && (std::strcmp(env_sr, "1") == 0 || std::strcmp(env_sr, "true") == 0)) {
         enable_soft_reset = true;
     }
+    const char* env_anim = std::getenv("MZM_NATIVE_SAMUS_ANIM");
+    if (env_anim && (std::strcmp(env_anim, "1") == 0 || std::strcmp(env_anim, "true") == 0)) {
+        enable_samus_anim = true;
+    }
 
     // CLI flags override environment variables
     for (auto it = args.begin() + 1; it != args.end(); ) {
         if (*it == "--native-all") {
             enable_math = true;
             enable_soft_reset = true;
+            enable_samus_anim = true;
             it = args.erase(it);
         } else if (*it == "--no-native-all") {
             enable_math = false;
             enable_soft_reset = false;
+            enable_samus_anim = false;
             it = args.erase(it);
         } else if (*it == "--native-math" || *it == "--native-fixed-mult") {
             enable_math = true;
@@ -95,6 +105,12 @@ int main(int argc, char** argv) {
         } else if (*it == "--no-native-soft-reset") {
             enable_soft_reset = false;
             it = args.erase(it);
+        } else if (*it == "--native-samus-anim") {
+            enable_samus_anim = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-samus-anim") {
+            enable_samus_anim = false;
+            it = args.erase(it);
         } else {
             ++it;
         }
@@ -102,11 +118,13 @@ int main(int argc, char** argv) {
 
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::FixedMultiplication, enable_math);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SoftResetCheck, enable_soft_reset);
+    mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusUpdateAnimation, enable_samus_anim);
     mzm::native::sync_all_hooks();
 
-    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s\n",
+    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s\n",
                 enable_math ? "ON" : "OFF",
-                enable_soft_reset ? "ON" : "OFF");
+                enable_soft_reset ? "ON" : "OFF",
+                enable_samus_anim ? "ON" : "OFF");
 
     std::error_code ec;
     auto exe_path = std::filesystem::absolute(argv[0], ec);

@@ -8,6 +8,7 @@
 #include <cstdint>
 #include "fixed_multiplication.h"
 #include "soft_reset_check.h"
+#include "samus_animation.h"
 #include "native_pipeline.h"
 
 #if __has_include("runtime_arm_types.h")
@@ -56,5 +57,16 @@ uint64_t get_native_soft_reset_hits() noexcept;
 void reset_native_soft_reset_hits() noexcept;
 void activate_native_soft_reset_hook() noexcept;
 void deactivate_native_soft_reset_hook() noexcept;
+
+// --- SamusUpdateAnimation (0x0800847C, R6) ---
+void thunk_samus_update_animation_on_state(ArmCpuState* cpu) noexcept;
+int hook_samus_update_animation(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept;
+
+void set_native_samus_anim_enabled(bool enabled) noexcept;
+bool is_native_samus_anim_enabled() noexcept;
+uint64_t get_native_samus_anim_hits() noexcept;
+void reset_native_samus_anim_hits() noexcept;
+void activate_native_samus_anim_hook() noexcept;
+void deactivate_native_samus_anim_hook() noexcept;
 
 } // namespace mzm::native

@@ -76,6 +76,7 @@ add_executable(MetroidZeroMissionRecomp
     src/copied_code.cpp
     src/native/fixed_multiplication.cpp
     src/native/soft_reset_check.cpp
+    src/native/samus_animation.cpp
     src/native/native_thunk.cpp
     ${CART_SOURCES}
     "${STACK_GENERATED}"

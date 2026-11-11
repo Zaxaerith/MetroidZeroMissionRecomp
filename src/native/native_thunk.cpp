@@ -10,6 +10,8 @@
 #include <atomic>
 #include <cstdio>
 
+extern "C" int runtime_call_should_return(uint32_t target_pc);
+
 namespace mzm::native {
 
 namespace {
@@ -18,6 +20,9 @@ std::atomic<uint64_t> g_fixed_mult_hits{0};
 
 std::atomic<bool> g_soft_reset_enabled{false};
 std::atomic<uint64_t> g_soft_reset_hits{0};
+
+std::atomic<bool> g_samus_anim_enabled{false};
+std::atomic<uint64_t> g_samus_anim_hits{0};
 } // namespace
 
 // ============================================================================
@@ -32,6 +37,9 @@ void set_function_enabled(NativeFunctionId id, bool enabled) noexcept {
     case NativeFunctionId::SoftResetCheck:
         g_soft_reset_enabled.store(enabled, std::memory_order_release);
         break;
+    case NativeFunctionId::SamusUpdateAnimation:
+        g_samus_anim_enabled.store(enabled, std::memory_order_release);
+        break;
     default:
         break;
     }
@@ -43,6 +51,8 @@ bool is_function_enabled(NativeFunctionId id) noexcept {
         return g_fixed_mult_enabled.load(std::memory_order_acquire);
     case NativeFunctionId::SoftResetCheck:
         return g_soft_reset_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusUpdateAnimation:
+        return g_samus_anim_enabled.load(std::memory_order_acquire);
     default:
         return false;
     }
@@ -54,6 +64,8 @@ uint64_t get_function_hits(NativeFunctionId id) noexcept {
         return g_fixed_mult_hits.load(std::memory_order_relaxed);
     case NativeFunctionId::SoftResetCheck:
         return g_soft_reset_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusUpdateAnimation:
+        return g_samus_anim_hits.load(std::memory_order_relaxed);
     default:
         return 0;
     }
@@ -67,6 +79,9 @@ void reset_function_hits(NativeFunctionId id) noexcept {
     case NativeFunctionId::SoftResetCheck:
         g_soft_reset_hits.store(0, std::memory_order_relaxed);
         break;
+    case NativeFunctionId::SamusUpdateAnimation:
+        g_samus_anim_hits.store(0, std::memory_order_relaxed);
+        break;
     default:
         break;
     }
@@ -75,6 +90,7 @@ void reset_function_hits(NativeFunctionId id) noexcept {
 void set_all_functions_enabled(bool enabled) noexcept {
     set_function_enabled(NativeFunctionId::FixedMultiplication, enabled);
     set_function_enabled(NativeFunctionId::SoftResetCheck, enabled);
+    set_function_enabled(NativeFunctionId::SamusUpdateAnimation, enabled);
 }
 
 void sync_all_hooks() noexcept {
@@ -89,11 +105,18 @@ void sync_all_hooks() noexcept {
     } else {
         deactivate_native_soft_reset_hook();
     }
+
+    if (is_function_enabled(NativeFunctionId::SamusUpdateAnimation)) {
+        activate_native_samus_anim_hook();
+    } else {
+        deactivate_native_samus_anim_hook();
+    }
 }
 
 void print_session_summary() noexcept {
     const uint64_t mult_hits = get_function_hits(NativeFunctionId::FixedMultiplication);
     const uint64_t reset_hits = get_function_hits(NativeFunctionId::SoftResetCheck);
+    const uint64_t anim_hits = get_function_hits(NativeFunctionId::SamusUpdateAnimation);
     const uint64_t framework_hits = gba_mod_function_hook_hits();
 
     std::printf("[mzm:native] Native Pipeline Summary:\n");
@@ -103,6 +126,9 @@ void print_session_summary() noexcept {
     std::printf("  - SoftResetCheck      (0x080007D0): %llu hits [%s]\n",
                 static_cast<unsigned long long>(reset_hits),
                 is_function_enabled(NativeFunctionId::SoftResetCheck) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusUpdateAnimation (0x0800847C): %llu hits [%s]\n",
+                static_cast<unsigned long long>(anim_hits),
+                is_function_enabled(NativeFunctionId::SamusUpdateAnimation) ? "ENABLED" : "DISABLED");
     std::printf("  - Framework hook total calls: %llu\n",
                 static_cast<unsigned long long>(framework_hits));
 }
@@ -171,6 +197,7 @@ void thunk_fixed_multiplication_on_state(ArmCpuState* cpu) noexcept {
     } else {
         cpu->cpsr &= ~CPSR_T_BIT;
     }
+    runtime_call_should_return(cpu->R[15]);
 }
 
 int hook_fixed_multiplication(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
@@ -235,6 +262,7 @@ void thunk_soft_reset_check_on_state(ArmCpuState* cpu) noexcept {
     } else {
         cpu->cpsr &= ~CPSR_T_BIT;
     }
+    runtime_call_should_return(cpu->R[15]);
 }
 
 int hook_soft_reset_check(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
@@ -248,6 +276,84 @@ int hook_soft_reset_check(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
 
     thunk_soft_reset_check_on_state(cpu);
     g_soft_reset_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
+// SamusUpdateAnimation (0x0800847C, R6)
+// ============================================================================
+
+void set_native_samus_anim_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusUpdateAnimation, enabled);
+}
+
+bool is_native_samus_anim_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusUpdateAnimation);
+}
+
+uint64_t get_native_samus_anim_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusUpdateAnimation);
+}
+
+void reset_native_samus_anim_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusUpdateAnimation);
+}
+
+void activate_native_samus_anim_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_anim", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_anim (0x0800847C)\n");
+}
+
+void deactivate_native_samus_anim_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_anim", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_anim (0x0800847C)\n");
+}
+
+void thunk_samus_update_animation_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData, R1 = slowed (u8)
+    const uint32_t p_data = cpu->R[0];
+    const uint8_t slowed = static_cast<uint8_t>(cpu->R[1] & 0xFFu);
+
+    // 2. Execute readable native C++ logic
+    const uint8_t result = samus_update_animation(p_data, slowed);
+
+    // 3. Return value in R0
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r4}; pop {r1}; bx r1):
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags: original movs r0, #imm sets N=0, Z=(result == 0)
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT);
+    if (result == 0u) {
+        cpu->cpsr |= CPSR_Z_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_update_animation(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x0800847Cu || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_anim_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_update_animation_on_state(cpu);
+    g_samus_anim_hits.fetch_add(1, std::memory_order_relaxed);
     return 1;
 }
 
@@ -278,7 +384,16 @@ GBA_MOD_CONSTRUCTOR(register_mzm_native_hooks) {
     );
     gba_mod_register_activation_plugin("mzm.native.soft_reset", on_mod_sync_callback);
 
-    // 3. Register global reset callback to re-sync hooks across soft resets
+    // 3. SamusUpdateAnimation (0x0800847C, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_anim",
+        0x0800847Cu,
+        1,
+        hook_samus_update_animation
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_anim", on_mod_sync_callback);
+
+    // 4. Register global reset callback to re-sync hooks across soft resets
     gba_mod_register_reset_callback(on_mod_sync_callback);
 }
 
