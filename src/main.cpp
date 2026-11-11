@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <string>
@@ -7,6 +8,8 @@
 #include "runtime.h"
 #include "runtime_arm.h"
 #include "copied_code.h"
+#include "native_thunk.h"
+#include "mod_function_hooks.h"
 
 int game_launcher_preboot(std::vector<std::string>&, const gbarecomp::RunOptions&);
 int game_validate_inputs(std::vector<std::string>&, const gbarecomp::RunOptions&);
@@ -24,6 +27,8 @@ int main(int argc, char** argv) {
                       "  --save <path>      Save file path (default: saves/metroid_zero_mission_usa.sav)\n"
                       "  --no-window        Headless validation mode\n"
                       "  --frames <count>   Stop after specified frame count\n"
+                      "  --native-math      Enable experimental Native C++ FixedMultiplication\n"
+                      "  --no-native-math   Force original AOT FixedMultiplication (default)\n"
                       "\n"
                       "Faithful 240x160 presentation; cartridge and BIOS hashes are verified.");
             return 0;
@@ -43,6 +48,34 @@ int main(int argc, char** argv) {
 
     std::vector<std::string> args(argv, argv + argc);
     const bool player_launch = argc == 1 || (argc == 2 && args[1] == "--launcher");
+
+    // Process native math experimental toggle
+    bool enable_native_math = false;
+    const char* env_native = std::getenv("MZM_NATIVE_FIXED_MULT");
+    if (env_native && (std::strcmp(env_native, "1") == 0 || std::strcmp(env_native, "true") == 0)) {
+        enable_native_math = true;
+    }
+    for (auto it = args.begin() + 1; it != args.end(); ) {
+        if (*it == "--native-math" || *it == "--native-fixed-mult") {
+            enable_native_math = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-math" || *it == "--disable-native-fixed-mult") {
+            enable_native_math = false;
+            it = args.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
+    if (enable_native_math) {
+        mzm::native::set_native_fixed_mult_enabled(true);
+        mzm::native::activate_native_fixed_mult_hook();
+        std::printf("[mzm:native] Native FixedMultiplication experimental switch: ON\n");
+    } else {
+        mzm::native::set_native_fixed_mult_enabled(false);
+        mzm::native::deactivate_native_fixed_mult_hook();
+        std::printf("[mzm:native] Native FixedMultiplication experimental switch: OFF (original AOT active)\n");
+    }
 
     std::error_code ec;
     auto exe_path = std::filesystem::absolute(argv[0], ec);
@@ -98,5 +131,13 @@ int main(int argc, char** argv) {
     native_args.reserve(args.size());
     for (auto& arg : args) native_args.push_back(arg.data());
 
-    return gbarecomp::run_game(static_cast<int>(native_args.size()), native_args.data(), options);
+    int ret = gbarecomp::run_game(static_cast<int>(native_args.size()), native_args.data(), options);
+
+    const uint64_t native_hits = mzm::native::get_native_fixed_mult_hits();
+    const uint64_t framework_hits = gba_mod_function_hook_hits();
+    std::printf("[mzm:native] Session summary: Native FixedMultiplication hits: %llu (framework hook hits: %llu)\n",
+                static_cast<unsigned long long>(native_hits),
+                static_cast<unsigned long long>(framework_hits));
+
+    return ret;
 }

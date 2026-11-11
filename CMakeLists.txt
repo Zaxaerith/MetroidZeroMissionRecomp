@@ -20,6 +20,9 @@ if(NOT EXISTS "${GBARECOMP_ROOT}/CMakeLists.txt")
     message(FATAL_ERROR "Missing framework checkout; see docs/FRAMEWORK_PIN.json")
 endif()
 
+# Enable official mod hooks and mod runtime support
+set(GBARECOMP_ENABLE_MODS ON CACHE BOOL "Build the GBA mod package loader and trusted-plugin runtime" FORCE)
+
 add_subdirectory("${GBARECOMP_ROOT}" framework EXCLUDE_FROM_ALL)
 
 if(RECOMP_UI_ROOT AND EXISTS "${RECOMP_UI_ROOT}/recomp_ui.cmake")
@@ -68,8 +71,20 @@ if(NOT STACK_ROM_COUNT EQUAL 1)
     message(FATAL_ERROR "Native RAM generation requires exactly one verified local USA ROM")
 endif()
 
-add_executable(MetroidZeroMissionRecomp src/main.cpp src/copied_code.cpp ${CART_SOURCES} "${STACK_GENERATED}")
-target_include_directories(MetroidZeroMissionRecomp PRIVATE src)
+add_executable(MetroidZeroMissionRecomp
+    src/main.cpp
+    src/copied_code.cpp
+    src/native/fixed_multiplication.cpp
+    src/native/native_thunk.cpp
+    ${CART_SOURCES}
+    "${STACK_GENERATED}"
+)
+target_include_directories(MetroidZeroMissionRecomp PRIVATE
+    src
+    src/native
+    "${GBARECOMP_ROOT}/src/runtime"
+    "${GBARECOMP_ROOT}/src/armv4t"
+)
 target_link_gbarecomp_runtime_stack(MetroidZeroMissionRecomp)
 if(TARGET game_launcher_ui)
     target_link_libraries(MetroidZeroMissionRecomp PRIVATE game_launcher_ui)
