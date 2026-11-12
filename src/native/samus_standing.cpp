@@ -20,13 +20,19 @@ void bus_write_u32(uint32_t addr, uint32_t val);
 
 namespace mzm::native {
 
-uint8_t samus_standing_gfx(uint32_t p_data_addr) noexcept {
+uint8_t samus_standing_gfx(uint32_t p_data_addr, uint8_t* out_anim_state) noexcept {
     if (p_data_addr == 0u) {
+        if (out_anim_state) {
+            *out_anim_state = SAMUS_ANIM_STATE_NONE;
+        }
         return SPOSE_NONE;
     }
 
     // 1. Advance standing animation (slowed = FALSE = 0)
     const uint8_t anim_state = samus_update_animation(p_data_addr, 0u);
+    if (out_anim_state) {
+        *out_anim_state = anim_state;
+    }
 
     // 2. If animation sequence ended, loop back to frame 0
     if (anim_state == SAMUS_ANIM_STATE_ENDED) {

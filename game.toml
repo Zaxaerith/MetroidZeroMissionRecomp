@@ -288,3 +288,8 @@ note = "Reviewed Native C++ SamusTurningAroundGfx replacement (R7)"
 addr = 0x0800881C
 mode = "thumb"
 note = "Reviewed Native C++ SamusStandingGfx replacement (R8)"
+
+[[mod_function_hook]]
+addr = 0x08008940
+mode = "thumb"
+note = "Reviewed Native C++ SamusShootingGfx replacement (R9)"

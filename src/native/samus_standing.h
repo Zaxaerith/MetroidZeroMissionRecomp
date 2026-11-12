@@ -20,7 +20,8 @@ namespace mzm::native {
  *
  * Calls SamusUpdateAnimation(pData, FALSE); if sequence ended, resets
  * currentAnimationFrame to 0. Always returns SPOSE_NONE (0xFF).
+ * Optionally records anim_state to out_anim_state for accurate CPSR C/V thunk restoration.
  */
-uint8_t samus_standing_gfx(uint32_t p_data_addr) noexcept;
+uint8_t samus_standing_gfx(uint32_t p_data_addr, uint8_t* out_anim_state = nullptr) noexcept;
 
 } // namespace mzm::native

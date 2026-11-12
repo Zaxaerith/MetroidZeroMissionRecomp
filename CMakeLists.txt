@@ -79,6 +79,7 @@ add_executable(MetroidZeroMissionRecomp
     src/native/samus_animation.cpp
     src/native/samus_turning.cpp
     src/native/samus_standing.cpp
+    src/native/samus_shooting.cpp
     src/native/native_thunk.cpp
     ${CART_SOURCES}
     "${STACK_GENERATED}"

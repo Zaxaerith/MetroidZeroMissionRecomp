@@ -29,6 +29,9 @@ std::atomic<uint64_t> g_samus_turn_hits{0};
 
 std::atomic<bool> g_samus_standing_enabled{false};
 std::atomic<uint64_t> g_samus_standing_hits{0};
+
+std::atomic<bool> g_samus_shooting_enabled{false};
+std::atomic<uint64_t> g_samus_shooting_hits{0};
 } // namespace
 
 // ============================================================================
@@ -52,6 +55,9 @@ void set_function_enabled(NativeFunctionId id, bool enabled) noexcept {
     case NativeFunctionId::SamusStandingGfx:
         g_samus_standing_enabled.store(enabled, std::memory_order_release);
         break;
+    case NativeFunctionId::SamusShootingGfx:
+        g_samus_shooting_enabled.store(enabled, std::memory_order_release);
+        break;
     default:
         break;
     }
@@ -69,6 +75,8 @@ bool is_function_enabled(NativeFunctionId id) noexcept {
         return g_samus_turn_enabled.load(std::memory_order_acquire);
     case NativeFunctionId::SamusStandingGfx:
         return g_samus_standing_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusShootingGfx:
+        return g_samus_shooting_enabled.load(std::memory_order_acquire);
     default:
         return false;
     }
@@ -86,6 +94,8 @@ uint64_t get_function_hits(NativeFunctionId id) noexcept {
         return g_samus_turn_hits.load(std::memory_order_relaxed);
     case NativeFunctionId::SamusStandingGfx:
         return g_samus_standing_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusShootingGfx:
+        return g_samus_shooting_hits.load(std::memory_order_relaxed);
     default:
         return 0;
     }
@@ -108,6 +118,9 @@ void reset_function_hits(NativeFunctionId id) noexcept {
     case NativeFunctionId::SamusStandingGfx:
         g_samus_standing_hits.store(0, std::memory_order_relaxed);
         break;
+    case NativeFunctionId::SamusShootingGfx:
+        g_samus_shooting_hits.store(0, std::memory_order_relaxed);
+        break;
     default:
         break;
     }
@@ -119,6 +132,7 @@ void set_all_functions_enabled(bool enabled) noexcept {
     set_function_enabled(NativeFunctionId::SamusUpdateAnimation, enabled);
     set_function_enabled(NativeFunctionId::SamusTurningAroundGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusStandingGfx, enabled);
+    set_function_enabled(NativeFunctionId::SamusShootingGfx, enabled);
 }
 
 void sync_all_hooks() noexcept {
@@ -151,6 +165,12 @@ void sync_all_hooks() noexcept {
     } else {
         deactivate_native_samus_standing_gfx_hook();
     }
+
+    if (is_function_enabled(NativeFunctionId::SamusShootingGfx)) {
+        activate_native_samus_shooting_gfx_hook();
+    } else {
+        deactivate_native_samus_shooting_gfx_hook();
+    }
 }
 
 void print_session_summary() noexcept {
@@ -159,6 +179,7 @@ void print_session_summary() noexcept {
     const uint64_t anim_hits = get_function_hits(NativeFunctionId::SamusUpdateAnimation);
     const uint64_t turn_hits = get_function_hits(NativeFunctionId::SamusTurningAroundGfx);
     const uint64_t standing_hits = get_function_hits(NativeFunctionId::SamusStandingGfx);
+    const uint64_t shooting_hits = get_function_hits(NativeFunctionId::SamusShootingGfx);
     const uint64_t framework_hits = gba_mod_function_hook_hits();
 
     std::printf("[mzm:native] Native Pipeline Summary:\n");
@@ -177,6 +198,9 @@ void print_session_summary() noexcept {
     std::printf("  - SamusStandingGfx     (0x0800881C): %llu hits [%s]\n",
                 static_cast<unsigned long long>(standing_hits),
                 is_function_enabled(NativeFunctionId::SamusStandingGfx) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusShootingGfx     (0x08008940): %llu hits [%s]\n",
+                static_cast<unsigned long long>(shooting_hits),
+                is_function_enabled(NativeFunctionId::SamusShootingGfx) ? "ENABLED" : "DISABLED");
     std::printf("  - Framework hook total calls: %llu\n",
                 static_cast<unsigned long long>(framework_hits));
 }
@@ -519,7 +543,8 @@ void thunk_samus_standing_gfx_on_state(ArmCpuState* cpu) noexcept {
     const uint32_t p_data = cpu->R[0];
 
     // 2. Execute readable native C++ logic
-    const uint8_t result = samus_standing_gfx(p_data);
+    uint8_t anim_state = 0u;
+    const uint8_t result = samus_standing_gfx(p_data, &anim_state);
 
     // 3. Return value in R0 (SPOSE_NONE = 0xFF = 255)
     cpu->R[0] = static_cast<uint32_t>(result);
@@ -528,8 +553,11 @@ void thunk_samus_standing_gfx_on_state(ArmCpuState* cpu) noexcept {
     // In original function, LR was pushed on stack and popped into R1 before bx r1.
     cpu->R[1] = cpu->R[14];
 
-    // 5. Flags: original movs r0, #255 sets N=0, Z=0. Thumb-1 movs imm8 does not affect C or V.
-    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT);
+    // 5. Flags: cmp r0, #2 sets C=(anim_state >= 2), V=0. movs r0, #255 sets N=0, Z=0.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state >= 2u) {
+        cpu->cpsr |= CPSR_C_BIT;
+    }
 
     // 6. Architectural PC & Thumb mode return contract
     const uint32_t target = cpu->R[14];
@@ -553,6 +581,84 @@ int hook_samus_standing_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept
 
     thunk_samus_standing_gfx_on_state(cpu);
     g_samus_standing_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
+// SamusShootingGfx (0x08008940, R9)
+// ============================================================================
+
+void set_native_samus_shooting_gfx_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusShootingGfx, enabled);
+}
+
+bool is_native_samus_shooting_gfx_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusShootingGfx);
+}
+
+uint64_t get_native_samus_shooting_gfx_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusShootingGfx);
+}
+
+void reset_native_samus_shooting_gfx_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusShootingGfx);
+}
+
+void activate_native_samus_shooting_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_shooting", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_shooting (0x08008940)\n");
+}
+
+void deactivate_native_samus_shooting_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_shooting", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_shooting (0x08008940)\n");
+}
+
+void thunk_samus_shooting_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    uint8_t anim_state = 0u;
+    const uint8_t result = samus_shooting_gfx(p_data, &anim_state);
+
+    // 3. Return value in R0 (SPOSE_STANDING=1 if ended, SPOSE_NONE=0xFF otherwise)
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r1}; bx r1):
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags: cmp r0, #2 sets C=(anim_state >= 2), V=0. movs r0, #imm sets N=0, Z=0.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state >= 2u) {
+        cpu->cpsr |= CPSR_C_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_shooting_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x08008940u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_shooting_gfx_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_shooting_gfx_on_state(cpu);
+    g_samus_shooting_hits.fetch_add(1, std::memory_order_relaxed);
     return 1;
 }
 
@@ -610,7 +716,16 @@ GBA_MOD_CONSTRUCTOR(register_mzm_native_hooks) {
     );
     gba_mod_register_activation_plugin("mzm.native.samus_standing", on_mod_sync_callback);
 
-    // 6. Register global reset callback to re-sync hooks across soft resets
+    // 6. SamusShootingGfx (0x08008940, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_shooting",
+        0x08008940u,
+        1,
+        hook_samus_shooting_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_shooting", on_mod_sync_callback);
+
+    // 7. Register global reset callback to re-sync hooks across soft resets
     gba_mod_register_reset_callback(on_mod_sync_callback);
 }
 
