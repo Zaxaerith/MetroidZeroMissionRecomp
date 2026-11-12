@@ -32,11 +32,13 @@ int main(int argc, char** argv) {
                       "  --native-soft-reset Enable Native C++ SoftResetCheck (0x080007D0)\n"
                       "  --native-samus-anim Enable Native C++ SamusUpdateAnimation (0x0800847C)\n"
                       "  --native-samus-turn Enable Native C++ SamusTurningAroundGfx (0x080088F8)\n"
+                      "  --native-samus-standing-gfx Enable Native C++ SamusStandingGfx (0x0800881C)\n"
                       "  --native-all       Enable all verified Native C++ replacements\n"
                       "  --no-native-math   Disable Native C++ FixedMultiplication\n"
                       "  --no-native-soft-reset Disable Native C++ SoftResetCheck\n"
                       "  --no-native-samus-anim Disable Native C++ SamusUpdateAnimation\n"
                       "  --no-native-samus-turn Disable Native C++ SamusTurningAroundGfx\n"
+                      "  --no-native-samus-standing-gfx Disable Native C++ SamusStandingGfx\n"
                       "  --no-native-all    Disable all Native C++ replacements (default: original AOT)\n"
                       "\n"
                       "Faithful 240x160 presentation; cartridge and BIOS hashes are verified.");
@@ -63,6 +65,7 @@ int main(int argc, char** argv) {
     bool enable_soft_reset = false;
     bool enable_samus_anim = false;
     bool enable_samus_turn = false;
+    bool enable_samus_standing = false;
 
     // Check environment variables
     const char* env_all = std::getenv("MZM_NATIVE_ALL");
@@ -71,6 +74,7 @@ int main(int argc, char** argv) {
         enable_soft_reset = true;
         enable_samus_anim = true;
         enable_samus_turn = true;
+        enable_samus_standing = true;
     }
     const char* env_math = std::getenv("MZM_NATIVE_FIXED_MULT");
     if (env_math && (std::strcmp(env_math, "1") == 0 || std::strcmp(env_math, "true") == 0)) {
@@ -88,6 +92,13 @@ int main(int argc, char** argv) {
     if (env_turn && (std::strcmp(env_turn, "1") == 0 || std::strcmp(env_turn, "true") == 0)) {
         enable_samus_turn = true;
     }
+    const char* env_standing = std::getenv("MZM_NATIVE_SAMUS_STANDING_GFX");
+    if (!env_standing) {
+        env_standing = std::getenv("MZM_NATIVE_SAMUS_STANDING");
+    }
+    if (env_standing && (std::strcmp(env_standing, "1") == 0 || std::strcmp(env_standing, "true") == 0)) {
+        enable_samus_standing = true;
+    }
 
     // CLI flags override environment variables
     for (auto it = args.begin() + 1; it != args.end(); ) {
@@ -96,12 +107,14 @@ int main(int argc, char** argv) {
             enable_soft_reset = true;
             enable_samus_anim = true;
             enable_samus_turn = true;
+            enable_samus_standing = true;
             it = args.erase(it);
         } else if (*it == "--no-native-all") {
             enable_math = false;
             enable_soft_reset = false;
             enable_samus_anim = false;
             enable_samus_turn = false;
+            enable_samus_standing = false;
             it = args.erase(it);
         } else if (*it == "--native-math" || *it == "--native-fixed-mult") {
             enable_math = true;
@@ -127,6 +140,12 @@ int main(int argc, char** argv) {
         } else if (*it == "--no-native-samus-turn") {
             enable_samus_turn = false;
             it = args.erase(it);
+        } else if (*it == "--native-samus-standing-gfx" || *it == "--native-samus-standing") {
+            enable_samus_standing = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-samus-standing-gfx" || *it == "--no-native-samus-standing") {
+            enable_samus_standing = false;
+            it = args.erase(it);
         } else {
             ++it;
         }
@@ -136,13 +155,15 @@ int main(int argc, char** argv) {
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SoftResetCheck, enable_soft_reset);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusUpdateAnimation, enable_samus_anim);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusTurningAroundGfx, enable_samus_turn);
+    mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusStandingGfx, enable_samus_standing);
     mzm::native::sync_all_hooks();
 
-    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s, SamusTurningAroundGfx=%s\n",
+    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s, SamusTurningAroundGfx=%s, SamusStandingGfx=%s\n",
                 enable_math ? "ON" : "OFF",
                 enable_soft_reset ? "ON" : "OFF",
                 enable_samus_anim ? "ON" : "OFF",
-                enable_samus_turn ? "ON" : "OFF");
+                enable_samus_turn ? "ON" : "OFF",
+                enable_samus_standing ? "ON" : "OFF");
 
     std::error_code ec;
     auto exe_path = std::filesystem::absolute(argv[0], ec);

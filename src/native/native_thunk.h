@@ -10,6 +10,7 @@
 #include "soft_reset_check.h"
 #include "samus_animation.h"
 #include "samus_turning.h"
+#include "samus_standing.h"
 #include "native_pipeline.h"
 
 #if __has_include("runtime_arm_types.h")
@@ -80,5 +81,16 @@ uint64_t get_native_samus_turn_hits() noexcept;
 void reset_native_samus_turn_hits() noexcept;
 void activate_native_samus_turn_hook() noexcept;
 void deactivate_native_samus_turn_hook() noexcept;
+
+// --- SamusStandingGfx (0x0800881C, R8) ---
+void thunk_samus_standing_gfx_on_state(ArmCpuState* cpu) noexcept;
+int hook_samus_standing_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept;
+
+void set_native_samus_standing_gfx_enabled(bool enabled) noexcept;
+bool is_native_samus_standing_gfx_enabled() noexcept;
+uint64_t get_native_samus_standing_gfx_hits() noexcept;
+void reset_native_samus_standing_gfx_hits() noexcept;
+void activate_native_samus_standing_gfx_hook() noexcept;
+void deactivate_native_samus_standing_gfx_hook() noexcept;
 
 } // namespace mzm::native

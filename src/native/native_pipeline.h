@@ -14,6 +14,7 @@ enum class NativeFunctionId {
     SoftResetCheck,       // 0x080007D0 (R5)
     SamusUpdateAnimation, // 0x0800847C (R6)
     SamusTurningAroundGfx, // 0x080088F8 (R7)
+    SamusStandingGfx,      // 0x0800881C (R8)
     Count
 };
 
