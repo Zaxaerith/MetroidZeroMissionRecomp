@@ -35,6 +35,9 @@ std::atomic<uint64_t> g_samus_shooting_hits{0};
 
 std::atomic<bool> g_samus_shooting_crouching_enabled{false};
 std::atomic<uint64_t> g_samus_shooting_crouching_hits{0};
+
+std::atomic<bool> g_samus_turning_crouching_enabled{false};
+std::atomic<uint64_t> g_samus_turning_crouching_hits{0};
 } // namespace
 
 // ============================================================================
@@ -64,6 +67,9 @@ void set_function_enabled(NativeFunctionId id, bool enabled) noexcept {
     case NativeFunctionId::SamusShootingAndCrouchingGfx:
         g_samus_shooting_crouching_enabled.store(enabled, std::memory_order_release);
         break;
+    case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
+        g_samus_turning_crouching_enabled.store(enabled, std::memory_order_release);
+        break;
     default:
         break;
     }
@@ -85,6 +91,8 @@ bool is_function_enabled(NativeFunctionId id) noexcept {
         return g_samus_shooting_enabled.load(std::memory_order_acquire);
     case NativeFunctionId::SamusShootingAndCrouchingGfx:
         return g_samus_shooting_crouching_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
+        return g_samus_turning_crouching_enabled.load(std::memory_order_acquire);
     default:
         return false;
     }
@@ -106,6 +114,8 @@ uint64_t get_function_hits(NativeFunctionId id) noexcept {
         return g_samus_shooting_hits.load(std::memory_order_relaxed);
     case NativeFunctionId::SamusShootingAndCrouchingGfx:
         return g_samus_shooting_crouching_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
+        return g_samus_turning_crouching_hits.load(std::memory_order_relaxed);
     default:
         return 0;
     }
@@ -134,6 +144,9 @@ void reset_function_hits(NativeFunctionId id) noexcept {
     case NativeFunctionId::SamusShootingAndCrouchingGfx:
         g_samus_shooting_crouching_hits.store(0, std::memory_order_relaxed);
         break;
+    case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
+        g_samus_turning_crouching_hits.store(0, std::memory_order_relaxed);
+        break;
     default:
         break;
     }
@@ -147,6 +160,7 @@ void set_all_functions_enabled(bool enabled) noexcept {
     set_function_enabled(NativeFunctionId::SamusStandingGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusShootingGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusShootingAndCrouchingGfx, enabled);
+    set_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx, enabled);
 }
 
 void sync_all_hooks() noexcept {
@@ -191,6 +205,12 @@ void sync_all_hooks() noexcept {
     } else {
         deactivate_native_samus_shooting_crouching_gfx_hook();
     }
+
+    if (is_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx)) {
+        activate_native_samus_turning_crouching_gfx_hook();
+    } else {
+        deactivate_native_samus_turning_crouching_gfx_hook();
+    }
 }
 
 void print_session_summary() noexcept {
@@ -201,6 +221,7 @@ void print_session_summary() noexcept {
     const uint64_t standing_hits = get_function_hits(NativeFunctionId::SamusStandingGfx);
     const uint64_t shooting_hits = get_function_hits(NativeFunctionId::SamusShootingGfx);
     const uint64_t shooting_crouching_hits = get_function_hits(NativeFunctionId::SamusShootingAndCrouchingGfx);
+    const uint64_t turning_crouching_hits = get_function_hits(NativeFunctionId::SamusTurningAroundAndCrouchingGfx);
     const uint64_t framework_hits = gba_mod_function_hook_hits();
 
     std::printf("[mzm:native] Native Pipeline Summary:\n");
@@ -225,6 +246,9 @@ void print_session_summary() noexcept {
     std::printf("  - SamusShootingAndCrouchingGfx(0x08008C50): %llu hits [%s]\n",
                 static_cast<unsigned long long>(shooting_crouching_hits),
                 is_function_enabled(NativeFunctionId::SamusShootingAndCrouchingGfx) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusTurningAroundAndCrouchingGfx(0x08008C24): %llu hits [%s]\n",
+                static_cast<unsigned long long>(turning_crouching_hits),
+                is_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx) ? "ENABLED" : "DISABLED");
     std::printf("  - Framework hook total calls: %llu\n",
                 static_cast<unsigned long long>(framework_hits));
 }
@@ -765,6 +789,96 @@ int hook_samus_shooting_crouching_gfx(uint32_t addr, int thumb, ArmCpuState* cpu
 }
 
 // ============================================================================
+// SamusTurningAroundAndCrouchingGfx (0x08008C24, R11)
+// ============================================================================
+
+void set_native_samus_turning_crouching_gfx_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx, enabled);
+}
+
+bool is_native_samus_turning_crouching_gfx_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx);
+}
+
+uint64_t get_native_samus_turning_crouching_gfx_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusTurningAroundAndCrouchingGfx);
+}
+
+void reset_native_samus_turning_crouching_gfx_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusTurningAroundAndCrouchingGfx);
+}
+
+void activate_native_samus_turning_crouching_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_turn_crouch", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_turn_crouch (0x08008C24)\n");
+}
+
+void deactivate_native_samus_turning_crouching_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_turn_crouch", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_turn_crouch (0x08008C24)\n");
+}
+
+void thunk_samus_turning_around_and_crouching_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    uint8_t anim_state = 0u;
+    uint8_t suit_type = 0u;
+    const uint8_t result = samus_turning_around_and_crouching_gfx(p_data, &anim_state, &suit_type);
+
+    // 3. Return value in R0
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r1}; bx r1):
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags:
+    // If anim_state != 2 (SAMUS_ANIM_STATE_ENDED):
+    //   CPSR set by `cmp r0, #2` against anim_state: C = (anim_state >= 2), V = 0.
+    // If anim_state == 2:
+    //   CPSR set by second `cmp r0, #2` against suitType: C = (suit_type >= 2), V = 0.
+    // In all 3 paths, movs r0, #imm sets N = 0, Z = 0 and preserves C and V.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state != SAMUS_ANIM_STATE_ENDED) {
+        if (anim_state >= 2u) {
+            cpu->cpsr |= CPSR_C_BIT;
+        }
+    } else {
+        if (suit_type >= 2u) {
+            cpu->cpsr |= CPSR_C_BIT;
+        }
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_turning_around_and_crouching_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x08008C24u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_turning_crouching_gfx_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_turning_around_and_crouching_gfx_on_state(cpu);
+    g_samus_turning_crouching_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
 // Lifecycle & Plugin Registration
 // ============================================================================
 
@@ -836,7 +950,16 @@ GBA_MOD_CONSTRUCTOR(register_mzm_native_hooks) {
     );
     gba_mod_register_activation_plugin("mzm.native.samus_shooting_crouching", on_mod_sync_callback);
 
-    // 8. Register global reset callback to re-sync hooks across soft resets
+    // 8. SamusTurningAroundAndCrouchingGfx (0x08008C24, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_turn_crouch",
+        0x08008C24u,
+        1,
+        hook_samus_turning_around_and_crouching_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_turn_crouch", on_mod_sync_callback);
+
+    // 9. Register global reset callback to re-sync hooks across soft resets
     gba_mod_register_reset_callback(on_mod_sync_callback);
 }
 
