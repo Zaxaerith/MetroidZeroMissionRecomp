@@ -18,6 +18,7 @@ enum class NativeFunctionId {
     SamusShootingGfx,      // 0x08008940 (R9)
     SamusShootingAndCrouchingGfx, // 0x08008C50 (R10)
     SamusTurningAroundAndCrouchingGfx, // 0x08008C24 (R11)
+    SamusStartingSpinJumpGfx,          // 0x08008ED8 (R12)
     Count
 };
 

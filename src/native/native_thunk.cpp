@@ -38,6 +38,9 @@ std::atomic<uint64_t> g_samus_shooting_crouching_hits{0};
 
 std::atomic<bool> g_samus_turning_crouching_enabled{false};
 std::atomic<uint64_t> g_samus_turning_crouching_hits{0};
+
+std::atomic<bool> g_samus_starting_spin_jump_enabled{false};
+std::atomic<uint64_t> g_samus_starting_spin_jump_hits{0};
 } // namespace
 
 // ============================================================================
@@ -70,6 +73,9 @@ void set_function_enabled(NativeFunctionId id, bool enabled) noexcept {
     case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
         g_samus_turning_crouching_enabled.store(enabled, std::memory_order_release);
         break;
+    case NativeFunctionId::SamusStartingSpinJumpGfx:
+        g_samus_starting_spin_jump_enabled.store(enabled, std::memory_order_release);
+        break;
     default:
         break;
     }
@@ -93,6 +99,8 @@ bool is_function_enabled(NativeFunctionId id) noexcept {
         return g_samus_shooting_crouching_enabled.load(std::memory_order_acquire);
     case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
         return g_samus_turning_crouching_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusStartingSpinJumpGfx:
+        return g_samus_starting_spin_jump_enabled.load(std::memory_order_acquire);
     default:
         return false;
     }
@@ -116,6 +124,8 @@ uint64_t get_function_hits(NativeFunctionId id) noexcept {
         return g_samus_shooting_crouching_hits.load(std::memory_order_relaxed);
     case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
         return g_samus_turning_crouching_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusStartingSpinJumpGfx:
+        return g_samus_starting_spin_jump_hits.load(std::memory_order_relaxed);
     default:
         return 0;
     }
@@ -147,6 +157,9 @@ void reset_function_hits(NativeFunctionId id) noexcept {
     case NativeFunctionId::SamusTurningAroundAndCrouchingGfx:
         g_samus_turning_crouching_hits.store(0, std::memory_order_relaxed);
         break;
+    case NativeFunctionId::SamusStartingSpinJumpGfx:
+        g_samus_starting_spin_jump_hits.store(0, std::memory_order_relaxed);
+        break;
     default:
         break;
     }
@@ -161,6 +174,7 @@ void set_all_functions_enabled(bool enabled) noexcept {
     set_function_enabled(NativeFunctionId::SamusShootingGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusShootingAndCrouchingGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx, enabled);
+    set_function_enabled(NativeFunctionId::SamusStartingSpinJumpGfx, enabled);
 }
 
 void sync_all_hooks() noexcept {
@@ -211,6 +225,12 @@ void sync_all_hooks() noexcept {
     } else {
         deactivate_native_samus_turning_crouching_gfx_hook();
     }
+
+    if (is_function_enabled(NativeFunctionId::SamusStartingSpinJumpGfx)) {
+        activate_native_samus_starting_spin_jump_gfx_hook();
+    } else {
+        deactivate_native_samus_starting_spin_jump_gfx_hook();
+    }
 }
 
 void print_session_summary() noexcept {
@@ -222,6 +242,7 @@ void print_session_summary() noexcept {
     const uint64_t shooting_hits = get_function_hits(NativeFunctionId::SamusShootingGfx);
     const uint64_t shooting_crouching_hits = get_function_hits(NativeFunctionId::SamusShootingAndCrouchingGfx);
     const uint64_t turning_crouching_hits = get_function_hits(NativeFunctionId::SamusTurningAroundAndCrouchingGfx);
+    const uint64_t starting_spin_jump_hits = get_function_hits(NativeFunctionId::SamusStartingSpinJumpGfx);
     const uint64_t framework_hits = gba_mod_function_hook_hits();
 
     std::printf("[mzm:native] Native Pipeline Summary:\n");
@@ -249,6 +270,9 @@ void print_session_summary() noexcept {
     std::printf("  - SamusTurningAroundAndCrouchingGfx(0x08008C24): %llu hits [%s]\n",
                 static_cast<unsigned long long>(turning_crouching_hits),
                 is_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusStartingSpinJumpGfx(0x08008ED8): %llu hits [%s]\n",
+                static_cast<unsigned long long>(starting_spin_jump_hits),
+                is_function_enabled(NativeFunctionId::SamusStartingSpinJumpGfx) ? "ENABLED" : "DISABLED");
     std::printf("  - Framework hook total calls: %llu\n",
                 static_cast<unsigned long long>(framework_hits));
 }
@@ -879,6 +903,88 @@ int hook_samus_turning_around_and_crouching_gfx(uint32_t addr, int thumb, ArmCpu
 }
 
 // ============================================================================
+// SamusStartingSpinJumpGfx (0x08008ED8, R12)
+// ============================================================================
+
+void set_native_samus_starting_spin_jump_gfx_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusStartingSpinJumpGfx, enabled);
+}
+
+bool is_native_samus_starting_spin_jump_gfx_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusStartingSpinJumpGfx);
+}
+
+uint64_t get_native_samus_starting_spin_jump_gfx_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusStartingSpinJumpGfx);
+}
+
+void reset_native_samus_starting_spin_jump_gfx_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusStartingSpinJumpGfx);
+}
+
+void activate_native_samus_starting_spin_jump_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_starting_spin_jump", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_starting_spin_jump (0x08008ED8)\n");
+}
+
+void deactivate_native_samus_starting_spin_jump_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_starting_spin_jump", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_starting_spin_jump (0x08008ED8)\n");
+}
+
+void thunk_samus_starting_spin_jump_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    uint8_t anim_state = 0u;
+    const uint8_t result = samus_starting_spin_jump_gfx(p_data, &anim_state);
+
+    // 3. Return value in R0
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r4}; pop {r1}; bx r1):
+    // Caller's R4 is preserved.
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags:
+    // Original Thumb: `cmp r0, #2` where r0 was anim_state.
+    // Sets C = (anim_state >= 2), V = 0.
+    // In both paths (ended and in-progress), `movs r0, #255` sets N = 0, Z = 0 and preserves C and V.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state >= 2u) {
+        cpu->cpsr |= CPSR_C_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_starting_spin_jump_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x08008ED8u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_starting_spin_jump_gfx_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_starting_spin_jump_gfx_on_state(cpu);
+    g_samus_starting_spin_jump_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
 // Lifecycle & Plugin Registration
 // ============================================================================
 
@@ -959,7 +1065,16 @@ GBA_MOD_CONSTRUCTOR(register_mzm_native_hooks) {
     );
     gba_mod_register_activation_plugin("mzm.native.samus_turn_crouch", on_mod_sync_callback);
 
-    // 9. Register global reset callback to re-sync hooks across soft resets
+    // 9. SamusStartingSpinJumpGfx (0x08008ED8, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_starting_spin_jump",
+        0x08008ED8u,
+        1,
+        hook_samus_starting_spin_jump_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_starting_spin_jump", on_mod_sync_callback);
+
+    // 10. Register global reset callback to re-sync hooks across soft resets
     gba_mod_register_reset_callback(on_mod_sync_callback);
 }
 

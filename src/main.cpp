@@ -36,6 +36,7 @@ int main(int argc, char** argv) {
                       "  --native-samus-shooting-gfx Enable Native C++ SamusShootingGfx (0x08008940)\n"
                       "  --native-samus-shooting-crouching-gfx Enable Native C++ SamusShootingAndCrouchingGfx (0x08008C50)\n"
                       "  --native-samus-turning-crouching-gfx Enable Native C++ SamusTurningAroundAndCrouchingGfx (0x08008C24)\n"
+                      "  --native-samus-starting-spin-jump-gfx Enable Native C++ SamusStartingSpinJumpGfx (0x08008ED8)\n"
                       "  --native-all       Enable all verified Native C++ replacements\n"
                       "  --no-native-math   Disable Native C++ FixedMultiplication\n"
                       "  --no-native-soft-reset Disable Native C++ SoftResetCheck\n"
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
                       "  --no-native-samus-shooting-gfx Disable Native C++ SamusShootingGfx\n"
                       "  --no-native-samus-shooting-crouching-gfx Disable Native C++ SamusShootingAndCrouchingGfx\n"
                       "  --no-native-samus-turning-crouching-gfx Disable Native C++ SamusTurningAroundAndCrouchingGfx\n"
+                      "  --no-native-samus-starting-spin-jump-gfx Disable Native C++ SamusStartingSpinJumpGfx\n"
                       "  --no-native-all    Disable all Native C++ replacements (default: original AOT)\n"
                       "\n"
                       "Faithful 240x160 presentation; cartridge and BIOS hashes are verified.");
@@ -75,6 +77,7 @@ int main(int argc, char** argv) {
     bool enable_samus_shooting = false;
     bool enable_samus_shooting_crouching = false;
     bool enable_samus_turning_crouching = false;
+    bool enable_samus_starting_spin_jump = false;
 
     // Check environment variables
     const char* env_all = std::getenv("MZM_NATIVE_ALL");
@@ -87,6 +90,7 @@ int main(int argc, char** argv) {
         enable_samus_shooting = true;
         enable_samus_shooting_crouching = true;
         enable_samus_turning_crouching = true;
+        enable_samus_starting_spin_jump = true;
     }
     const char* env_math = std::getenv("MZM_NATIVE_FIXED_MULT");
     if (env_math && (std::strcmp(env_math, "1") == 0 || std::strcmp(env_math, "true") == 0)) {
@@ -132,6 +136,13 @@ int main(int argc, char** argv) {
     if (env_turn_crouch && (std::strcmp(env_turn_crouch, "1") == 0 || std::strcmp(env_turn_crouch, "true") == 0)) {
         enable_samus_turning_crouching = true;
     }
+    const char* env_starting_spin_jump = std::getenv("MZM_NATIVE_SAMUS_STARTING_SPIN_JUMP_GFX");
+    if (!env_starting_spin_jump) {
+        env_starting_spin_jump = std::getenv("MZM_NATIVE_SAMUS_STARTING_SPIN_JUMP");
+    }
+    if (env_starting_spin_jump && (std::strcmp(env_starting_spin_jump, "1") == 0 || std::strcmp(env_starting_spin_jump, "true") == 0)) {
+        enable_samus_starting_spin_jump = true;
+    }
 
     // CLI flags override environment variables
     for (auto it = args.begin() + 1; it != args.end(); ) {
@@ -144,6 +155,7 @@ int main(int argc, char** argv) {
             enable_samus_shooting = true;
             enable_samus_shooting_crouching = true;
             enable_samus_turning_crouching = true;
+            enable_samus_starting_spin_jump = true;
             it = args.erase(it);
         } else if (*it == "--no-native-all") {
             enable_math = false;
@@ -154,6 +166,7 @@ int main(int argc, char** argv) {
             enable_samus_shooting = false;
             enable_samus_shooting_crouching = false;
             enable_samus_turning_crouching = false;
+            enable_samus_starting_spin_jump = false;
             it = args.erase(it);
         } else if (*it == "--native-math" || *it == "--native-fixed-mult") {
             enable_math = true;
@@ -203,6 +216,12 @@ int main(int argc, char** argv) {
         } else if (*it == "--no-native-samus-turning-crouching-gfx" || *it == "--no-native-samus-turning-crouching") {
             enable_samus_turning_crouching = false;
             it = args.erase(it);
+        } else if (*it == "--native-samus-starting-spin-jump-gfx" || *it == "--native-samus-starting-spin-jump") {
+            enable_samus_starting_spin_jump = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-samus-starting-spin-jump-gfx" || *it == "--no-native-samus-starting-spin-jump") {
+            enable_samus_starting_spin_jump = false;
+            it = args.erase(it);
         } else {
             ++it;
         }
@@ -216,9 +235,10 @@ int main(int argc, char** argv) {
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusShootingGfx, enable_samus_shooting);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusShootingAndCrouchingGfx, enable_samus_shooting_crouching);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusTurningAroundAndCrouchingGfx, enable_samus_turning_crouching);
+    mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusStartingSpinJumpGfx, enable_samus_starting_spin_jump);
     mzm::native::sync_all_hooks();
 
-    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s, SamusTurningAroundGfx=%s, SamusStandingGfx=%s, SamusShootingGfx=%s, SamusShootingAndCrouchingGfx=%s, SamusTurningAroundAndCrouchingGfx=%s\n",
+    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s, SamusTurningAroundGfx=%s, SamusStandingGfx=%s, SamusShootingGfx=%s, SamusShootingAndCrouchingGfx=%s, SamusTurningAroundAndCrouchingGfx=%s, SamusStartingSpinJumpGfx=%s\n",
                 enable_math ? "ON" : "OFF",
                 enable_soft_reset ? "ON" : "OFF",
                 enable_samus_anim ? "ON" : "OFF",
@@ -226,7 +246,8 @@ int main(int argc, char** argv) {
                 enable_samus_standing ? "ON" : "OFF",
                 enable_samus_shooting ? "ON" : "OFF",
                 enable_samus_shooting_crouching ? "ON" : "OFF",
-                enable_samus_turning_crouching ? "ON" : "OFF");
+                enable_samus_turning_crouching ? "ON" : "OFF",
+                enable_samus_starting_spin_jump ? "ON" : "OFF");
 
     std::error_code ec;
     auto exe_path = std::filesystem::absolute(argv[0], ec);
