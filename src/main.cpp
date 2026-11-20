@@ -81,6 +81,9 @@ int main(int argc, char** argv) {
     bool enable_samus_turning_crouching = false;
     bool enable_samus_starting_spin_jump = false;
     bool enable_samus_turning_midair = false;
+    bool enable_samus_morphing = false;
+    bool enable_samus_unmorphing = false;
+    bool enable_samus_starting_wall_jump = false;
 
     // Check environment variables
     const char* env_all = std::getenv("MZM_NATIVE_ALL");
@@ -95,6 +98,9 @@ int main(int argc, char** argv) {
         enable_samus_turning_crouching = true;
         enable_samus_starting_spin_jump = true;
         enable_samus_turning_midair = true;
+        enable_samus_morphing = true;
+        enable_samus_unmorphing = true;
+        enable_samus_starting_wall_jump = true;
     }
     const char* env_math = std::getenv("MZM_NATIVE_FIXED_MULT");
     if (env_math && (std::strcmp(env_math, "1") == 0 || std::strcmp(env_math, "true") == 0)) {
@@ -154,6 +160,27 @@ int main(int argc, char** argv) {
     if (env_turning_midair && (std::strcmp(env_turning_midair, "1") == 0 || std::strcmp(env_turning_midair, "true") == 0)) {
         enable_samus_turning_midair = true;
     }
+    const char* env_morphing = std::getenv("MZM_NATIVE_SAMUS_MORPHING_GFX");
+    if (!env_morphing) {
+        env_morphing = std::getenv("MZM_NATIVE_SAMUS_MORPHING");
+    }
+    if (env_morphing && (std::strcmp(env_morphing, "1") == 0 || std::strcmp(env_morphing, "true") == 0)) {
+        enable_samus_morphing = true;
+    }
+    const char* env_unmorphing = std::getenv("MZM_NATIVE_SAMUS_UNMORPHING_GFX");
+    if (!env_unmorphing) {
+        env_unmorphing = std::getenv("MZM_NATIVE_SAMUS_UNMORPHING");
+    }
+    if (env_unmorphing && (std::strcmp(env_unmorphing, "1") == 0 || std::strcmp(env_unmorphing, "true") == 0)) {
+        enable_samus_unmorphing = true;
+    }
+    const char* env_starting_wall_jump = std::getenv("MZM_NATIVE_SAMUS_STARTING_WALL_JUMP_GFX");
+    if (!env_starting_wall_jump) {
+        env_starting_wall_jump = std::getenv("MZM_NATIVE_SAMUS_STARTING_WALL_JUMP");
+    }
+    if (env_starting_wall_jump && (std::strcmp(env_starting_wall_jump, "1") == 0 || std::strcmp(env_starting_wall_jump, "true") == 0)) {
+        enable_samus_starting_wall_jump = true;
+    }
 
     // CLI flags override environment variables
     for (auto it = args.begin() + 1; it != args.end(); ) {
@@ -168,6 +195,9 @@ int main(int argc, char** argv) {
             enable_samus_turning_crouching = true;
             enable_samus_starting_spin_jump = true;
             enable_samus_turning_midair = true;
+            enable_samus_morphing = true;
+            enable_samus_unmorphing = true;
+            enable_samus_starting_wall_jump = true;
             it = args.erase(it);
         } else if (*it == "--no-native-all") {
             enable_math = false;
@@ -180,6 +210,9 @@ int main(int argc, char** argv) {
             enable_samus_turning_crouching = false;
             enable_samus_starting_spin_jump = false;
             enable_samus_turning_midair = false;
+            enable_samus_morphing = false;
+            enable_samus_unmorphing = false;
+            enable_samus_starting_wall_jump = false;
             it = args.erase(it);
         } else if (*it == "--native-math" || *it == "--native-fixed-mult") {
             enable_math = true;
@@ -241,6 +274,24 @@ int main(int argc, char** argv) {
         } else if (*it == "--no-native-samus-turning-midair-gfx" || *it == "--no-native-samus-turning-midair") {
             enable_samus_turning_midair = false;
             it = args.erase(it);
+        } else if (*it == "--native-samus-morphing-gfx" || *it == "--native-samus-morphing") {
+            enable_samus_morphing = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-samus-morphing-gfx" || *it == "--no-native-samus-morphing") {
+            enable_samus_morphing = false;
+            it = args.erase(it);
+        } else if (*it == "--native-samus-unmorphing-gfx" || *it == "--native-samus-unmorphing") {
+            enable_samus_unmorphing = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-samus-unmorphing-gfx" || *it == "--no-native-samus-unmorphing") {
+            enable_samus_unmorphing = false;
+            it = args.erase(it);
+        } else if (*it == "--native-samus-starting-wall-jump-gfx" || *it == "--native-samus-starting-wall-jump") {
+            enable_samus_starting_wall_jump = true;
+            it = args.erase(it);
+        } else if (*it == "--no-native-samus-starting-wall-jump-gfx" || *it == "--no-native-samus-starting-wall-jump") {
+            enable_samus_starting_wall_jump = false;
+            it = args.erase(it);
         } else {
             ++it;
         }
@@ -256,9 +307,12 @@ int main(int argc, char** argv) {
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusTurningAroundAndCrouchingGfx, enable_samus_turning_crouching);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusStartingSpinJumpGfx, enable_samus_starting_spin_jump);
     mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusTurningAroundMidAirGfx, enable_samus_turning_midair);
+    mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusMorphingGfx, enable_samus_morphing);
+    mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusUnmorphingGfx, enable_samus_unmorphing);
+    mzm::native::set_function_enabled(mzm::native::NativeFunctionId::SamusStartingWallJumpGfx, enable_samus_starting_wall_jump);
     mzm::native::sync_all_hooks();
 
-    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s, SamusTurningAroundGfx=%s, SamusStandingGfx=%s, SamusShootingGfx=%s, SamusShootingAndCrouchingGfx=%s, SamusTurningAroundAndCrouchingGfx=%s, SamusStartingSpinJumpGfx=%s, SamusTurningAroundMidAirGfx=%s\n",
+    std::printf("[mzm:native] Native Pipeline Configuration: FixedMultiplication=%s, SoftResetCheck=%s, SamusUpdateAnimation=%s, SamusTurningAroundGfx=%s, SamusStandingGfx=%s, SamusShootingGfx=%s, SamusShootingAndCrouchingGfx=%s, SamusTurningAroundAndCrouchingGfx=%s, SamusStartingSpinJumpGfx=%s, SamusTurningAroundMidAirGfx=%s, SamusMorphingGfx=%s, SamusUnmorphingGfx=%s, SamusStartingWallJumpGfx=%s\n",
                 enable_math ? "ON" : "OFF",
                 enable_soft_reset ? "ON" : "OFF",
                 enable_samus_anim ? "ON" : "OFF",
@@ -268,7 +322,10 @@ int main(int argc, char** argv) {
                 enable_samus_shooting_crouching ? "ON" : "OFF",
                 enable_samus_turning_crouching ? "ON" : "OFF",
                 enable_samus_starting_spin_jump ? "ON" : "OFF",
-                enable_samus_turning_midair ? "ON" : "OFF");
+                enable_samus_turning_midair ? "ON" : "OFF",
+                enable_samus_morphing ? "ON" : "OFF",
+                enable_samus_unmorphing ? "ON" : "OFF",
+                enable_samus_starting_wall_jump ? "ON" : "OFF");
 
     std::error_code ec;
     auto exe_path = std::filesystem::absolute(argv[0], ec);

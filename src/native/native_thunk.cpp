@@ -44,6 +44,15 @@ std::atomic<uint64_t> g_samus_starting_spin_jump_hits{0};
 
 std::atomic<bool> g_samus_turning_midair_enabled{false};
 std::atomic<uint64_t> g_samus_turning_midair_hits{0};
+
+std::atomic<bool> g_samus_morphing_enabled{false};
+std::atomic<uint64_t> g_samus_morphing_hits{0};
+
+std::atomic<bool> g_samus_unmorphing_enabled{false};
+std::atomic<uint64_t> g_samus_unmorphing_hits{0};
+
+std::atomic<bool> g_samus_starting_wall_jump_enabled{false};
+std::atomic<uint64_t> g_samus_starting_wall_jump_hits{0};
 } // namespace
 
 // ============================================================================
@@ -82,6 +91,15 @@ void set_function_enabled(NativeFunctionId id, bool enabled) noexcept {
     case NativeFunctionId::SamusTurningAroundMidAirGfx:
         g_samus_turning_midair_enabled.store(enabled, std::memory_order_release);
         break;
+    case NativeFunctionId::SamusMorphingGfx:
+        g_samus_morphing_enabled.store(enabled, std::memory_order_release);
+        break;
+    case NativeFunctionId::SamusUnmorphingGfx:
+        g_samus_unmorphing_enabled.store(enabled, std::memory_order_release);
+        break;
+    case NativeFunctionId::SamusStartingWallJumpGfx:
+        g_samus_starting_wall_jump_enabled.store(enabled, std::memory_order_release);
+        break;
     default:
         break;
     }
@@ -109,6 +127,12 @@ bool is_function_enabled(NativeFunctionId id) noexcept {
         return g_samus_starting_spin_jump_enabled.load(std::memory_order_acquire);
     case NativeFunctionId::SamusTurningAroundMidAirGfx:
         return g_samus_turning_midair_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusMorphingGfx:
+        return g_samus_morphing_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusUnmorphingGfx:
+        return g_samus_unmorphing_enabled.load(std::memory_order_acquire);
+    case NativeFunctionId::SamusStartingWallJumpGfx:
+        return g_samus_starting_wall_jump_enabled.load(std::memory_order_acquire);
     default:
         return false;
     }
@@ -136,6 +160,12 @@ uint64_t get_function_hits(NativeFunctionId id) noexcept {
         return g_samus_starting_spin_jump_hits.load(std::memory_order_relaxed);
     case NativeFunctionId::SamusTurningAroundMidAirGfx:
         return g_samus_turning_midair_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusMorphingGfx:
+        return g_samus_morphing_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusUnmorphingGfx:
+        return g_samus_unmorphing_hits.load(std::memory_order_relaxed);
+    case NativeFunctionId::SamusStartingWallJumpGfx:
+        return g_samus_starting_wall_jump_hits.load(std::memory_order_relaxed);
     default:
         return 0;
     }
@@ -173,6 +203,15 @@ void reset_function_hits(NativeFunctionId id) noexcept {
     case NativeFunctionId::SamusTurningAroundMidAirGfx:
         g_samus_turning_midair_hits.store(0, std::memory_order_relaxed);
         break;
+    case NativeFunctionId::SamusMorphingGfx:
+        g_samus_morphing_hits.store(0, std::memory_order_relaxed);
+        break;
+    case NativeFunctionId::SamusUnmorphingGfx:
+        g_samus_unmorphing_hits.store(0, std::memory_order_relaxed);
+        break;
+    case NativeFunctionId::SamusStartingWallJumpGfx:
+        g_samus_starting_wall_jump_hits.store(0, std::memory_order_relaxed);
+        break;
     default:
         break;
     }
@@ -189,6 +228,9 @@ void set_all_functions_enabled(bool enabled) noexcept {
     set_function_enabled(NativeFunctionId::SamusTurningAroundAndCrouchingGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusStartingSpinJumpGfx, enabled);
     set_function_enabled(NativeFunctionId::SamusTurningAroundMidAirGfx, enabled);
+    set_function_enabled(NativeFunctionId::SamusMorphingGfx, enabled);
+    set_function_enabled(NativeFunctionId::SamusUnmorphingGfx, enabled);
+    set_function_enabled(NativeFunctionId::SamusStartingWallJumpGfx, enabled);
 }
 
 void sync_all_hooks() noexcept {
@@ -251,6 +293,24 @@ void sync_all_hooks() noexcept {
     } else {
         deactivate_native_samus_turning_midair_gfx_hook();
     }
+
+    if (is_function_enabled(NativeFunctionId::SamusMorphingGfx)) {
+        activate_native_samus_morphing_gfx_hook();
+    } else {
+        deactivate_native_samus_morphing_gfx_hook();
+    }
+
+    if (is_function_enabled(NativeFunctionId::SamusUnmorphingGfx)) {
+        activate_native_samus_unmorphing_gfx_hook();
+    } else {
+        deactivate_native_samus_unmorphing_gfx_hook();
+    }
+
+    if (is_function_enabled(NativeFunctionId::SamusStartingWallJumpGfx)) {
+        activate_native_samus_starting_wall_jump_gfx_hook();
+    } else {
+        deactivate_native_samus_starting_wall_jump_gfx_hook();
+    }
 }
 
 void print_session_summary() noexcept {
@@ -264,6 +324,9 @@ void print_session_summary() noexcept {
     const uint64_t turning_crouching_hits = get_function_hits(NativeFunctionId::SamusTurningAroundAndCrouchingGfx);
     const uint64_t starting_spin_jump_hits = get_function_hits(NativeFunctionId::SamusStartingSpinJumpGfx);
     const uint64_t turning_midair_hits = get_function_hits(NativeFunctionId::SamusTurningAroundMidAirGfx);
+    const uint64_t morphing_hits = get_function_hits(NativeFunctionId::SamusMorphingGfx);
+    const uint64_t unmorphing_hits = get_function_hits(NativeFunctionId::SamusUnmorphingGfx);
+    const uint64_t starting_wall_jump_hits = get_function_hits(NativeFunctionId::SamusStartingWallJumpGfx);
     const uint64_t framework_hits = gba_mod_function_hook_hits();
 
     std::printf("[mzm:native] Native Pipeline Summary:\n");
@@ -297,6 +360,15 @@ void print_session_summary() noexcept {
     std::printf("  - SamusTurningAroundMidAirGfx(0x08008EB8): %llu hits [%s]\n",
                 static_cast<unsigned long long>(turning_midair_hits),
                 is_function_enabled(NativeFunctionId::SamusTurningAroundMidAirGfx) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusMorphingGfx     (0x08009230): %llu hits [%s]\n",
+                static_cast<unsigned long long>(morphing_hits),
+                is_function_enabled(NativeFunctionId::SamusMorphingGfx) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusUnmorphingGfx   (0x08009508): %llu hits [%s]\n",
+                static_cast<unsigned long long>(unmorphing_hits),
+                is_function_enabled(NativeFunctionId::SamusUnmorphingGfx) ? "ENABLED" : "DISABLED");
+    std::printf("  - SamusStartingWallJumpGfx(0x080090E0): %llu hits [%s]\n",
+                static_cast<unsigned long long>(starting_wall_jump_hits),
+                is_function_enabled(NativeFunctionId::SamusStartingWallJumpGfx) ? "ENABLED" : "DISABLED");
     std::printf("  - Framework hook total calls: %llu\n",
                 static_cast<unsigned long long>(framework_hits));
 }
@@ -1092,6 +1164,256 @@ int hook_samus_turning_around_mid_air_gfx(uint32_t addr, int thumb, ArmCpuState*
 }
 
 // ============================================================================
+// SamusMorphingGfx (0x08009230, R14)
+// ============================================================================
+
+void set_native_samus_morphing_gfx_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusMorphingGfx, enabled);
+}
+
+bool is_native_samus_morphing_gfx_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusMorphingGfx);
+}
+
+uint64_t get_native_samus_morphing_gfx_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusMorphingGfx);
+}
+
+void reset_native_samus_morphing_gfx_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusMorphingGfx);
+}
+
+void activate_native_samus_morphing_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_morphing", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_morphing (0x08009230)\n");
+}
+
+void deactivate_native_samus_morphing_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_morphing", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_morphing (0x08009230)\n");
+}
+
+void thunk_samus_morphing_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    uint8_t anim_state = 0u;
+    const uint8_t result = samus_morphing_gfx(p_data, &anim_state);
+
+    // 3. Return value in R0 (SPOSE_MORPH_BALL=17 if ended, SPOSE_NONE=0xFF otherwise)
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r1}; bx r1):
+    // Note: SamusMorphingGfx pushes ONLY {lr}, NOT {r4, lr}.
+    // Caller's R4 is NOT modified.
+    // LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags:
+    // Original Thumb: `cmp r0, #2` where r0 was anim_state.
+    // Sets C = (anim_state >= 2), V = 0.
+    // In both paths (ended movs r0, #17 and not-ended movs r0, #255),
+    // movs Rd, #imm8 sets N = 0, Z = 0 and preserves C and V.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state >= 2u) {
+        cpu->cpsr |= CPSR_C_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_morphing_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x08009230u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_morphing_gfx_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_morphing_gfx_on_state(cpu);
+    g_samus_morphing_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
+// SamusUnmorphingGfx (0x08009508, R14)
+// ============================================================================
+
+void set_native_samus_unmorphing_gfx_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusUnmorphingGfx, enabled);
+}
+
+bool is_native_samus_unmorphing_gfx_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusUnmorphingGfx);
+}
+
+uint64_t get_native_samus_unmorphing_gfx_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusUnmorphingGfx);
+}
+
+void reset_native_samus_unmorphing_gfx_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusUnmorphingGfx);
+}
+
+void activate_native_samus_unmorphing_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_unmorphing", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_unmorphing (0x08009508)\n");
+}
+
+void deactivate_native_samus_unmorphing_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_unmorphing", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_unmorphing (0x08009508)\n");
+}
+
+void thunk_samus_unmorphing_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    uint8_t anim_state = 0u;
+    const uint8_t result = samus_unmorphing_gfx(p_data, &anim_state);
+
+    // 3. Return value in R0 (SPOSE_CROUCHING=4 if ended, SPOSE_NONE=0xFF otherwise)
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r4}; pop {r1}; bx r1):
+    // Caller's R4 is preserved.
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags:
+    // Original Thumb: `cmp r0, #2` where r0 was anim_state.
+    // Sets C = (anim_state >= 2), V = 0.
+    // In both paths (ended movs r0, #4 and not-ended movs r0, #255),
+    // movs Rd, #imm8 sets N = 0, Z = 0 and preserves C and V.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state >= 2u) {
+        cpu->cpsr |= CPSR_C_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_unmorphing_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x08009508u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_unmorphing_gfx_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_unmorphing_gfx_on_state(cpu);
+    g_samus_unmorphing_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
+// SamusStartingWallJumpGfx (0x080090E0, R14)
+// ============================================================================
+
+void set_native_samus_starting_wall_jump_gfx_enabled(bool enabled) noexcept {
+    set_function_enabled(NativeFunctionId::SamusStartingWallJumpGfx, enabled);
+}
+
+bool is_native_samus_starting_wall_jump_gfx_enabled() noexcept {
+    return is_function_enabled(NativeFunctionId::SamusStartingWallJumpGfx);
+}
+
+uint64_t get_native_samus_starting_wall_jump_gfx_hits() noexcept {
+    return get_function_hits(NativeFunctionId::SamusStartingWallJumpGfx);
+}
+
+void reset_native_samus_starting_wall_jump_gfx_hits() noexcept {
+    reset_function_hits(NativeFunctionId::SamusStartingWallJumpGfx);
+}
+
+void activate_native_samus_starting_wall_jump_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_starting_wall_jump", 1);
+    std::printf("[mzm:native] Hook ACTIVE: mzm.native.samus_starting_wall_jump (0x080090E0)\n");
+}
+
+void deactivate_native_samus_starting_wall_jump_gfx_hook() noexcept {
+    gba_mod_set_function_hook_enabled("mzm.native.samus_starting_wall_jump", 0);
+    std::printf("[mzm:native] Hook INACTIVE: mzm.native.samus_starting_wall_jump (0x080090E0)\n");
+}
+
+void thunk_samus_starting_wall_jump_gfx_on_state(ArmCpuState* cpu) noexcept {
+    if (!cpu) return;
+
+    // 1. Inputs: R0 = pData (pointer to SamusData in IWRAM)
+    const uint32_t p_data = cpu->R[0];
+
+    // 2. Execute readable native C++ logic
+    uint8_t anim_state = 0u;
+    const uint8_t result = samus_starting_wall_jump_gfx(p_data, &anim_state);
+
+    // 3. Return value in R0 (SPOSE_MID_AIR_REQUEST=0xFE if ended, SPOSE_NONE=0xFF otherwise)
+    cpu->R[0] = static_cast<uint32_t>(result);
+
+    // 4. Mirror original Thumb epilogue (pop {r4}; pop {r1}; bx r1):
+    // Caller's R4 is preserved.
+    // In original function, LR was pushed on stack and popped into R1 before bx r1.
+    cpu->R[1] = cpu->R[14];
+
+    // 5. Flags:
+    // Original Thumb: `cmp r0, #2` where r0 was anim_state.
+    // Sets C = (anim_state >= 2), V = 0.
+    // In both paths (ended movs r0, #254 and not-ended movs r0, #255),
+    // movs Rd, #imm8 sets N = 0, Z = 0 and preserves C and V.
+    cpu->cpsr &= ~(CPSR_N_BIT | CPSR_Z_BIT | CPSR_V_BIT | CPSR_C_BIT);
+    if (anim_state >= 2u) {
+        cpu->cpsr |= CPSR_C_BIT;
+    }
+
+    // 6. Architectural PC & Thumb mode return contract
+    const uint32_t target = cpu->R[14];
+    cpu->R[15] = target & ~1u;
+    if (target & 1u) {
+        cpu->cpsr |= CPSR_T_BIT;
+    } else {
+        cpu->cpsr &= ~CPSR_T_BIT;
+    }
+    runtime_call_should_return(cpu->R[15]);
+}
+
+int hook_samus_starting_wall_jump_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept {
+    if (addr != 0x080090E0u || !thumb || !cpu) {
+        return 0;
+    }
+
+    if (!is_native_samus_starting_wall_jump_gfx_enabled()) {
+        return 0;
+    }
+
+    thunk_samus_starting_wall_jump_gfx_on_state(cpu);
+    g_samus_starting_wall_jump_hits.fetch_add(1, std::memory_order_relaxed);
+    return 1;
+}
+
+// ============================================================================
 // Lifecycle & Plugin Registration
 // ============================================================================
 
@@ -1190,7 +1512,34 @@ GBA_MOD_CONSTRUCTOR(register_mzm_native_hooks) {
     );
     gba_mod_register_activation_plugin("mzm.native.samus_turning_midair", on_mod_sync_callback);
 
-    // 11. Register global reset callback to re-sync hooks across soft resets
+    // 11. SamusMorphingGfx (0x08009230, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_morphing",
+        0x08009230u,
+        1,
+        hook_samus_morphing_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_morphing", on_mod_sync_callback);
+
+    // 12. SamusUnmorphingGfx (0x08009508, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_unmorphing",
+        0x08009508u,
+        1,
+        hook_samus_unmorphing_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_unmorphing", on_mod_sync_callback);
+
+    // 13. SamusStartingWallJumpGfx (0x080090E0, Thumb)
+    gba_mod_register_function_entry_plugin(
+        "mzm.native.samus_starting_wall_jump",
+        0x080090E0u,
+        1,
+        hook_samus_starting_wall_jump_gfx
+    );
+    gba_mod_register_activation_plugin("mzm.native.samus_starting_wall_jump", on_mod_sync_callback);
+
+    // 14. Register global reset callback to re-sync hooks across soft resets
     gba_mod_register_reset_callback(on_mod_sync_callback);
 }
 

@@ -20,6 +20,9 @@ enum class NativeFunctionId {
     SamusTurningAroundAndCrouchingGfx, // 0x08008C24 (R11)
     SamusStartingSpinJumpGfx,          // 0x08008ED8 (R12)
     SamusTurningAroundMidAirGfx,       // 0x08008EB8 (R13)
+    SamusMorphingGfx,                  // 0x08009230 (R14)
+    SamusUnmorphingGfx,                // 0x08009508 (R14)
+    SamusStartingWallJumpGfx,          // 0x080090E0 (R14)
     Count
 };
 
