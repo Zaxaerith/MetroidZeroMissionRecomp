@@ -15,6 +15,7 @@
 #include "samus_shooting_crouching.h"
 #include "samus_turning_crouching.h"
 #include "samus_starting_spin_jump.h"
+#include "samus_turning_midair.h"
 #include "native_pipeline.h"
 
 #if __has_include("runtime_arm_types.h")
@@ -140,5 +141,16 @@ uint64_t get_native_samus_starting_spin_jump_gfx_hits() noexcept;
 void reset_native_samus_starting_spin_jump_gfx_hits() noexcept;
 void activate_native_samus_starting_spin_jump_gfx_hook() noexcept;
 void deactivate_native_samus_starting_spin_jump_gfx_hook() noexcept;
+
+// --- SamusTurningAroundMidAirGfx (0x08008EB8, R13) ---
+void thunk_samus_turning_around_mid_air_gfx_on_state(ArmCpuState* cpu) noexcept;
+int hook_samus_turning_around_mid_air_gfx(uint32_t addr, int thumb, ArmCpuState* cpu) noexcept;
+
+void set_native_samus_turning_midair_gfx_enabled(bool enabled) noexcept;
+bool is_native_samus_turning_midair_gfx_enabled() noexcept;
+uint64_t get_native_samus_turning_midair_gfx_hits() noexcept;
+void reset_native_samus_turning_midair_gfx_hits() noexcept;
+void activate_native_samus_turning_midair_gfx_hook() noexcept;
+void deactivate_native_samus_turning_midair_gfx_hook() noexcept;
 
 } // namespace mzm::native
