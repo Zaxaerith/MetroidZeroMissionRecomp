@@ -143,7 +143,7 @@ src/native/
    - 表明 `SoftResetCheck` 的 Native 替换在游戏逻辑执行轨迹上与原 AOT 实现了完美等价替代。
 3. **软复位命中机制说明：** 前 ~290 帧为 GBA BIOS 冷启动与 Nintendo 标识流程，290 帧起进入游戏主循环 `agbmain`，每帧必定触发 1 次 `SoftResetCheck`，至 600 帧结束恰好命中 `310` 次。
 4. **回退可靠性证明：** 当命令行传递 `--no-native-soft-reset` 时，即使设置了环境变量，命中次数依然恒为 0，AOT 代码无损接管。
-5. **玩家存档保护：** 真实玩家存档 [`saves/metroid_zero_mission_usa.sav`](file:///D:/Project/GameRecomp/MetroidZeroMissionRecomp/saves/metroid_zero_mission_usa.sav) 在整轮测试期间由 `--save saves/test_ab.sav` 严格隔离，哈希值与人工验收时间戳完好无损。
+5. **玩家存档保护：** 真实玩家存档 [`saves/metroid_zero_mission_usa.sav`](saves/metroid_zero_mission_usa.sav) 在整轮测试期间由 `--save saves/test_ab.sav` 严格隔离，哈希值与人工验收时间戳完好无损。
 
 ---
 

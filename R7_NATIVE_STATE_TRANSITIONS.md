@@ -239,7 +239,7 @@ ALL 7 UNIT TESTS PASSED SUCCESSFULLY!
 > 在 R7 中，由于 `SamusTurningAroundGfx` 被原生替换并直接在 Host C++ 中调用 `samus_update_animation`，其在实机演示中触发了 **4 次**。因此通过 GBARecomp AOT 入口拦截的 `SamusUpdateAnimation` 次数为 `1,480 - 4 = 1,476 次`。两者相加恰好为 **1,480 次**，严格证明了原生函数间调用链的准确性与零泄漏！
 >
 > **初态存档对显存计数的影响说明（参见 R7.1 专项审计报告）：**  
-> 上表中原版 AOT 初始记录的 52,165 / 297 是在无存档冷启动（Cold Boot）下测得，触发了 SRAM 格式化耗时；而在已有有效存档热启动（Warm Boot）下，AOT 与 Native 均严格为 **52,180 / 301**（Scanline 34）。经 R7.1 专项 32KB IWRAM 镜像逐字节比对，萨姆斯核心数据 `SamusData` (0x030013D4) 与 `gEquipment` (0x03001530) **100% 逐比特完全一致**。详细证明见 [`R7_1_AUDIT.md`](file:///d:/Project/GameRecomp/MetroidZeroMissionRecomp/R7_1_AUDIT.md)。
+> 上表中原版 AOT 初始记录的 52,165 / 297 是在无存档冷启动（Cold Boot）下测得，触发了 SRAM 格式化耗时；而在已有有效存档热启动（Warm Boot）下，AOT 与 Native 均严格为 **52,180 / 301**（Scanline 34）。经 R7.1 专项 32KB IWRAM 镜像逐字节比对，萨姆斯核心数据 `SamusData` (0x030013D4) 与 `gEquipment` (0x03001530) **100% 逐比特完全一致**。详细证明见 [`R7_1_AUDIT.md`](R7_1_AUDIT.md)。
 
 ---
 
